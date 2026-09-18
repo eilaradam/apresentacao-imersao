@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Imersão Claude pra Creator · Dia 1 · Construir</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#C8441A; --red-dark:#A3360F; --ink:#1B1B1B; --cream:#FFF8F2; --cream2:#EEEDE9;
+  --line:#E8E0D8; --muted:#5A5550; --white:#FFFFFF; --soft:#FFF0E8;
+  --font-h:'Montserrat',Arial,sans-serif; --font-b:'DM Sans',Arial,sans-serif; --font-m:'DM Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--ink);font-family:var(--font-b);color:var(--ink);overflow:hidden}
+#deck{position:relative;width:100vw;height:100vh}
+.slide{position:absolute;inset:0;display:none;padding:7vh 8vw;flex-direction:column;justify-content:center;background:var(--cream);color:var(--ink)}
+.slide.active{display:flex}
+.slide.dark{background:var(--ink);color:var(--white)}
+.slide.red{background:var(--red);color:var(--white)}
+.slide.center{align-items:center;text-align:center}
+.tag{font-family:var(--font-h);font-weight:700;font-size:clamp(11px,1.1vw,14px);letter-spacing:.18em;text-transform:uppercase;color:var(--red);margin-bottom:2.2vh}
+.dark .tag,.red .tag{color:rgba(255,255,255,.72)}
+h1{font-family:var(--font-h);font-weight:900;font-size:clamp(36px,6.4vw,100px);line-height:1.02;letter-spacing:-.02em}
+h2{font-family:var(--font-h);font-weight:800;font-size:clamp(28px,4.4vw,68px);line-height:1.06;letter-spacing:-.015em;max-width:22ch}
+h3{font-family:var(--font-h);font-weight:700;font-size:clamp(18px,1.9vw,28px);line-height:1.2}
+p,li{font-size:clamp(17px,1.75vw,27px);line-height:1.45}
+p.lead{margin-top:3vh;max-width:60ch;color:var(--muted)}
+.dark p.lead,.red p.lead{color:rgba(255,255,255,.8)}
+.big{font-family:var(--font-h);font-weight:900;font-size:clamp(40px,8vw,130px);line-height:1;letter-spacing:-.02em}
+.mono{font-family:var(--font-m)}
+ul.list{list-style:none;margin-top:3.5vh;display:grid;gap:1.6vh}
+ul.list li{position:relative;padding-left:1.6em}
+ul.list li::before{content:"";position:absolute;left:0;top:.55em;width:.7em;height:.7em;border-radius:50%;background:var(--red)}
+.dark ul.list li::before,.red ul.list li::before{background:var(--white)}
+ol.steps{list-style:none;counter-reset:s;margin-top:3.5vh;display:grid;gap:1.6vh}
+ol.steps li{counter-increment:s;position:relative;padding-left:2.4em}
+ol.steps li::before{content:counter(s);position:absolute;left:0;top:.05em;font-family:var(--font-m);font-weight:500;color:var(--red);font-size:.95em}
+.dark ol.steps li::before,.red ol.steps li::before{color:var(--white)}
+.grid{display:grid;gap:2vw;margin-top:4vh}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:1fr 1fr 1fr}
+.g4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--white);border:1px solid var(--line);border-radius:8px;padding:2.4vh 1.6vw;box-shadow:0 3px 0 rgba(27,27,27,.07);transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-3px);box-shadow:0 6px 0 rgba(27,27,27,.1)}
+.card h3{margin-bottom:1vh}
+.card p{font-size:clamp(14px,1.35vw,20px);color:var(--muted)}
+.dark .card{background:#262320;border-color:#3a3632;box-shadow:0 3px 0 rgba(0,0,0,.35)}
+.dark .card:hover{box-shadow:0 6px 0 rgba(0,0,0,.45)}
+.dark .card p{color:rgba(255,255,255,.75)}
+.dark .card h3{color:var(--white)}
+.card .n{font-family:var(--font-m);color:var(--red);font-size:clamp(14px,1.4vw,20px);margin-bottom:.6vh}
+.dark .card .n{color:#FF8A5C}
+.agenda{display:grid;grid-template-columns:auto 1fr;gap:1.2vh 2.5vw;margin-top:3.5vh;align-items:baseline}
+.agenda .t{font-family:var(--font-m);color:var(--red);font-size:clamp(16px,1.7vw,26px);white-space:nowrap}
+.dark .agenda .t{color:#FF8A5C}
+.agenda .d{font-size:clamp(16px,1.7vw,26px)}
+.agenda .d.now{font-weight:600}
+.kicker{display:inline-block;background:var(--red);color:var(--white);font-family:var(--font-h);font-weight:700;font-size:clamp(12px,1.1vw,16px);letter-spacing:.12em;text-transform:uppercase;padding:.55em 1.1em;border-radius:100px;margin-bottom:3vh}
+.dark .kicker{background:var(--white);color:var(--ink)}
+.red .kicker{background:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:1vh 1vw;margin-top:3vh}
+.chip{border:2px solid var(--red);color:var(--red);border-radius:100px;padding:.5em 1.1em;font-family:var(--font-h);font-weight:700;font-size:clamp(13px,1.3vw,20px)}
+.chip.fill{background:var(--red);color:var(--white)}
+.dark .chip,.red .chip{border-color:var(--white);color:var(--white)}
+.dark .chip.fill,.red .chip.fill{background:var(--white);color:var(--ink)}
+.ph{border:2px dashed rgba(200,68,26,.55);border-radius:8px;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--red);font-family:var(--font-h);font-weight:700;font-size:clamp(13px,1.3vw,19px);letter-spacing:.06em;text-transform:uppercase;padding:2vh;min-height:24vh;background:var(--soft)}
+.dark .ph{border-color:rgba(255,255,255,.4);color:rgba(255,255,255,.75);background:#262320}
+.two{display:grid;grid-template-columns:1.05fr 1fr;gap:4vw;align-items:center;margin-top:2vh}
+.vs{display:grid;grid-template-columns:1fr 1fr;margin-top:4vh;border-radius:8px;overflow:hidden;box-shadow:0 3px 0 rgba(27,27,27,.07)}
+.vs .col{padding:3vh 2vw}
+.vs .col h3{margin-bottom:1.5vh;font-size:clamp(14px,1.3vw,18px);letter-spacing:.14em;text-transform:uppercase}
+.vs .col ul{list-style:none;display:grid;gap:1.2vh}
+.vs .col li{font-size:clamp(15px,1.55vw,23px)}
+.vs .sem{background:#F1EEEA;color:var(--muted)}
+.vs .sem li{text-decoration:line-through;text-decoration-color:rgba(27,27,27,.4)}
+.vs .com{background:var(--red);color:var(--white)}
+.vs .com li::before{content:"✓  ";color:#B8F0C8}
+.flow{display:flex;align-items:center;gap:1.5vw;margin-top:4vh}
+.flow .box{flex:1;background:var(--white);border:1px solid var(--line);border-radius:8px;padding:3vh 1.5vw;text-align:center;box-shadow:0 3px 0 rgba(27,27,27,.07)}
+.dark .flow .box{background:#262320;border-color:#3a3632;box-shadow:0 3px 0 rgba(0,0,0,.35)}
+.flow .box h3{margin-bottom:.8vh}
+.flow .box p{font-size:clamp(13px,1.3vw,19px);color:var(--muted)}
+.dark .flow .box p{color:rgba(255,255,255,.75)}
+.flow .arr{font-family:var(--font-h);font-weight:900;font-size:clamp(24px,3vw,44px);color:var(--red)}
+.dark .flow .arr{color:#FF8A5C}
+.check{list-style:none;margin-top:3.5vh;display:grid;gap:1.4vh}
+.check li{padding-left:2em;position:relative}
+.check li::before{content:"";position:absolute;left:0;top:.2em;width:1.1em;height:1.1em;border:2px solid var(--red);border-radius:5px}
+.dark .check li::before{border-color:var(--white)}
+.prompt{background:var(--ink);color:#F4EFE9;border-radius:8px;padding:3vh 2vw;font-family:var(--font-m);font-size:clamp(13px,1.3vw,19px);line-height:1.5;white-space:pre-wrap;margin-top:3vh;max-height:56vh;overflow:auto}
+.dark .prompt{background:#0F0E0D;border:1px solid #3a3632}
+.prompt .k{color:#FF8A5C}
+.foot{position:absolute;left:8vw;right:8vw;bottom:3.5vh;display:flex;justify-content:space-between;font-family:var(--font-h);font-weight:700;font-size:clamp(10px,.95vw,13px);letter-spacing:.14em;text-transform:uppercase;color:rgba(27,27,27,.45)}
+.dark .foot,.red .foot{color:rgba(255,255,255,.5)}
+#counter{display:none}
+#notes{position:fixed;left:0;right:0;bottom:0;background:rgba(27,27,27,.96);color:#F4EFE9;padding:2vh 4vw;font-size:15px;line-height:1.5;display:none;z-index:10;border-top:2px solid var(--red);max-height:36vh;overflow:auto}
+#notes.on{display:block}
+#notes b{color:#FF8A5C}
+.notes{display:none}
+/* ================= agenda do dia em dois turnos ================= */
+.dia{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,3.2vw,60px);margin-top:4vh}
+.turno__t{font-family:var(--font-m);font-size:clamp(10px,1vw,13px);letter-spacing:.2em;text-transform:uppercase;color:var(--red);
+  padding-bottom:1.1vh;border-bottom:2px solid var(--ink);margin-bottom:.4vh}
+.dark .turno__t{border-bottom-color:var(--white);color:#FF8A5C}
+.ag{display:grid;grid-template-columns:auto 1fr;gap:clamp(12px,1.5vw,28px);align-items:baseline;
+  padding:1.45vh .4vw;border-bottom:1px solid var(--line)}
+.ag .h{font-family:var(--font-m);font-size:clamp(13px,1.4vw,20px);color:var(--red);white-space:nowrap;min-width:5.4ch}
+.ag .d{font-size:clamp(14px,1.48vw,21px);line-height:1.32}
+.ag--pausa{background:var(--ink);border-radius:8px;border-bottom:0;margin-top:1.4vh;padding:1.9vh clamp(12px,1.1vw,22px);
+  box-shadow:0 3px 0 rgba(27,27,27,.14)}
+.ag--pausa .h{color:#FF8A5C}
+.ag--pausa .d{color:var(--white);font-family:var(--font-h);font-weight:800;font-size:clamp(14px,1.5vw,22px);letter-spacing:.01em}
+.slide.active .turno{animation:rise .5s both}
+.slide.active .turno:nth-child(1){animation-delay:.28s}
+.slide.active .turno:nth-child(2){animation-delay:.4s}
+.slide.active .ag{animation:rise .45s both}
+.slide.active .ag:nth-child(2){animation-delay:.42s}
+.slide.active .ag:nth-child(3){animation-delay:.5s}
+.slide.active .ag:nth-child(4){animation-delay:.58s}
+.slide.active .ag:nth-child(5){animation-delay:.66s}
+.slide.active .ag:nth-child(6){animation-delay:.78s}
+
+/* ================= barra do horário ================= */
+#horaBar{position:fixed;top:0;left:0;right:0;height:58px;z-index:8;display:flex;align-items:center;gap:clamp(14px,1.8vw,28px);
+  padding:0 8vw;color:var(--ink);pointer-events:none;transition:color .35s,opacity .3s}
+#horaBar.claro{color:#fff}
+#horaBar.some{opacity:0}
+.hb__hora{font-family:var(--font-h);font-weight:900;font-size:clamp(17px,1.65vw,25px);letter-spacing:-.025em;line-height:1;white-space:nowrap}
+.hb__fase{font-family:var(--font-m);font-size:clamp(9.5px,.82vw,12px);letter-spacing:.16em;text-transform:uppercase;opacity:.6;white-space:nowrap}
+.hb__trilho{flex:1;display:flex;gap:5px;align-items:center;min-width:70px}
+.hb__trilho i{flex:1;height:4px;border-radius:2px;background:currentColor;opacity:.15;transition:opacity .4s}
+.hb__trilho i.passou{opacity:.35}
+.hb__trilho i.agora{opacity:1;color:var(--red);transform-origin:left;animation:preenche .55s cubic-bezier(.2,.8,.3,1) both}
+#horaBar.claro .hb__trilho i.agora{color:#fff}
+.hb__n{font-family:var(--font-m);font-size:clamp(10px,.85vw,12.5px);opacity:.45;white-space:nowrap}
+#linhaProg{position:fixed;top:56px;left:0;height:2px;background:var(--red);z-index:9;width:0;transition:width .4s cubic-bezier(.2,.8,.3,1)}
+@keyframes preenche{from{transform:scaleX(.08)}to{transform:scaleX(1)}}
+
+/* ================= grão de papel ================= */
+#grao{position:fixed;inset:0;z-index:7;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ================= entrada do slide e das palavras ================= */
+@keyframes entra{from{opacity:0;transform:scale(.988)}to{opacity:1;transform:none}}
+.slide.active{animation:entra .4s cubic-bezier(.2,.8,.3,1) both}
+.pal{display:inline-block}
+.slide.active h1.fatiado,.slide.active h2.fatiado{animation:none}
+.slide.active .fatiado .pal{animation:rise .6s cubic-bezier(.2,.8,.3,1) both}
+
+@media (max-width:800px){.dia{grid-template-columns:1fr;gap:20px}#horaBar{padding:0 5vw;gap:10px}.hb__fase{display:none}.g2,.g3,.g4,.two,.vs{grid-template-columns:1fr}.flow{flex-direction:column}.flow .arr{transform:rotate(90deg)}h2{max-width:none}}
+
+/* ===== animações ===== */
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes drift{0%{transform:translate(0,0) rotate(0deg)}50%{transform:translate(2vw,-2vh) rotate(6deg)}100%{transform:translate(0,0) rotate(0deg)}}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.85}50%{transform:scale(1.18);opacity:1}}
+@keyframes tick{from{transform:scale(0) rotate(-20deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+.slide.active .tag,.slide.active .kicker{animation:rise .45s .05s both}
+.slide.active h1,.slide.active h2{animation:rise .55s .15s both}
+.slide.active p.lead{animation:rise .55s .35s both}
+.slide.active .card,.slide.active ul.list li,.slide.active ol.steps li,.slide.active .check li,.slide.active .chip,.slide.active .flow .box,.slide.active .agenda .t,.slide.active .agenda .d,.slide.active .vs .col,.slide.active .ph,.slide.active .prompt,.slide.active .two>*{animation:rise .5s both}
+.slide.active :is(.card,ul.list li,ol.steps li,.check li,.chip,.flow .box,.ph,.prompt,.two>*):nth-child(1){animation-delay:.3s}
+.slide.active :is(.card,ul.list li,ol.steps li,.check li,.chip,.flow .box,.ph,.prompt,.two>*):nth-child(2){animation-delay:.42s}
+.slide.active :is(.card,ul.list li,ol.steps li,.check li,.chip,.flow .box,.ph,.prompt,.two>*):nth-child(3){animation-delay:.54s}
+.slide.active :is(.card,ul.list li,ol.steps li,.check li,.chip,.flow .box,.ph,.prompt,.two>*):nth-child(4){animation-delay:.66s}
+.slide.active :is(.card,ul.list li,ol.steps li,.check li,.chip,.flow .box,.ph,.prompt,.two>*):nth-child(5){animation-delay:.78s}
+.slide.active :is(.card,ul.list li,ol.steps li,.check li,.chip,.flow .box,.ph,.prompt,.two>*):nth-child(6){animation-delay:.9s}
+.slide.active :is(.card,ul.list li,ol.steps li,.check li,.chip,.flow .box,.ph,.prompt,.two>*):nth-child(7){animation-delay:1.02s}
+.slide.active :is(.card,ul.list li,ol.steps li,.check li,.chip,.flow .box,.ph,.prompt,.two>*):nth-child(8){animation-delay:1.14s}
+.slide.active .agenda>*{animation-delay:calc(.25s + var(--i,0)*.07s)}
+.slide.active .flow .arr{animation:pulse 1.6s 1s ease-in-out infinite}
+.slide.active .check li::before{animation:tick .4s .9s both}
+.slide.active .vs .col.com li{animation:rise .4s both}
+.slide.active .vs .col.com li:nth-child(1){animation-delay:.8s}.slide.active .vs .col.com li:nth-child(2){animation-delay:.95s}.slide.active .vs .col.com li:nth-child(3){animation-delay:1.1s}.slide.active .vs .col.com li:nth-child(4){animation-delay:1.25s}
+.slide>*:not(.foot):not(.bg-logo){position:relative;z-index:1}
+/* logo do Claude no fundo (você coloca o arquivo claude-logo.svg ou .png ao lado deste html) */
+.bg-logo{position:absolute;right:-6vw;top:50%;width:44vw;height:44vw;margin-top:-22vw;z-index:0;opacity:.09;pointer-events:none;display:flex;align-items:center;justify-content:center;animation:drift 14s ease-in-out infinite}
+.bg-logo img{width:100%;height:100%;object-fit:contain;animation:spin 60s linear infinite}
+.dark .bg-logo{opacity:.12}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<div id="grao"></div>
+<div id="horaBar">
+  <span class="hb__hora" id="hbHora">9h</span>
+  <span class="hb__fase" id="hbFase">Abertura</span>
+  <span class="hb__trilho" id="hbTrilho"></span>
+  <span class="hb__n" id="hbN">1 / 45</span>
+</div>
+<div id="linhaProg"></div>
+<div id="deck">
+
+<!-- 1 -->
+<section class="slide red center">
+  <div class="kicker">Sejam bem-vindas</div>
+  <h1>Imersão<br>Claude pra Creator</h1>
+  <p class="lead" style="margin-top:3.4vh;color:rgba(255,255,255,.92);font-size:clamp(18px,2.05vw,31px);max-width:46ch">
+    <strong>Dia 1 · Construir o portfólio e o admin</strong><br>Hoje você sai com os dois no ar, num endereço seu.</p>
+  <div class="chips" style="justify-content:center;margin-top:4.2vh">
+    <span class="chip">19 de setembro</span><span class="chip">9h às 17h</span><span class="chip fill">Turma 2</span>
+  </div>
+  <div class="foot"><span>@eilaradam</span><span>Se ajeita que já vamos começar</span></div>
+  <div class="notes"><b>Antes de começar:</b> tela do seu portfólio e do seu admin abertas em abas. Pedir pra todo mundo escrever no chat "cheguei" e a cidade. Confirmar que está gravando.</div>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <div class="tag">Como vai ser o dia</div>
+  <h2 style="max-width:34ch">O dia inteiro tem um único objetivo: você sair com as duas coisas no ar.</h2>
+  <div class="dia">
+    <div class="turno">
+      <div class="turno__t">Manhã · construir o portfólio</div>
+      <div class="ag"><span class="h">9h</span><span class="d">O que é o Claude e como ele trabalha pra você</span></div>
+      <div class="ag"><span class="h">10h</span><span class="d">Começa o portfólio. Enquanto ele monta, eu explico a estrutura</span></div>
+      <div class="ag"><span class="h">11h</span><span class="d">Domínio: como ter um endereço seu, de graça</span></div>
+      <div class="ag"><span class="h">12h</span><span class="d">Portfólio pronto</span></div>
+      <div class="ag ag--pausa"><span class="h">12h às 13h30</span><span class="d">Pausa</span></div>
+    </div>
+    <div class="turno">
+      <div class="turno__t">Tarde · construir o admin</div>
+      <div class="ag"><span class="h">13h30</span><span class="d">Deu certo? Dúvidas</span></div>
+      <div class="ag"><span class="h">14h</span><span class="d">Página de admin: o que é e o que ela faz</span></div>
+      <div class="ag"><span class="h">14h30</span><span class="d">Construir o admin: Supabase, GitHub, cada peça explicada</span></div>
+      <div class="ag"><span class="h">16h</span><span class="d">Admin pronto e conectado ao portfólio</span></div>
+      <div class="ag"><span class="h">17h</span><span class="d">Dúvidas e fechamento</span></div>
+    </div>
+  </div>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Agenda</span></div>
+</section>
+
+<!-- 3 -->
+<section class="slide dark">
+  <div class="tag">Onde a gente chega às 17h</div>
+  <h2>Isso aqui é o que você vai ter hoje à noite.</h2>
+  <div class="grid g2">
+    <div>
+      <div class="ph">[PRINT DO SEU PORTFÓLIO NO AR]</div>
+      <p style="margin-top:1.5vh;font-size:clamp(15px,1.5vw,22px);color:rgba(255,255,255,.8)">Portfólio publicado, num endereço seu, com formulário de contato.</p>
+    </div>
+    <div>
+      <div class="ph">[PRINT DO SEU ADMIN]</div>
+      <p style="margin-top:1.5vh;font-size:clamp(15px,1.5vw,22px);color:rgba(255,255,255,.8)">Página de admin com login, ligada ao site: Portfólio, Calendário, Organização de Campanha e Checklist Portfólio.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Resultado</span></div>
+  <div class="notes">Mostrar o seu ao vivo em vez de descrever. Abre o site, abre o admin, muda um vídeo no admin e mostra ele mudando no site. Isso é a promessa do dia inteira em 30 segundos.</div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <div class="tag">Combinados</div>
+  <h2>Quatro regras pra esse dia dar certo.</h2>
+  <div class="grid g2">
+    <div class="card"><div class="n">01</div><h3>Travou? Fala no chat na hora</h3><p>Não espera acabar a explicação. A gente resolve junto, e o que travou numa serve pra todas.</p></div>
+    <div class="card"><div class="n">02</div><h3>Erro ao vivo é parte da aula</h3><p>Vai acontecer comigo também. Quando acontecer, eu mostro na tela como eu peço pro Claude arrumar.</p></div>
+    <div class="card"><div class="n">03</div><h3>Está tudo gravado</h3><p>Perdeu um pedaço, o computador reiniciou, ficou pra trás. Assiste depois e refaz com calma.</p></div>
+    <div class="card" style="border-color:var(--red)"><div class="n">04</div><h3>Um pedido por vez</h3><p>Hoje você aprende a pedir. Quem sai daqui sabendo pedir constrói qualquer coisa depois.</p></div>
+  </div>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Combinados</span></div>
+</section>
+
+<!-- 5 -->
+<section class="slide red center">
+  <div class="tag">Bloco 1 · 9h</div>
+  <h1>O que é o Claude</h1>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Bloco 1</span></div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <div class="bg-logo"><img src="claude-logo.svg" alt="" onerror="this.parentNode.style.display='none'"></div>
+  <div class="tag">O que é</div>
+  <h2>O Claude é um assistente de inteligência artificial com quem você conversa.</h2>
+  <p class="lead">Feito pela Anthropic. Você escreve em português, do jeito que fala, e ele responde, analisa, escreve e, na versão que a gente usa hoje, constrói coisas de verdade no seu computador.</p>
+  <div class="chips">
+    <span class="chip">Conversa</span><span class="chip">Analisa</span><span class="chip">Escreve</span><span class="chip fill">Constrói</span>
+  </div>
+  <div class="foot"><span>Dia 1 · Construir</span><span>O que é o Claude</span></div>
+  <div class="notes">Contar em 1 minuto a sua história: você cancelou o ChatGPT pra ficar só com o Claude, e por quê. Não vender, só contextualizar.</div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <div class="tag">Duas portas de entrada</div>
+  <h2>Claude no chat e Claude Code não são a mesma coisa.</h2>
+  <div class="grid g2">
+    <div class="card">
+      <div class="n">01</div>
+      <h3>Claude (chat)</h3>
+      <p>Você conversa. Ele responde na tela. Serve pra pensar, escrever legenda, analisar briefing, revisar roteiro. Nada sai do chat.</p>
+    </div>
+    <div class="card" style="border-color:var(--red)">
+      <div class="n">02</div>
+      <h3>Claude Code</h3>
+      <p>A parte de Code do aplicativo do Claude. Você conversa e ele mexe nos arquivos do seu computador: cria a pasta, escreve o site, arruma o que quebrou, publica. É o que a gente usa hoje o dia inteiro.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Chat vs Code</span></div>
+</section>
+
+<!-- 8 -->
+<section class="slide dark">
+  <div class="bg-logo" style="left:-8vw;right:auto;animation-delay:5s"><img src="claude-logo.svg" alt="" onerror="this.parentNode.style.display='none'"></div>
+  <div class="tag">Como o Claude Code trabalha</div>
+  <h2>Você pede. Ele cria os arquivos. Você abre no navegador e vê.</h2>
+  <div class="flow">
+    <div class="box"><h3>Você pede</h3><p>Em português, com contexto. "Quero um portfólio com..."</p></div>
+    <div class="arr">→</div>
+    <div class="box"><h3>Ele cria</h3><p>Os arquivos do seu site, dentro da pasta que você escolheu</p></div>
+    <div class="arr">→</div>
+    <div class="box"><h3>Você vê</h3><p>Abre no navegador, olha, pede o ajuste. Repete até ficar seu</p></div>
+  </div>
+  <p class="lead" style="margin-top:4vh">Nenhum momento do dia você vai escrever código. Você vai ler o que ele fez e dizer o que quer diferente.</p>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Como funciona</span></div>
+  <div class="notes">Abrir o Claude Code na tela, pasta vazia, e fazer um pedido bobo (uma página com "olá" em vermelho) só pra elas verem o ciclo inteiro em 1 minuto: pedido, arquivos aparecendo, navegador.</div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <div class="tag">Vocabulário mínimo</div>
+  <h2>Sete palavras que vão aparecer hoje. Só isso.</h2>
+  <div class="grid g4">
+    <div class="card"><div class="n">01</div><h3>Pasta</h3><p>Onde o seu site mora no computador. Uma pasta por projeto, e é só isso.</p></div>
+    <div class="card"><div class="n">02</div><h3>Arquivo</h3><p>Os pedaços do site dentro da pasta. Você não precisa saber o nome de nenhum: quem abre e mexe é o Claude.</p></div>
+    <div class="card"><div class="n">03</div><h3>Modelo</h3><p>Um dos portfólios prontos que eu fiz. Você escolhe o seu e o prompt adapta pra você.</p></div>
+    <div class="card"><div class="n">04</div><h3>Prévia</h3><p>O site aberto no seu navegador antes de ir pro ar. Só você vê.</p></div>
+    <div class="card"><div class="n">05</div><h3>Repositório</h3><p>A cópia do seu projeto guardada na internet, no GitHub. É de lá que o site publica.</p></div>
+    <div class="card"><div class="n">06</div><h3>Publicar</h3><p>Mandar o site pro ar. Depois disso qualquer pessoa abre pelo link.</p></div>
+    <div class="card"><div class="n">07</div><h3>Banco de dados</h3><p>Onde ficam as informações que mudam: seus vídeos, seus contatos. Hoje é o Supabase.</p></div>
+    <div class="card" style="background:var(--soft)"><h3>E só</h3><p>O resto o Claude explica quando aparecer. Pergunta pra ele: "explica isso como se eu nunca tivesse programado".</p></div>
+  </div>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Vocabulário</span></div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <div class="tag">Plano e modelo</div>
+  <h2>Você não precisa entender de modelo. Precisa de um plano pago e de saber quando trocar.</h2>
+  <ul class="list">
+    <li>O plano pago mais básico já roda o Claude Code. É o único investimento além da imersão.</li>
+    <li>O modelo que já vem ligado dá conta do dia inteiro. Não precisa mexer em nada.</li>
+    <li>Apareceu aviso de limite? Para, anota onde parou e volta quando liberar. Seu projeto continua salvo na pasta.</li>
+  </ul>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Plano e modelo</span></div>
+  <div class="notes">Confirmar antes da aula o nome do plano e do modelo padrão que aparece pra elas na tela, pra falar o nome certo. Não citar valor de plano no slide, fala se perguntarem.</div>
+</section>
+
+<!-- 11 -->
+<section class="slide dark">
+  <div class="tag">A habilidade do dia</div>
+  <h2>Pedir bem é a única coisa que você precisa aprender hoje.</h2>
+  <div class="grid g2">
+    <div class="card"><div class="n">Contexto</div><h3>Quem você é, pra quem é o site</h3><p>"Sou creator UGC, quero um portfólio pra marca de casa e decoração abrir no celular."</p></div>
+    <div class="card"><div class="n">Resultado</div><h3>O que você quer ver na tela</h3><p>"Uma seção com 6 vídeos do YouTube, 3 por linha, com o nome da marca embaixo."</p></div>
+    <div class="card"><div class="n">Limite</div><h3>O que não pode mudar</h3><p>"Não mexe nas cores. Não apaga o formulário. Só troca a ordem das seções."</p></div>
+    <div class="card"><div class="n">Ritmo</div><h3>Um pedido por vez</h3><p>Pediu, olhou no navegador, aí pede o próximo. Cinco pedidos de uma vez viram bagunça.</p></div>
+  </div>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Como pedir</span></div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <div class="tag">Por que isso importa pra você</div>
+  <h2>Eu escolho creator toda semana, e decido em menos de um minuto.</h2>
+  <div class="vs">
+    <div class="col sem"><h3>O que eu fecho rápido</h3><ul>
+      <li>Link do Instagram, "dá uma olhada lá"</li>
+      <li>PDF com vídeo que não abre</li>
+      <li>Sem nicho, sem formato, sem contato</li>
+    </ul></div>
+    <div class="col com"><h3>O que eu paro pra ver</h3><ul>
+      <li>Um site que abre rápido no celular</li>
+      <li>Vídeos rodando ali, separados por nicho</li>
+      <li>Um endereço que é dela</li>
+    </ul></div>
+  </div>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Ponto de vista da marca</span></div>
+  <div class="notes">Contar o seu antes e depois: Canva genérico, mandava e torcia. Depois do site você descobriu que casa e decoração era o nicho mais procurado e você nem dava destaque. Reorganizou, passou a receber mais proposta.</div>
+</section>
+
+<!-- 13 -->
+<section class="slide red center">
+  <div class="tag">Bloco 2 · 10h</div>
+  <h1>Hora de construir<br>o portfólio</h1>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Bloco 2</span></div>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <div class="tag">Antes de rodar o prompt</div>
+  <h2>Separa isso agora. São as respostas que o site do prompt vai te pedir.</h2>
+  <ul class="check">
+    <li>Seu nome e como quer ser chamada no site</li>
+    <li>Uma frase de posicionamento: o que você faz e pra quem</li>
+    <li>De 2 a 4 nichos que você atende</li>
+    <li>Formatos que entrega (Reels, unboxing, review, rotina...)</li>
+    <li>De 3 a 6 vídeos seus no YouTube, publicados como <strong>não listado</strong></li>
+    <li>Marcas com quem já trabalhou (se tiver)</li>
+    <li>Uma foto sua e o WhatsApp ou email de contato</li>
+  </ul>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Preparação</span></div>
+  <div class="notes">Explicar o YouTube não listado: o vídeo não aparece no canal nem em busca, só quem tem o link vê. Por isso é o jeito mais leve de colocar vídeo em site sem pesar a página e sem depender do Instagram.</div>
+</section>
+
+<!-- 15a -->
+<section class="slide">
+  <div class="tag">Os modelos</div>
+  <h2>Escolha <em style="font-style:normal;text-decoration:underline;text-decoration-thickness:6px;text-underline-offset:8px;text-decoration-color:var(--red)">um</em> modelo. O que tiver mais a sua cara.</h2>
+  <p class="lead">Todos têm a mesma estrutura por baixo, o que muda é o estilo. Então não existe escolha errada, e depois dá pra trocar cor, fonte e ordem com um pedido.</p>
+  <div class="chips">
+    <span class="chip fill">5 minutos pra decidir</span><span class="chip">Um modelo só</span><span class="chip">Dá pra mudar depois</span>
+  </div>
+  <p class="lead">A pergunta não é qual você acha mais bonito. É qual deles a marca do seu nicho gostaria de receber.</p>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Modelos</span></div>
+  <div class="notes">Mandar o link no grupo agora. Falar em voz alta o combinado: <b>abre, olha, escolhe UM e fecha</b>. Quem ficar comparando modelo perde o bloco inteiro. Se alguém travar na escolha, escolhe por ela e segue.</div>
+</section>
+
+<!-- 15b -->
+<section class="slide dark">
+  <div class="tag">O site do prompt</div>
+  <h2>Você não escreve o prompt. Você preenche e copia.</h2>
+  <div class="two">
+    <ol class="steps" style="margin-top:0">
+      <li>Abre o site do prompt (link no grupo agora)</li>
+      <li>Escolhe o modelo que você acabou de decidir</li>
+      <li>Preenche: nome, Instagram, posicionamento, nichos, formatos, links dos vídeos, marcas, contato</li>
+      <li>Clica em copiar. O prompt sai pronto, já com as suas informações</li>
+      <li>Cola no Claude Code e manda. Ele começa a montar</li>
+    </ol>
+    <div class="ph">[PRINT DO SITE DO PROMPT]</div>
+  </div>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Prompt</span></div>
+  <div class="notes">Mandar o link do site no grupo neste momento, não antes. Fazer o seu na tela junto com elas. Enquanto o Claude trabalha, avançar pros próximos slides e explicar a estrutura.</div>
+</section>
+
+<!-- 16 -->
+<section class="slide">
+  <div class="tag">Enquanto ele monta · estrutura</div>
+  <h2>Anatomia de um portfólio que a marca compra.</h2>
+  <div class="grid g3">
+    <div class="card"><div class="n">01</div><h3>Capa</h3><p>Seu nome, sua foto e a sua frase de posicionamento. É a primeira impressão, e é aqui que a marca decide se continua rolando.</p></div>
+    <div class="card"><div class="n">02</div><h3>Um pouco sobre você</h3><p>Seus nichos, seus formatos e os seus diferenciais. O que só você entrega.</p></div>
+    <div class="card" style="border-color:var(--red)"><div class="n">03</div><h3>Seus melhores conteúdos</h3><p>Escolha três. Pode ser pelo resultado, pelas visualizações, pela entrega, pela qualidade ou pelo roteiro.</p></div>
+    <div class="card"><div class="n">04</div><h3>Todos os seus vídeos</h3><p>Organizados por nicho, pra marca achar rápido o que interessa pra ela.</p></div>
+    <div class="card"><div class="n">05</div><h3>Feedback de marcas</h3><p>O que disseram de você depois de trabalhar com você. É a prova que não sai da sua boca.</p></div>
+    <div class="card"><div class="n">06</div><h3>Contato</h3><p>Formulário na página e WhatsApp fixo. O formulário ganha destino à tarde, no admin.</p></div>
+  </div>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Estrutura</span></div>
+</section>
+
+<!-- 17 -->
+<section class="slide">
+  <div class="tag">Enquanto ele monta · sem decoreba</div>
+  <h2>Você não precisa saber o nome de nenhum arquivo.</h2>
+  <p class="lead">Enquanto trabalha, o Claude vai citar nomes esquisitos na tela. Deixa ele falar. Você não precisa abrir, nem entender, nem decorar nenhum deles.</p>
+  <div class="vs">
+    <div class="col sem"><h3>Você não precisa dizer</h3><ul>
+      <li>"Edita o index"</li>
+      <li>"Muda a cor no arquivo de estilo"</li>
+      <li>"Troca a lista de vídeos no código"</li>
+    </ul></div>
+    <div class="col com"><h3>Você diz assim</h3><ul>
+      <li>"Troca a cor principal pra terracota"</li>
+      <li>"Abre a pasta do meu site pra mim"</li>
+      <li>"Troca o segundo vídeo por esse link aqui"</li>
+    </ul></div>
+  </div>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Sem decoreba</span></div>
+</section>
+
+<!-- 18 -->
+<section class="slide dark">
+  <div class="tag">Ajustando</div>
+  <h2>Ficou pronto. Agora é o momento de deixar seu.</h2>
+  <ol class="steps">
+    <li>Abre no navegador e olha inteiro, no computador e no celular (o Claude te mostra como simular).</li>
+    <li>Anota tudo que quer mudar antes de pedir. Depois pede uma coisa de cada vez.</li>
+    <li>Cor e fonte: "quero a cor principal terracota e o título mais pesado". Sem código, sem hex se não souber.</li>
+    <li>Texto: "reescreve minha apresentação mais direta, com no máximo duas linhas".</li>
+    <li>Quebrou algo: "isso quebrou depois da última mudança, volta e me explica o que aconteceu".</li>
+  </ol>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Ajustes</span></div>
+  <div class="notes">Fazer 2 ou 3 ajustes no seu ao vivo, incluindo um que dá errado de propósito, pra mostrar o "volta e me explica".</div>
+</section>
+
+<!-- 19 -->
+<section class="slide">
+  <div class="tag">Celular primeiro</div>
+  <h2>Confira o seu portfólio no celular também. É de lá que a marca vai abrir o seu link.</h2>
+  <div class="two">
+    <ul class="list" style="margin-top:0">
+      <li>Abre em menos de 3 segundos no 4G</li>
+      <li>Vídeo roda sem abrir outra aba</li>
+      <li>Botão de WhatsApp fixo, sempre visível</li>
+      <li>Nada cortado, nada que precise dar zoom</li>
+      <li>Teste agora: manda o link pra você mesma no WhatsApp e abre</li>
+    </ul>
+    <div class="ph">[PRINT DO SEU PORTFÓLIO NO CELULAR]</div>
+  </div>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Mobile</span></div>
+</section>
+
+<!-- 19b -->
+<section class="slide dark">
+  <div class="tag">Sem precisar pegar o celular</div>
+  <h2>Dá pra ver a versão de celular aqui mesmo, no computador.</h2>
+  <ol class="steps">
+    <li>Com o seu site aberto no Chrome, clica com o <strong>botão direito</strong> em qualquer lugar da página e escolhe <span class="mono">Inspecionar</span>.</li>
+    <li>Abre um painel do lado. No topo dele tem um <strong>ícone de celular e tablet</strong>. Clica nele.</li>
+    <li>Sua página vira do tamanho de um celular. Em cima dá pra escolher qual aparelho você quer simular.</li>
+    <li>Passa o site inteiro assim. O que estiver cortado ou apertado, você já pede o ajuste na hora.</li>
+  </ol>
+  <p class="lead">Fecha no mesmo caminho. Isso não mexe no seu site, é só um jeito de olhar.</p>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Ver no celular</span></div>
+  <div class="notes">Fazer ao vivo, devagar, com o seu site na tela. É o truque que elas mais vão repetir em casa. Atalho: Cmd+Option+I no Mac e F12 no Windows, mas o botão direito funciona nos dois e é mais fácil de lembrar.</div>
+</section>
+
+<!-- 20 -->
+<section class="slide red center">
+  <div class="tag">Bloco 3 · 11h</div>
+  <h1>Colocar no ar</h1>
+  <p class="lead" style="color:rgba(255,255,255,.85)">Um endereço seu, de graça, hoje.</p>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Bloco 3</span></div>
+</section>
+
+<!-- 21 -->
+<section class="slide">
+  <div class="tag">Como um site chega na internet</div>
+  <h2>Três coisas: os arquivos, um lugar pra guardar, e um endereço.</h2>
+  <div class="flow">
+    <div class="box"><h3>Arquivos</h3><p>O que o Claude criou na sua pasta. Hoje só existe no seu computador.</p></div>
+    <div class="arr">→</div>
+    <div class="box"><h3>Hospedagem</h3><p>Um computador ligado 24h que guarda esses arquivos e entrega pra quem pedir.</p></div>
+    <div class="arr">→</div>
+    <div class="box"><h3>Domínio</h3><p>O endereço que a pessoa digita. É o que aparece no link que você manda.</p></div>
+  </div>
+  <p class="lead" style="margin-top:4vh">A hospedagem e o endereço a gente resolve hoje sem pagar nada. O domínio próprio com seu nome é o passo seguinte, e eu mostro como.</p>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Domínio e hospedagem</span></div>
+</section>
+
+<!-- 22 -->
+<section class="slide">
+  <div class="tag">Domínio</div>
+  <h2>Gratuito hoje, seu nome depois.</h2>
+  <div class="grid g2">
+    <div class="card" style="border-color:var(--red)">
+      <div class="n">Hoje · grátis</div>
+      <h3>Endereço do GitHub Pages</h3>
+      <p>Cada projeto no GitHub pode virar um site publicado, de graça, num endereço tipo <span class="mono">seunome.github.io/portfolio</span>. Serve pra mandar pra marca hoje mesmo.</p>
+    </div>
+    <div class="card">
+      <div class="n">Depois · pago</div>
+      <h3>Seu domínio próprio</h3>
+      <p>Um <span class="mono">seunome.com.br</span> custa por ano e aponta pro mesmo site. Não muda nada do que a gente construiu: é só trocar o endereço da porta.</p>
+    </div>
+  </div>
+  <p class="lead">Quem comprou domínio na aula de configuração conecta hoje. Quem não comprou publica no endereço gratuito e conecta quando quiser.</p>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Domínio</span></div>
+  <div class="notes">CONFIRMAR: esse slide assume GitHub Pages como publicação gratuita. Se você for usar Netlify, Vercel ou Hostinger, me avisa que eu troco os nomes e o passo a passo do próximo slide.</div>
+</section>
+
+<!-- 23 -->
+<section class="slide dark">
+  <div class="tag">Publicando</div>
+  <h2>Do computador pro ar em quatro pedidos.</h2>
+  <ol class="steps">
+    <li>"Cria um repositório no GitHub com esse projeto e sobe os arquivos." Como você já entrou no GitHub na aula de configuração, ele faz e te mostra o link.</li>
+    <li>"Ativa o GitHub Pages nesse repositório." Ele configura e te diz o endereço.</li>
+    <li>Abre o endereço no navegador. Pode levar 1 ou 2 minutos pra aparecer.</li>
+    <li>Toda mudança daqui pra frente: "publica a versão nova". Nunca mais sobe arquivo na mão.</li>
+  </ol>
+  <p class="lead">Se tiver domínio próprio: "conecta o domínio [seunome.com.br] nesse site" e ele te guia no que apontar.</p>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Publicar</span></div>
+  <div class="notes">Aqui é onde mais trava (login do GitHub, permissão). Deixar 20 minutos de gordura. Quem terminar antes: manda o link no chat.</div>
+</section>
+
+<!-- 23b -->
+<section class="slide">
+  <div class="tag">Se o passo anterior travar</div>
+  <h2>Caminho B: publicar pelo site do GitHub. Seis cliques, igual no Mac e no Windows.</h2>
+  <div class="two">
+    <ol class="steps" style="margin-top:0">
+      <li>Em <span class="mono">github.com</span>, botão <span class="mono">New repository</span>. Nome, <span class="mono">Public</span>, criar.</li>
+      <li>Na tela do repositório vazio: <span class="mono">uploading an existing file</span>.</li>
+      <li>Arrasta os arquivos da pasta e clica em <span class="mono">Commit changes</span>.</li>
+      <li>Menu <span class="mono">Settings</span>, depois <span class="mono">Pages</span>.</li>
+      <li>Source: <span class="mono">Deploy from a branch</span> · <span class="mono">main</span> · <span class="mono">/ (root)</span>. Salva.</li>
+      <li>Espera 2 minutos e recarrega. O endereço aparece nessa mesma tela.</li>
+    </ol>
+    <div class="ph" style="min-height:15vh">[PRINT DA TELA DE PAGES DO GITHUB]</div>
+  </div>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Publicar · caminho B</span></div>
+  <div class="notes">Só abrir esse slide se alguém travar no anterior. Se a sala inteira travar, todo mundo faz por aqui e o dia segue. Vale ter esse print pronto porque é o slide que mais gente vai olhar de perto.</div>
+</section>
+
+<!-- 24 -->
+<section class="slide">
+  <div class="tag">12h · checkpoint</div>
+  <h2>Antes de sair pro almoço, confere:</h2>
+  <ul class="check">
+    <li>O link abre em outro dispositivo (manda pra alguém)</li>
+    <li>Abre bem no celular</li>
+    <li>Os vídeos rodam</li>
+    <li>O botão de WhatsApp leva pro seu número</li>
+    <li>Você salvou o link e o nome da pasta do projeto</li>
+  </ul>
+  <p class="lead">Ticou tudo? Cola o link no chat. Faltou algo? Também cola, que a gente resolve às 13h30.</p>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Checkpoint</span></div>
+</section>
+
+<!-- 25 -->
+<section class="slide dark center">
+  <div class="tag">12h às 13h30</div>
+  <h1>Pausa</h1>
+  <p class="lead" style="margin-top:4vh">Voltamos às 13h30 pra conferir quem publicou e tirar dúvida.</p>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Pausa</span></div>
+</section>
+
+<!-- 26 -->
+<section class="slide">
+  <div class="tag">13h30 · de volta</div>
+  <h2>Deu certo?</h2>
+  <ul class="list">
+    <li>Quem publicou: cola o link no chat. Vou abrir alguns na tela.</li>
+    <li>Quem travou: fala em que passo. Resolvemos agora, antes do admin.</li>
+    <li>Dúvida sobre pedir, ajustar, publicar: é o momento.</li>
+  </ul>
+  <p class="lead">O admin da tarde depende do site da manhã estar no ar. Ninguém começa o próximo bloco com o anterior pendurado.</p>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Retorno</span></div>
+  <div class="notes">Abrir 3 ou 4 portfólios de alunas na tela e comentar um acerto em cada. Não corrigir design aqui, só celebrar que está no ar. Correção é individual no chat.</div>
+</section>
+
+<!-- 27 -->
+<section class="slide red center">
+  <div class="tag">Bloco 4 · 14h</div>
+  <h1>A página de admin</h1>
+  <p class="lead" style="color:rgba(255,255,255,.85)">O site é o que a marca vê. O admin é o que você usa.</p>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Bloco 4</span></div>
+</section>
+
+<!-- 28 -->
+<section class="slide">
+  <div class="tag">O que é</div>
+  <h2>Uma página com o seu próprio login, onde você organiza a sua rotina e vê como o seu portfólio está indo.</h2>
+  <div class="grid g3">
+    <div class="card"><div class="n">01</div><h3>Muda o site</h3><p>Você troca vídeo, nicho e texto aqui dentro. O site atualiza sozinho.</p></div>
+    <div class="card"><div class="n">02</div><h3>Recebe os contatos</h3><p>O formulário do portfólio passa a chegar aqui, com nome, marca e mensagem.</p></div>
+    <div class="card"><div class="n">03</div><h3>Organiza o seu dia</h3><p>Calendário, campanhas em andamento e as métricas do seu portfólio.</p></div>
+  </div>
+  <p class="lead">É a tela que eu mais abro no dia. Vou mostrar a minha agora.</p>
+  <div class="foot"><span>Dia 1 · Construir</span><span>O que é o admin</span></div>
+  <div class="notes">Abrir o seu admin real: entrar com login, mostrar cada aba em 20 segundos. Mostrar um lead que chegou pelo formulário.</div>
+</section>
+
+<!-- 29 -->
+<section class="slide dark">
+  <div class="tag">As abas de hoje</div>
+  <h2>Quatro abas. Três de trabalho e uma que eu fiz pra essa turma.</h2>
+  <div class="grid g4">
+    <div class="card"><div class="n">01</div><h3>Portfólio</h3><p>Seus vídeos, nichos e formatos, mais as métricas de como ele está indo. O que você edita aqui aparece no site.</p></div>
+    <div class="card"><div class="n">02</div><h3>Calendário</h3><p>O que grava, edita e posta, por semana. Prazo de cada marca no mesmo lugar.</p></div>
+    <div class="card"><div class="n">03</div><h3>Organização de Campanha</h3><p>A mesma que eu uso pra tocar as minhas: briefing, entrega, aprovação, pagamento.</p></div>
+    <div class="card" style="border-color:#FF8A5C"><div class="n">Bônus</div><h3>Checklist Portfólio</h3><p>Checklist do portfólio, referências de vídeo, roteiros, ideias por nicho e revisão de roteiro.</p></div>
+  </div>
+  <p class="lead">Amanhã entram as extras: envio de proposta, automação e o que mais fizer sentido pra sua rotina.</p>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Abas</span></div>
+</section>
+
+<!-- 30 -->
+<section class="slide">
+  <div class="tag">As três peças</div>
+  <h2>O site, o banco e o admin. Cada um mora num lugar.</h2>
+  <div class="flow">
+    <div class="box"><div class="n" style="font-family:var(--font-m);color:var(--red);font-size:clamp(12px,1.1vw,16px);margin-bottom:.8vh">MORA NO GITHUB</div><h3>Site</h3><p>O que a marca vê. Lê os dados do banco e mostra.</p></div>
+    <div class="arr">↔</div>
+    <div class="box" style="border-color:var(--red)"><div class="n" style="font-family:var(--font-m);color:var(--red);font-size:clamp(12px,1.1vw,16px);margin-bottom:.8vh">MORA NO SUPABASE</div><h3>Banco de dados</h3><p>Vídeos, nichos, leads, calendário, campanhas. Tudo que muda fica aqui.</p></div>
+    <div class="arr">↔</div>
+    <div class="box"><div class="n" style="font-family:var(--font-m);color:var(--red);font-size:clamp(12px,1.1vw,16px);margin-bottom:.8vh">MORA NO GITHUB</div><h3>Admin</h3><p>O que você usa, com login. Escreve no banco.</p></div>
+  </div>
+  <p class="lead" style="margin-top:4vh">Você edita no admin, o admin grava no banco, o site lê do banco. Por isso o site muda sem você tocar em código.</p>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Arquitetura</span></div>
+</section>
+
+<!-- 31 -->
+<section class="slide">
+  <div class="tag">Supabase</div>
+  <h2>O Supabase é o Google Drive das informações do seu site.</h2>
+  <p class="lead">Você já usa o Drive pra guardar os vídeos que manda pra marca. O Supabase é a mesma ideia: uma pasta na internet. A diferença é que quem guarda e busca as coisas lá dentro é o seu site, sozinho.</p>
+  <h3 style="margin-top:4vh;font-family:var(--font-m);font-weight:400;font-size:clamp(11px,1.05vw,15px);letter-spacing:.16em;text-transform:uppercase;color:var(--red)">O que fica guardado lá</h3>
+  <div class="chips" style="margin-top:1.6vh">
+    <span class="chip">Seu login</span><span class="chip">Seus vídeos</span><span class="chip">Seus contatos de marca</span><span class="chip">Seu calendário</span><span class="chip">Suas campanhas</span>
+  </div>
+  <p class="lead" style="margin-top:3.6vh">Cada coisa que você salva vira uma linha lá dentro. Quem cria essas pastas e organiza tudo é o Claude, sozinho. De você, ele só precisa que a conta esteja criada.</p>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Supabase</span></div>
+  <div class="notes">Abrir o painel do Supabase e mostrar uma tabela com linhas: "cada linha aqui é um vídeo seu". Usar o Drive como ponte, elas já vivem disso.<br><br><b>Lembrete só pra você, não vai pro slide:</b> quando o Claude pedir a chave, é a <b>pública</b>. A secreta fica escondida atrás de um botão de revelar. Se precisou clicar pra revelar, é a errada. Se alguma aluna colar a secreta, o banco dela fica aberto. Vale dar essa olhada de perto na tela de quem estiver com dúvida.</div>
+</section>
+
+<!-- 32 -->
+<section class="slide">
+  <div class="tag">GitHub</div>
+  <h2>GitHub é onde o projeto fica guardado e de onde ele publica.</h2>
+  <div class="grid g3">
+    <div class="card"><div class="n">01</div><h3>Guarda</h3><p>A pasta do seu projeto, salva na internet. Seu site já está lá desde a manhã, e o admin vai pro mesmo lugar.</p></div>
+    <div class="card"><div class="n">02</div><h3>Publica</h3><p>É ele que transforma essa pasta em site no ar, de graça, com um endereço que você manda pra marca.</p></div>
+    <div class="card"><div class="n">03</div><h3>Guarda as versões</h3><p>Cada vez que você publica, ele salva a anterior. Quebrou alguma coisa? Dá pra voltar.</p></div>
+  </div>
+  <p class="lead">Você quase não vai abrir o GitHub. Quem conversa com ele é o Claude.</p>
+  <div class="foot"><span>Dia 1 · Construir</span><span>GitHub</span></div>
+</section>
+
+<!-- 33 -->
+<section class="slide red center">
+  <div class="tag">14h30</div>
+  <h1>Construir<br>o admin</h1>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Mão na massa</span></div>
+</section>
+
+<!-- 34 -->
+<section class="slide dark">
+  <div class="tag">A página do admin</div>
+  <h2>O admin também sai de um prompt pronto.</h2>
+  <div class="two">
+    <ol class="steps" style="margin-top:0">
+      <li>Abre a página do admin (link no grupo agora)</li>
+      <li>Copia o prompt. Ele já sabe que o seu portfólio está no GitHub e que o banco é o Supabase</li>
+      <li>Cola no Claude Code, na mesma pasta do portfólio, e manda</li>
+      <li>Ele vai pedir as chaves do Supabase. Eu mostro onde copiar</li>
+      <li>Vai mostrando o que faz. Você acompanha, e quando ele parar e perguntar, responde</li>
+    </ol>
+    <div class="ph" style="min-height:19vh">[PRINT DA PÁGINA DO ADMIN COM O PROMPT]</div>
+  </div>
+  <p class="lead" style="margin-top:2.2vh">Ele mora dentro do seu próprio site, em <span class="mono">/login</span>. Uma porta que só você sabe que existe.</p>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Prompt do admin</span></div>
+  <div class="notes">Mandar o link no grupo neste momento. O prompt já precisa nascer com duas coisas dentro: o <b>/login</b> como endereço do admin e o <b>RLS ligado em todas as tabelas</b>. Nenhuma das duas aparece em slide, então se não estiver no prompt, não acontece. Rodar o seu na tela. Esse prompt é longo e demora, usar o tempo pra explicar Supabase e GitHub na prática enquanto ele constrói.</div>
+</section>
+
+<!-- 35 -->
+<section class="slide">
+  <div class="tag">Passo 1 · login</div>
+  <h2>Primeiro a porta. Depois os cômodos.</h2>
+  <ol class="steps">
+    <li>O Claude cria a página de login ligada ao Supabase.</li>
+    <li>No painel do Supabase, menu <span class="mono">Authentication</span>, botão <span class="mono">Add user</span>. Coloca o seu email e uma senha.</li>
+    <li>Anota esse email e essa senha num lugar seguro. É com eles que você entra todo dia.</li>
+    <li>Abre o seu site em <span class="mono">/login</span> e entra. Se entrou, a porta está pronta.</li>
+    <li>Testa sair e entrar de novo. Testa com a senha errada de propósito: tem que barrar.</li>
+  </ol>
+  <p class="lead">Só você tem esse login. A marca nunca vê essa página.</p>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Login</span></div>
+  <div class="notes">A tranca do banco (o RLS) já vem ligada pelo prompt, então não precisa aparecer aqui. Mas confere na sua tela que ligou, antes de alguém colocar contato de marca de verdade lá dentro.</div>
+</section>
+
+<!-- 36 -->
+<section class="slide">
+  <div class="tag">Passo 2 · aba Portfólio</div>
+  <h2>O teste que prova que funcionou: muda no admin, aparece no site.</h2>
+  <div class="two">
+    <ol class="steps" style="margin-top:0">
+      <li>No admin, adiciona um vídeo novo com link do YouTube e nicho.</li>
+      <li>Abre o site. O vídeo tem que estar lá, sem publicar nada.</li>
+      <li>Edita o título no admin. Recarrega o site. Mudou.</li>
+      <li>Apaga o vídeo de teste. Sumiu do site.</li>
+    </ol>
+    <div class="ph">[PRINT DA ABA PORTFÓLIO DO SEU ADMIN]</div>
+  </div>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Aba Portfólio</span></div>
+  <div class="notes">Fazer esse teste ao vivo com o seu. É o momento "ahh" da tarde. Se o site delas ainda lê os vídeos do main.js em vez do banco, esse é o pedido: "faz o site ler os vídeos da tabela do Supabase em vez do main.js".</div>
+</section>
+
+<!-- 37 -->
+<section class="slide">
+  <div class="tag">Passo 3 · formulário</div>
+  <h2>Agora o formulário do site chega em algum lugar.</h2>
+  <ol class="steps">
+    <li>Pede: "liga o formulário de contato do site à tabela leads e mostra os leads numa aba do admin".</li>
+    <li>Abre o site, preenche o formulário com seus dados de teste, envia.</li>
+    <li>Abre o admin. O lead está lá: nome, marca, mensagem, data.</li>
+    <li>Amanhã a gente faz esse lead virar proposta. Hoje só precisa chegar.</li>
+  </ol>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Leads</span></div>
+</section>
+
+<!-- 38 -->
+<section class="slide">
+  <div class="tag">Passo 4 · Calendário e Campanha</div>
+  <h2>Duas abas de organização. Você pede do jeito que trabalha.</h2>
+  <div class="grid g2">
+    <div class="card">
+      <div class="n">Calendário</div>
+      <h3>O que grava, edita e posta</h3>
+      <p>Visão por semana. Cada item tem marca, tipo (gravar, editar, postar), data e status. Pede pra colorir por marca se ajudar.</p>
+    </div>
+    <div class="card">
+      <div class="n">Organização de Campanha</div>
+      <h3>Cada campanha, do briefing ao pagamento</h3>
+      <p>Marca, briefing, prazo de entrega, status (em produção, enviado, aprovado, pago), valor e observações. É a que eu uso pra tocar as minhas.</p>
+    </div>
+  </div>
+  <p class="lead">Regra: primeiro faz funcionar simples. Campo a mais você adiciona quando sentir falta, não antes.</p>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Calendário e Campanha</span></div>
+  <div class="notes">Mostrar a sua aba de campanha real com uma campanha em andamento (esconde valor se preferir).</div>
+</section>
+
+<!-- 39 -->
+<section class="slide dark">
+  <div class="tag">Passo 5 · bônus</div>
+  <h2>Checklist Portfólio: o meu olhar de quem escolhe creator, dentro do seu admin.</h2>
+  <div class="grid g3" style="grid-template-columns:repeat(5,1fr)">
+    <div class="card"><div class="n">01</div><h3>Checklist do portfólio</h3><p>O que a marca procura. Você tica conforme completa.</p></div>
+    <div class="card"><div class="n">02</div><h3>Referências de vídeo</h3><p>Exemplos do que funciona, por formato.</p></div>
+    <div class="card"><div class="n">03</div><h3>Roteiros</h3><p>Estruturas prontas pra adaptar.</p></div>
+    <div class="card"><div class="n">04</div><h3>Ideias por nicho</h3><p>Nichos que você pode adicionar e o que gravar em cada um.</p></div>
+    <div class="card"><div class="n">05</div><h3>Revisar meu roteiro</h3><p>Cola o roteiro, o Claude revisa pelo meu critério.</p></div>
+  </div>
+  <p class="lead">Quem preenche esse checklist inteiro tem o portfólio que eu escolheria pra campanha.</p>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Checklist Portfólio</span></div>
+  <div class="notes">CONFIRMAR o nome da aba: os carrosséis de venda falam "Radar", o print da aula de 10/09 mostra "Checklist Portfólio". Usei o do produto real. O conteúdo dessa aba vai por prompt pronto no grupo, não construído ao vivo.</div>
+</section>
+
+<!-- 40 -->
+<section class="slide">
+  <div class="tag">16h · checkpoint</div>
+  <h2>Admin pronto é isso:</h2>
+  <div class="grid g2">
+    <div>
+      <h3 style="color:var(--red);letter-spacing:.1em;text-transform:uppercase;font-size:clamp(13px,1.2vw,17px)">O mínimo de hoje</h3>
+      <ul class="check" style="margin-top:2vh">
+        <li>Entro no admin com meu login e ninguém mais</li>
+        <li>Adiciono um vídeo no admin e ele aparece no site</li>
+        <li>Preencho o formulário do site e o lead chega no admin</li>
+        <li>O admin abre pelo link, não só no meu computador</li>
+      </ul>
+    </div>
+    <div>
+      <h3 style="color:var(--muted);letter-spacing:.1em;text-transform:uppercase;font-size:clamp(13px,1.2vw,17px)">Se deu tempo</h3>
+      <ul class="check" style="margin-top:2vh">
+        <li>Calendário abre e salva</li>
+        <li>Organização de Campanha abre e salva</li>
+        <li>Checklist Portfólio está no admin</li>
+      </ul>
+    </div>
+  </div>
+  <p class="lead" style="margin-top:3vh">Ticou a coluna da esquerda? Seu dia deu certo. A da direita a gente termina amanhã de manhã, e o guia fica com você.</p>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Checkpoint</span></div>
+</section>
+
+<!-- 41 -->
+<section class="slide">
+  <div class="tag">Se travou</div>
+  <h2>O que fazer quando não funciona.</h2>
+  <ol class="steps">
+    <li>Copia a mensagem de erro inteira e cola pro Claude: "isso apareceu, o que é e como arruma?"</li>
+    <li>Ainda travado: "volta pra última versão que funcionava e me explica o que mudou."</li>
+    <li>Ainda travado: manda no chat o passo e o print. Eu ou a monitoria olham com você.</li>
+    <li>Nada resolveu hoje: o passo a passo fica gravado e o grupo continua depois da imersão. Ninguém fica pra trás.</li>
+  </ol>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Suporte</span></div>
+</section>
+
+<!-- 42 -->
+<section class="slide dark">
+  <div class="tag">Amanhã · dia 20</div>
+  <h2>Hoje você construiu. Amanhã ele começa a trabalhar por você.</h2>
+  <div class="agenda">
+    <span class="t" style="--i:0">9h</span><span class="d" style="--i:1">Como foi: admin pronto, o que travou, o que você já mudou</span>
+    <span class="t" style="--i:2">10h</span><span class="d" style="--i:3">Abordagem: onde eu encontro marca hoje, plataformas, LinkedIn, Instagram, Google. Captação de 30 marcas ao vivo</span>
+    <span class="t" style="--i:4">11h30</span><span class="d" style="--i:5">Copy da proposta: estrutura, diferenciais, o que a marca lê</span>
+    <span class="t" style="--i:6">Tarde</span><span class="d" style="--i:7">Aba de envio de proposta no admin e o primeiro envio em massa</span>
+    <span class="t" style="--i:8">15h</span><span class="d" style="--i:9">Abas extras, automação e o que completa a sua rotina</span>
+  </div>
+  <p class="lead">Chega amanhã com o admin aberto e uma lista de 5 marcas que você queria muito fechar.</p>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Dia 20</span></div>
+</section>
+
+<!-- 43 -->
+<section class="slide red center">
+  <div class="tag">17h</div>
+  <h1>Dúvidas</h1>
+  <p class="lead" style="color:rgba(255,255,255,.85)">Cola o link do seu site e do seu admin no grupo antes de sair. Amanhã, 9h.</p>
+  <div class="foot"><span>@eilaradam</span><span>Até amanhã</span></div>
+</section>
+
+</div>
+<div id="counter"></div>
+<div id="notes"></div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+
+/* ---------- as fases do dia: [hora, nome, slide em que comeca] ---------- */
+const FASES=[
+  ['9h','Abertura',1],
+  ['9h','O que é o Claude',5],
+  ['10h','O portfólio',13],
+  ['11h','Colocar no ar',22],
+  ['12h','Pausa e retorno',27],
+  ['14h','A página de admin',30],
+  ['14h30','Construir o admin',36],
+  ['16h','Checkpoint e suporte',43],
+  ['17h','Fechamento',45]
+];
+const hbHora=document.getElementById('hbHora'), hbFase=document.getElementById('hbFase'),
+      hbN=document.getElementById('hbN'), horaBar=document.getElementById('horaBar'),
+      linhaProg=document.getElementById('linhaProg');
+document.getElementById('hbTrilho').innerHTML=FASES.map(()=>'<i></i>').join('');
+const tracos=[...document.querySelectorAll('#hbTrilho i')];
+
+function faseDe(n){ let f=0; FASES.forEach((x,k)=>{ if(n+1>=x[2]) f=k; }); return f; }
+
+function barra(n){
+  const f=faseDe(n), s=slides[n];
+  hbHora.textContent=FASES[f][0];
+  hbFase.textContent=FASES[f][1];
+  hbN.textContent=(n+1)+' / '+slides.length;
+  tracos.forEach((t,k)=>{
+    t.classList.toggle('passou',k<f);
+    if(k===f && !t.classList.contains('agora')){ t.classList.add('agora'); }
+    if(k!==f) t.classList.remove('agora');
+  });
+  horaBar.classList.toggle('claro', s.classList.contains('dark')||s.classList.contains('red'));
+  horaBar.classList.toggle('some', n===0);
+  linhaProg.style.width=((n+1)/slides.length*100)+'%';
+  linhaProg.style.background=s.classList.contains('red')?'#fff':'var(--red)';
+}
+
+/* ---------- titulo dos slides de abertura entra palavra por palavra ---------- */
+slides.forEach(s=>{
+  if(!s.classList.contains('center')) return;
+  const t=s.querySelector('h1,h2'); if(!t) return;
+  const saida=document.createDocumentFragment(); let i=0;
+  [...t.childNodes].forEach(no=>{
+    if(no.nodeType===3){
+      no.textContent.split(/(\s+)/).forEach(p=>{
+        if(!p) return;
+        if(/^\s+$/.test(p)){ saida.appendChild(document.createTextNode(p)); return; }
+        const sp=document.createElement('span');
+        sp.className='pal'; sp.textContent=p;
+        sp.style.animationDelay=(0.16+i*0.075)+'s'; i++;
+        saida.appendChild(sp);
+      });
+    } else saida.appendChild(no.cloneNode(true));
+  });
+  t.innerHTML=''; t.appendChild(saida); t.classList.add('fatiado');
+});
+let i=Math.max(0,Math.min(slides.length-1,(parseInt(location.hash.slice(1))||1)-1));
+const counter=document.getElementById('counter');
+const notesBox=document.getElementById('notes');
+let notesOn=false;
+function show(n){
+  i=Math.max(0,Math.min(slides.length-1,n));
+  slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+  counter.textContent=(i+1)+' / '+slides.length;
+  location.hash=i+1;
+  const nt=slides[i].querySelector('.notes');
+  notesBox.innerHTML=nt?nt.innerHTML:'<i>Sem nota nesse slide.</i>';
+  barra(i);
+}
+document.addEventListener('keydown',e=>{
+  if(['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key)){e.preventDefault();show(i+1);}
+  else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();show(i-1);}
+  else if(e.key==='Home')show(0);
+  else if(e.key==='End')show(slides.length-1);
+  else if(e.key.toLowerCase()==='n'){notesOn=!notesOn;notesBox.classList.toggle('on',notesOn);}
+  else if(e.key.toLowerCase()==='f'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
+});
+document.addEventListener('click',e=>{
+  if(e.target.closest('#notes'))return;
+  const x=e.clientX/window.innerWidth;
+  show(x<0.25?i-1:i+1);
+});
+let tx=null;
+document.addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+document.addEventListener('touchend',e=>{if(tx===null)return;const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>40)show(d<0?i+1:i-1);tx=null;});
+show(i);
+</script>
+</body>
+</html>
