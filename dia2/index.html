@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Imersão Claude pra Creator · Dia 2 · Prospectar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#C8441A; --red-dark:#A3360F; --ink:#1B1B1B; --cream:#FFF8F2; --cream2:#EEEDE9;
+  --line:#E8E0D8; --muted:#5A5550; --white:#FFFFFF; --soft:#FFF0E8;
+  --font-h:'Montserrat',Arial,sans-serif; --font-b:'DM Sans',Arial,sans-serif; --font-m:'DM Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--ink);font-family:var(--font-b);color:var(--ink);overflow:hidden}
+#deck{position:relative;width:100vw;height:100vh}
+.slide{position:absolute;inset:0;display:none;padding:7vh 8vw;flex-direction:column;justify-content:center;background:var(--cream);color:var(--ink)}
+.slide.active{display:flex}
+.slide.dark{background:var(--ink);color:var(--white)}
+.slide.red{background:var(--red);color:var(--white)}
+.slide.center{align-items:center;text-align:center}
+.tag{font-family:var(--font-h);font-weight:700;font-size:clamp(11px,1.1vw,14px);letter-spacing:.18em;text-transform:uppercase;color:var(--red);margin-bottom:2.2vh}
+.dark .tag,.red .tag{color:rgba(255,255,255,.72)}
+h1{font-family:var(--font-h);font-weight:900;font-size:clamp(36px,6.4vw,100px);line-height:1.02;letter-spacing:-.02em}
+h2{font-family:var(--font-h);font-weight:800;font-size:clamp(28px,4.4vw,68px);line-height:1.06;letter-spacing:-.015em;max-width:22ch}
+h3{font-family:var(--font-h);font-weight:700;font-size:clamp(18px,1.9vw,28px);line-height:1.2}
+p,li{font-size:clamp(17px,1.75vw,27px);line-height:1.45}
+p.lead{margin-top:3vh;max-width:60ch;color:var(--muted)}
+.dark p.lead,.red p.lead{color:rgba(255,255,255,.8)}
+.big{font-family:var(--font-h);font-weight:900;font-size:clamp(40px,8vw,130px);line-height:1;letter-spacing:-.02em}
+.mono{font-family:var(--font-m)}
+ul.list{list-style:none;margin-top:3.5vh;display:grid;gap:1.6vh}
+ul.list li{position:relative;padding-left:1.6em}
+ul.list li::before{content:"";position:absolute;left:0;top:.55em;width:.7em;height:.7em;border-radius:50%;background:var(--red)}
+.dark ul.list li::before,.red ul.list li::before{background:var(--white)}
+ol.steps{list-style:none;counter-reset:s;margin-top:3.5vh;display:grid;gap:1.6vh}
+ol.steps li{counter-increment:s;position:relative;padding-left:2.4em}
+ol.steps li::before{content:counter(s);position:absolute;left:0;top:.05em;font-family:var(--font-m);font-weight:500;color:var(--red);font-size:.95em}
+.dark ol.steps li::before,.red ol.steps li::before{color:var(--white)}
+.grid{display:grid;gap:2vw;margin-top:4vh}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:1fr 1fr 1fr}
+.g4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--white);border:1px solid var(--line);border-radius:8px;padding:2.4vh 1.6vw;box-shadow:0 3px 0 rgba(27,27,27,.07);transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-3px);box-shadow:0 6px 0 rgba(27,27,27,.1)}
+.card h3{margin-bottom:1vh}
+.card p{font-size:clamp(14px,1.35vw,20px);color:var(--muted)}
+.dark .card{background:#262320;border-color:#3a3632;box-shadow:0 3px 0 rgba(0,0,0,.35)}
+.dark .card:hover{box-shadow:0 6px 0 rgba(0,0,0,.45)}
+.dark .card p{color:rgba(255,255,255,.75)}
+.dark .card h3{color:var(--white)}
+.card .n{font-family:var(--font-m);color:var(--red);font-size:clamp(14px,1.4vw,20px);margin-bottom:.6vh}
+.dark .card .n{color:#FF8A5C}
+.agenda{display:grid;grid-template-columns:auto 1fr;gap:1.2vh 2.5vw;margin-top:3.5vh;align-items:baseline}
+.agenda .t{font-family:var(--font-m);color:var(--red);font-size:clamp(16px,1.7vw,26px);white-space:nowrap}
+.dark .agenda .t{color:#FF8A5C}
+.agenda .d{font-size:clamp(16px,1.7vw,26px)}
+.agenda .d.now{font-weight:600}
+.kicker{display:inline-block;background:var(--red);color:var(--white);font-family:var(--font-h);font-weight:700;font-size:clamp(12px,1.1vw,16px);letter-spacing:.12em;text-transform:uppercase;padding:.55em 1.1em;border-radius:100px;margin-bottom:3vh}
+.dark .kicker{background:var(--white);color:var(--ink)}
+.red .kicker{background:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:1vh 1vw;margin-top:3vh}
+.chip{border:2px solid var(--red);color:var(--red);border-radius:100px;padding:.5em 1.1em;font-family:var(--font-h);font-weight:700;font-size:clamp(13px,1.3vw,20px)}
+.chip.fill{background:var(--red);color:var(--white)}
+.dark .chip,.red .chip{border-color:var(--white);color:var(--white)}
+.dark .chip.fill,.red .chip.fill{background:var(--white);color:var(--ink)}
+.ph{border:2px dashed rgba(200,68,26,.55);border-radius:8px;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--red);font-family:var(--font-h);font-weight:700;font-size:clamp(13px,1.3vw,19px);letter-spacing:.06em;text-transform:uppercase;padding:2vh;min-height:24vh;background:var(--soft)}
+.dark .ph{border-color:rgba(255,255,255,.4);color:rgba(255,255,255,.75);background:#262320}
+.two{display:grid;grid-template-columns:1.05fr 1fr;gap:4vw;align-items:center;margin-top:2vh}
+.vs{display:grid;grid-template-columns:1fr 1fr;margin-top:4vh;border-radius:8px;overflow:hidden;box-shadow:0 3px 0 rgba(27,27,27,.07)}
+.vs .col{padding:3vh 2vw}
+.vs .col h3{margin-bottom:1.5vh;font-size:clamp(14px,1.3vw,18px);letter-spacing:.14em;text-transform:uppercase}
+.vs .col ul{list-style:none;display:grid;gap:1.2vh}
+.vs .col li{font-size:clamp(15px,1.55vw,23px)}
+.vs .sem{background:#F1EEEA;color:var(--muted)}
+.vs .sem li{text-decoration:line-through;text-decoration-color:rgba(27,27,27,.4)}
+.vs .com{background:var(--red);color:var(--white)}
+.vs .com li::before{content:"✓  ";color:#B8F0C8}
+.flow{display:flex;align-items:center;gap:1.5vw;margin-top:4vh}
+.flow .box{flex:1;background:var(--white);border:1px solid var(--line);border-radius:8px;padding:3vh 1.5vw;text-align:center;box-shadow:0 3px 0 rgba(27,27,27,.07)}
+.dark .flow .box{background:#262320;border-color:#3a3632;box-shadow:0 3px 0 rgba(0,0,0,.35)}
+.flow .box h3{margin-bottom:.8vh}
+.flow .box p{font-size:clamp(13px,1.3vw,19px);color:var(--muted)}
+.dark .flow .box p{color:rgba(255,255,255,.75)}
+.flow .arr{font-family:var(--font-h);font-weight:900;font-size:clamp(24px,3vw,44px);color:var(--red)}
+.dark .flow .arr{color:#FF8A5C}
+.check{list-style:none;margin-top:3.5vh;display:grid;gap:1.4vh}
+.check li{padding-left:2em;position:relative}
+.check li::before{content:"";position:absolute;left:0;top:.2em;width:1.1em;height:1.1em;border:2px solid var(--red);border-radius:5px}
+.dark .check li::before{border-color:var(--white)}
+.prompt{background:var(--ink);color:#F4EFE9;border-radius:8px;padding:3vh 2vw;font-family:var(--font-m);font-size:clamp(13px,1.3vw,19px);line-height:1.5;white-space:pre-wrap;margin-top:3vh;max-height:56vh;overflow:auto}
+.dark .prompt{background:#0F0E0D;border:1px solid #3a3632}
+.prompt .k{color:#FF8A5C}
+.foot{position:absolute;left:8vw;right:8vw;bottom:3.5vh;display:flex;justify-content:space-between;font-family:var(--font-h);font-weight:700;font-size:clamp(10px,.95vw,13px);letter-spacing:.14em;text-transform:uppercase;color:rgba(27,27,27,.45)}
+.dark .foot,.red .foot{color:rgba(255,255,255,.5)}
+#counter{display:none}
+#notes{position:fixed;left:0;right:0;bottom:0;background:rgba(27,27,27,.96);color:#F4EFE9;padding:2vh 4vw;font-size:15px;line-height:1.5;display:none;z-index:10;border-top:2px solid var(--red);max-height:36vh;overflow:auto}
+#notes.on{display:block}
+#notes b{color:#FF8A5C}
+.notes{display:none}
+/* ================= agenda do dia em dois turnos ================= */
+.dia{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,3.2vw,60px);margin-top:4vh}
+.turno__t{font-family:var(--font-m);font-size:clamp(10px,1vw,13px);letter-spacing:.2em;text-transform:uppercase;color:var(--red);
+  padding-bottom:1.1vh;border-bottom:2px solid var(--ink);margin-bottom:.4vh}
+.dark .turno__t{border-bottom-color:var(--white);color:#FF8A5C}
+.ag{display:grid;grid-template-columns:auto 1fr;gap:clamp(12px,1.5vw,28px);align-items:baseline;
+  padding:1.45vh .4vw;border-bottom:1px solid var(--line)}
+.ag .h{font-family:var(--font-m);font-size:clamp(13px,1.4vw,20px);color:var(--red);white-space:nowrap;min-width:5.4ch}
+.ag .d{font-size:clamp(14px,1.48vw,21px);line-height:1.32}
+.ag--pausa{background:var(--ink);border-radius:8px;border-bottom:0;margin-top:1.4vh;padding:1.9vh clamp(12px,1.1vw,22px);
+  box-shadow:0 3px 0 rgba(27,27,27,.14)}
+.ag--pausa .h{color:#FF8A5C}
+.ag--pausa .d{color:var(--white);font-family:var(--font-h);font-weight:800;font-size:clamp(14px,1.5vw,22px);letter-spacing:.01em}
+.slide.active .turno{animation:rise .5s both}
+.slide.active .turno:nth-child(1){animation-delay:.28s}
+.slide.active .turno:nth-child(2){animation-delay:.4s}
+.slide.active .ag{animation:rise .45s both}
+.slide.active .ag:nth-child(2){animation-delay:.42s}
+.slide.active .ag:nth-child(3){animation-delay:.5s}
+.slide.active .ag:nth-child(4){animation-delay:.58s}
+.slide.active .ag:nth-child(5){animation-delay:.66s}
+.slide.active .ag:nth-child(6){animation-delay:.78s}
+
+/* ================= barra do horário ================= */
+#horaBar{position:fixed;top:0;left:0;right:0;height:58px;z-index:8;display:flex;align-items:center;gap:clamp(14px,1.8vw,28px);
+  padding:0 8vw;color:var(--ink);pointer-events:none;transition:color .35s,opacity .3s}
+#horaBar.claro{color:#fff}
+#horaBar.some{opacity:0}
+.hb__hora{font-family:var(--font-h);font-weight:900;font-size:clamp(17px,1.65vw,25px);letter-spacing:-.025em;line-height:1;white-space:nowrap}
+.hb__fase{font-family:var(--font-m);font-size:clamp(9.5px,.82vw,12px);letter-spacing:.16em;text-transform:uppercase;opacity:.6;white-space:nowrap}
+.hb__trilho{flex:1;display:flex;gap:5px;align-items:center;min-width:70px}
+.hb__trilho i{flex:1;height:4px;border-radius:2px;background:currentColor;opacity:.15;transition:opacity .4s}
+.hb__trilho i.passou{opacity:.35}
+.hb__trilho i.agora{opacity:1;color:var(--red);transform-origin:left;animation:preenche .55s cubic-bezier(.2,.8,.3,1) both}
+#horaBar.claro .hb__trilho i.agora{color:#fff}
+.hb__n{font-family:var(--font-m);font-size:clamp(10px,.85vw,12.5px);opacity:.45;white-space:nowrap}
+#linhaProg{position:fixed;top:56px;left:0;height:2px;background:var(--red);z-index:9;width:0;transition:width .4s cubic-bezier(.2,.8,.3,1)}
+@keyframes preenche{from{transform:scaleX(.08)}to{transform:scaleX(1)}}
+
+/* ================= grão de papel ================= */
+#grao{position:fixed;inset:0;z-index:7;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ================= entrada do slide e das palavras ================= */
+@keyframes entra{from{opacity:0;transform:scale(.988)}to{opacity:1;transform:none}}
+.slide.active{animation:entra .4s cubic-bezier(.2,.8,.3,1) both}
+.pal{display:inline-block}
+.slide.active h1.fatiado,.slide.active h2.fatiado{animation:none}
+.slide.active .fatiado .pal{animation:rise .6s cubic-bezier(.2,.8,.3,1) both}
+
+@media (max-width:800px){.dia{grid-template-columns:1fr;gap:20px}#horaBar{padding:0 5vw;gap:10px}.hb__fase{display:none}.g2,.g3,.g4,.two,.vs{grid-template-columns:1fr}.flow{flex-direction:column}.flow .arr{transform:rotate(90deg)}h2{max-width:none}}
+
+/* ===== animações ===== */
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes drift{0%{transform:translate(0,0) rotate(0deg)}50%{transform:translate(2vw,-2vh) rotate(6deg)}100%{transform:translate(0,0) rotate(0deg)}}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.85}50%{transform:scale(1.18);opacity:1}}
+@keyframes tick{from{transform:scale(0) rotate(-20deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+.slide.active .tag,.slide.active .kicker{animation:rise .45s .05s both}
+.slide.active h1,.slide.active h2{animation:rise .55s .15s both}
+.slide.active p.lead{animation:rise .55s .35s both}
+.slide.active .card,.slide.active ul.list li,.slide.active ol.steps li,.slide.active .check li,.slide.active .chip,.slide.active .flow .box,.slide.active .agenda .t,.slide.active .agenda .d,.slide.active .vs .col,.slide.active .ph,.slide.active .prompt,.slide.active .two>*{animation:rise .5s both}
+.slide.active :is(.card,ul.list li,ol.steps li,.check li,.chip,.flow .box,.ph,.prompt,.two>*):nth-child(1){animation-delay:.3s}
+.slide.active :is(.card,ul.list li,ol.steps li,.check li,.chip,.flow .box,.ph,.prompt,.two>*):nth-child(2){animation-delay:.42s}
+.slide.active :is(.card,ul.list li,ol.steps li,.check li,.chip,.flow .box,.ph,.prompt,.two>*):nth-child(3){animation-delay:.54s}
+.slide.active :is(.card,ul.list li,ol.steps li,.check li,.chip,.flow .box,.ph,.prompt,.two>*):nth-child(4){animation-delay:.66s}
+.slide.active :is(.card,ul.list li,ol.steps li,.check li,.chip,.flow .box,.ph,.prompt,.two>*):nth-child(5){animation-delay:.78s}
+.slide.active :is(.card,ul.list li,ol.steps li,.check li,.chip,.flow .box,.ph,.prompt,.two>*):nth-child(6){animation-delay:.9s}
+.slide.active :is(.card,ul.list li,ol.steps li,.check li,.chip,.flow .box,.ph,.prompt,.two>*):nth-child(7){animation-delay:1.02s}
+.slide.active :is(.card,ul.list li,ol.steps li,.check li,.chip,.flow .box,.ph,.prompt,.two>*):nth-child(8){animation-delay:1.14s}
+.slide.active .agenda>*{animation-delay:calc(.25s + var(--i,0)*.07s)}
+.slide.active .flow .arr{animation:pulse 1.6s 1s ease-in-out infinite}
+.slide.active .check li::before{animation:tick .4s .9s both}
+.slide.active .vs .col.com li{animation:rise .4s both}
+.slide.active .vs .col.com li:nth-child(1){animation-delay:.8s}.slide.active .vs .col.com li:nth-child(2){animation-delay:.95s}.slide.active .vs .col.com li:nth-child(3){animation-delay:1.1s}.slide.active .vs .col.com li:nth-child(4){animation-delay:1.25s}
+.slide>*:not(.foot):not(.bg-logo){position:relative;z-index:1}
+/* logo do Claude no fundo (você coloca o arquivo claude-logo.svg ou .png ao lado deste html) */
+.bg-logo{position:absolute;right:-6vw;top:50%;width:44vw;height:44vw;margin-top:-22vw;z-index:0;opacity:.09;pointer-events:none;display:flex;align-items:center;justify-content:center;animation:drift 14s ease-in-out infinite}
+.bg-logo img{width:100%;height:100%;object-fit:contain;animation:spin 60s linear infinite}
+.dark .bg-logo{opacity:.12}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+
+.prompt{padding-top:5.2vh}
+.btnCopia{position:absolute;top:1.4vh;right:1vw;background:var(--red);color:#fff;border:0;border-radius:6px;
+  font-family:var(--font-h);font-weight:700;font-size:clamp(10px,.9vw,13px);letter-spacing:.14em;text-transform:uppercase;
+  padding:.55em 1em;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.4);transition:transform .15s,background .2s}
+.btnCopia:hover{transform:translateY(-1px)}
+.btnCopia.ok{background:#2E7D4F}
+</style>
+</head>
+<body>
+<div id="grao"></div>
+<div id="horaBar">
+  <span class="hb__hora" id="hbHora">9h</span>
+  <span class="hb__fase" id="hbFase">Abertura</span>
+  <span class="hb__trilho" id="hbTrilho"></span>
+  <span class="hb__n" id="hbN">1 / 75</span>
+</div>
+<div id="linhaProg"></div>
+<div id="deck">
+
+<!-- 1 -->
+<section class="slide red center">
+  <div class="kicker">Dia 2 de 2</div>
+  <h1>Encontrar marcas<br>e mandar proposta</h1>
+  <p class="lead" style="margin-top:3.4vh;color:rgba(255,255,255,.92);font-size:clamp(18px,2.05vw,31px);max-width:48ch">
+    <strong>Ontem você construiu. Hoje ele sai pra trabalhar.</strong><br>No fim do dia você terá mandado proposta pra marca de verdade.</p>
+  <div class="chips" style="justify-content:center;margin-top:4.2vh">
+    <span class="chip">20 de setembro</span><span class="chip">9h às 17h</span><span class="chip fill">Turma 2</span>
+  </div>
+  <div class="foot"><span>@eilaradam</span><span>Bom dia, senta que hoje é dia de trabalhar</span></div>
+  <div class="notes"><b>Antes de começar:</b> Chrome aberto com a extensão do Claude, seu admin aberto e a conta do Resend já criada. Pedir no chat: "cola aqui o link do seu site que ficou pronto ontem". Confirmar gravação.</div>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <div class="tag">Como vai ser o dia</div>
+  <h2 style="max-width:30ch">Hoje tem um objetivo só: sair daqui com proposta enviada.</h2>
+  <div class="dia">
+    <div class="turno">
+      <div class="turno__t">Manhã · encontrar as marcas</div>
+      <div class="ag"><span class="h">9h</span><span class="d">Como foi ontem: o que ficou no ar, o que travou</span></div>
+      <div class="ag"><span class="h">9h30</span><span class="d">Claude no Chrome: a pesquisa feita por ele, na sua frente</span></div>
+      <div class="ag"><span class="h">10h</span><span class="d">Quem procurar: nicho, produto e cidade</span></div>
+      <div class="ag"><span class="h">10h20</span><span class="d">Os 4 caminhos: Google, Instagram, LinkedIn e e-commerce</span></div>
+      <div class="ag"><span class="h">11h45</span><span class="d">Captação ao vivo: 30 marcas na sua lista</span></div>
+      <div class="ag ag--pausa"><span class="h">12h30 às 13h30</span><span class="d">Pausa</span></div>
+    </div>
+    <div class="turno">
+      <div class="turno__t">Tarde · transformar lista em proposta</div>
+      <div class="ag"><span class="h">13h30</span><span class="d">A base de marcas dentro do seu admin</span></div>
+      <div class="ag"><span class="h">14h30</span><span class="d">Copy: o que a marca lê nos primeiros 8 segundos</span></div>
+      <div class="ag"><span class="h">15h30</span><span class="d">Aba de prospecção: e-mail em massa com o Resend</span></div>
+      <div class="ag"><span class="h">16h</span><span class="d">Envio ao vivo, com gancho de Black Friday</span></div>
+      <div class="ag"><span class="h">16h30</span><span class="d">Rotina da semana e o que fazer quando responderem</span></div>
+      <div class="ag"><span class="h">17h</span><span class="d">Dúvidas e fechamento</span></div>
+    </div>
+  </div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Agenda</span></div>
+</section>
+
+<!-- 3 -->
+<section class="slide dark">
+  <div class="tag">Onde a gente chega às 17h</div>
+  <h2>Três coisas que você não tinha ontem.</h2>
+  <div class="grid g3">
+    <div class="card"><div class="n">01</div><h3>Uma lista de 30 marcas</h3><p>Com @ do Instagram, link do produto, e-mail e o nome de quem decide. Encontradas hoje, na sua frente.</p></div>
+    <div class="card"><div class="n">02</div><h3>A base dentro do seu admin</h3><p>Todas elas salvas numa aba sua, com status. Nada de print no celular e bloco de notas.</p></div>
+    <div class="card" style="border-color:var(--red)"><div class="n">03</div><h3>Proposta enviada</h3><p>Um e-mail escrito na sua voz, disparado pra dezenas de marcas com um clique.</p></div>
+  </div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Resultado</span></div>
+  <div class="notes">Mostrar o seu ao vivo: sua base de marcas, seu e-mail de prospecção e o painel do Resend com os envios. A promessa do dia em 30 segundos.</div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <div class="tag">Primeiro, ontem</div>
+  <h2>Três perguntas no chat antes de a gente andar.</h2>
+  <ol class="steps">
+    <li>Seu site está no ar? Cola o link.</li>
+    <li>Seu admin abre e você consegue entrar?</li>
+    <li>O que travou ontem e ficou pra hoje?</li>
+  </ol>
+  <p class="lead">Quem travou não fica pra trás: a monitoria resolve com você enquanto a gente segue.</p>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Como foi ontem</span></div>
+  <div class="notes">Máximo 20 minutos. Ler os links em voz alta e elogiar em público, isso levanta a turma. Anotar quem travou pra monitoria pegar em paralelo.</div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <div class="tag">A virada</div>
+  <h2>Ontem você fez a vitrine. Hoje você vai buscar quem entra nela.</h2>
+  <div class="vs">
+    <div class="col sem">
+      <h3>Esperar</h3>
+      <ul>
+        <li>Postar e torcer pra marca aparecer</li>
+        <li>Mídia kit parado esperando alguém pedir</li>
+        <li>Mês fechado sem nenhum trabalho novo</li>
+        <li>Aceitar o valor que a marca oferecer</li>
+      </ul>
+    </div>
+    <div class="col com">
+      <h3>Ir atrás</h3>
+      <ul>
+        <li>Escolher a marca que você quer</li>
+        <li>Falar com a pessoa que decide</li>
+        <li>Lista nova enchendo toda semana</li>
+        <li>Chegar primeiro, com ideia e preço seus</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>A virada</span></div>
+  <div class="notes">Contar em 1 minuto o seu caso: hoje chega muita marca em você, mas isso começou com prospecção ativa. Quem está começando não tem o inbox cheio, tem que ir atrás.</div>
+</section>
+
+<!-- 6 -->
+<section class="slide red center">
+  <div class="tag">Bloco 1 · 9h30</div>
+  <h1>O Claude dentro<br>do seu navegador</h1>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Bloco 1</span></div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <div class="bg-logo"><img src="claude-logo.svg" alt="" onerror="this.parentNode.style.display='none'"></div>
+  <div class="tag">O que é</div>
+  <h2>A extensão do Claude no Chrome enxerga a mesma tela que você.</h2>
+  <p class="lead">Você abre o navegador, clica no ícone dele ali no canto e pede do mesmo jeito que pediria no chat. A diferença é que ele pesquisa, abre link, lê a página e junta tudo pra você, sem você copiar e colar nada.</p>
+  <div class="chips">
+    <span class="chip">Lê a página</span><span class="chip">Pesquisa</span><span class="chip">Abre links</span><span class="chip">Compara</span><span class="chip fill">Monta a lista</span>
+  </div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Claude no Chrome</span></div>
+  <div class="notes">Mostrar o ícone na barra do Chrome antes de falar qualquer coisa. Gente visual entende em 2 segundos o que 3 slides não explicam.</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <div class="tag">Três lugares, três trabalhos</div>
+  <h2>Chat, Chrome e Code não são a mesma coisa.</h2>
+  <div class="grid g3">
+    <div class="card"><div class="n">01</div><h3>Claude no chat</h3><p>Pra pensar, escrever legenda, revisar roteiro e organizar ideia. Tudo acontece dentro da conversa.</p></div>
+    <div class="card" style="border-color:var(--red)"><div class="n">02</div><h3>Claude no Chrome</h3><p>Pra ir atrás de coisa na internet: procurar marca, ler site, achar contato, montar lista. É a manhã de hoje.</p></div>
+    <div class="card"><div class="n">03</div><h3>Claude Code</h3><p>Pra mexer nos arquivos e publicar. Foi o dia de ontem inteiro e volta hoje à tarde no seu admin.</p></div>
+  </div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Onde usar cada um</span></div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <div class="tag">Instalar</div>
+  <h2>Quatro passos e ele está na sua barra.</h2>
+  <ol class="steps">
+    <li>Chrome aberto e logado na sua conta de sempre.</li>
+    <li>Procura pela extensão do Claude para Chrome e adiciona.</li>
+    <li>Entra com a mesma conta do Claude que você usa na aula.</li>
+    <li>Fixa o ícone na barra, pra ele ficar sempre à vista.</li>
+  </ol>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Instalar</span></div>
+  <div class="notes">Fazer ao vivo, devagar, e esperar a turma acompanhar. Se a extensão não estiver liberada pra conta de alguma aluna, avisar na hora que existe o caminho do chat (próximo slide) e seguir sem drama.</div>
+</section>
+
+<!-- 10 -->
+<section class="slide dark">
+  <div class="tag">Como funciona</div>
+  <h2>Você pede, ele mostra o plano, você autoriza.</h2>
+  <div class="flow">
+    <div class="box"><h3>Você pede</h3><p>Escreve do jeito que fala, igual no chat.</p></div>
+    <div class="arr">→</div>
+    <div class="box"><h3>Ele mostra o plano</h3><p>O que vai abrir, procurar e coletar.</p></div>
+    <div class="arr">→</div>
+    <div class="box"><h3>Você autoriza</h3><p>Leu e concordou? Manda seguir.</p></div>
+    <div class="arr">→</div>
+    <div class="box"><h3>Ele trabalha</h3><p>Você vê as abas abrindo sozinhas.</p></div>
+  </div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Como funciona</span></div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <div class="tag">Combinados</div>
+  <h2>Quatro regras pra usar isso sem susto.</h2>
+  <div class="grid g2">
+    <div class="card"><div class="n">01</div><h3>Autoriza vendo</h3><p>Ele avisa o que vai fazer antes de fazer. Lê a frase antes de clicar em sim, não sai clicando no automático.</p></div>
+    <div class="card"><div class="n">02</div><h3>Onde tem dinheiro, não</h3><p>Banco, cartão, compra e checkout você faz com a sua mão. Pesquisa sim, comprar não.</p></div>
+    <div class="card"><div class="n">03</div><h3>Confere o que ele trouxe</h3><p>E-mail errado e número trocado acontecem. Bate o olho na lista antes de enviar qualquer coisa.</p></div>
+    <div class="card" style="border-color:var(--red)"><div class="n">04</div><h3>Uma aba por tarefa</h3><p>Deixa ele pesquisando numa aba e vai tocando a próxima em outra. É assim que a lista cresce rápido.</p></div>
+  </div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Combinados</span></div>
+</section>
+
+<!-- 12 -->
+<section class="slide dark">
+  <div class="tag">Plano B</div>
+  <h2>Se a extensão não abrir na sua conta, nada se perde.</h2>
+  <p class="lead">Todos os pedidos de hoje funcionam no chat normal do Claude, com a pesquisa ligada. Muda o lugar onde você cola, não o que você pede. O resultado chega igual, só que sem ver as abas abrindo.</p>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Plano B</span></div>
+  <div class="notes">Dizer isso cedo tira a ansiedade de quem não conseguiu instalar. Ninguém pode ficar parada olhando a tela das outras.</div>
+</section>
+
+<!-- 13 -->
+<section class="slide red center">
+  <div class="tag">Bloco 2 · 10h</div>
+  <h1>Antes de procurar,<br>decidir quem procurar</h1>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Bloco 2</span></div>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <div class="tag">Três filtros</div>
+  <h2>Toda busca boa começa escolhendo um destes três.</h2>
+  <div class="grid g3">
+    <div class="card"><div class="n">Nicho</div><h3>Casa e decoração</h3><p>Beleza, pet, maternidade, moda, tecnologia, alimentação. O nicho que você já gosta de mostrar.</p></div>
+    <div class="card" style="border-color:var(--red)"><div class="n">Produto</div><h3>Fogão de indução</h3><p>Um produto específico que você precisa agora. É o meu preferido e eu explico no próximo slide.</p></div>
+    <div class="card"><div class="n">Cidade</div><h3>Marcas da sua região</h3><p>Perto de você dá visita, dá gravação presencial e dá evento. Menos concorrência de creator.</p></div>
+  </div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Três filtros</span></div>
+</section>
+
+<!-- 15 -->
+<section class="slide">
+  <div class="tag">O jeito que eu uso</div>
+  <h2>O melhor cliente costuma ser o produto que você já ia comprar.</h2>
+  <p class="lead">Estou reformando a nossa casa, então fui atrás de marca de fogão de indução de duas bocas. A próxima meta é geladeira. Um dia sai, eu tenho fé.</p>
+  <div class="chips">
+    <span class="chip">Fogão de indução</span><span class="chip">Geladeira</span><span class="chip">Luminária</span><span class="chip">Tinta</span><span class="chip fill">O que a sua vida pede agora</span>
+  </div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Produto do momento</span></div>
+  <div class="notes">Contar a história da reforma com detalhe, é o que faz a ficha cair. E deixar claro que permuta de coisa que você não precisa é prejuízo disfarçado.</div>
+</section>
+
+<!-- 16 -->
+<section class="slide dark">
+  <div class="tag">Por que funciona</div>
+  <h2>Três motivos pra prospectar o que você precisa.</h2>
+  <div class="grid g3">
+    <div class="card"><div class="n">01</div><h3>A conversa é verdadeira</h3><p>"Estou reformando minha cozinha e quero mostrar o fogão de vocês" é um e-mail que a marca lê até o fim.</p></div>
+    <div class="card"><div class="n">02</div><h3>O vídeo sai melhor</h3><p>Você usa de verdade, na sua casa, no seu dia. Isso aparece na tela e a marca compra de novo.</p></div>
+    <div class="card"><div class="n">03</div><h3>A permuta vale</h3><p>Receber o produto que você ia comprar é dinheiro que fica no seu bolso. Receber o que você não usa, não.</p></div>
+  </div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Por que funciona</span></div>
+</section>
+
+<!-- 17 -->
+<section class="slide">
+  <div class="tag">Tamanho da marca</div>
+  <h2>Marca em crescimento responde. Marca gigante te coloca numa fila.</h2>
+  <div class="vs">
+    <div class="col sem">
+      <h3>Marca gigante</h3>
+      <ul>
+        <li>Agência no meio do caminho</li>
+        <li>Verba fechada com meses de antecedência</li>
+        <li>Fila de creator pra entrar</li>
+        <li>Resposta que demora ou nunca vem</li>
+      </ul>
+    </div>
+    <div class="col com">
+      <h3>Marca até 50 mil seguidores</h3>
+      <ul>
+        <li>Quem lê o e-mail é quem decide</li>
+        <li>Testa rápido e responde rápido</li>
+        <li>Topa permuta e primeiro teste</li>
+        <li>Cresce com você e vira cliente todo mês</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Tamanho da marca</span></div>
+</section>
+
+<!-- 18 -->
+<section class="slide">
+  <div class="tag">Sua vez · 3 minutos</div>
+  <h2>Escreve isso agora, num papel ou no bloco de notas.</h2>
+  <ul class="check">
+    <li>Três nichos que você gosta de mostrar</li>
+    <li>Dois produtos que a sua vida precisa nos próximos 3 meses</li>
+    <li>Uma marca dos sonhos, daquelas que você printaria pra contar</li>
+    <li>A cidade ou região que você consegue atender presencialmente</li>
+  </ul>
+  <p class="lead">Essa folha é o combustível de todos os pedidos que a gente vai fazer hoje.</p>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Sua vez</span></div>
+</section>
+
+<!-- 19 -->
+<section class="slide red center">
+  <div class="tag">Caminho 1 · 10h20</div>
+  <h1>Pesquisa de marcas<br>pelo Chrome</h1>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Caminho 1</span></div>
+</section>
+
+<!-- 20 -->
+<section class="slide">
+  <div class="tag">Anatomia do pedido</div>
+  <h2>Todo pedido bom tem estas cinco partes.</h2>
+  <ol class="steps">
+    <li><strong>Quem você é:</strong> criadora de conteúdo UGC, faço vídeo pra marca.</li>
+    <li><strong>O que você quer:</strong> encontrar empresas pra prospectar como cliente.</li>
+    <li><strong>O filtro:</strong> o produto, o nicho, a faixa de seguidores, a cidade.</li>
+    <li><strong>Quantas:</strong> 10, 20, 30. Sem número ele traz três e para.</li>
+    <li><strong>O formato:</strong> planilha, com estas colunas, pronta pra baixar.</li>
+  </ol>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Anatomia do pedido</span></div>
+  <div class="notes">Essa é a aula inteira em um slide. Quem entende as cinco partes monta qualquer busca depois, pra qualquer nicho.</div>
+</section>
+
+<!-- 21 -->
+<section class="slide dark">
+  <div class="tag">Prompt pronto · copia e adapta</div>
+  <h2 style="font-size:clamp(22px,2.6vw,38px);max-width:30ch">Marcas de um produto específico</h2>
+  <div class="prompt">Quero encontrar empresas pra prospectar como cliente do meu trabalho de UGC, criando vídeo pra marca.
+
+<span class="k">Meu foco:</span> empresas que vendam ou produzam fogão de indução de duas bocas, pra uma cozinha pequena.
+
+<span class="k">Encontre 10 empresas diferentes</span> que tenham esse produto e monte uma planilha com estas colunas:
+nome da empresa · link do produto · link do Instagram · quantidade de seguidores · e-mail do responsável ou do setor de marketing · outro contato, como WhatsApp · observações suas sobre a marca.
+
+Se você não encontrar o e-mail, escreve "não encontrado". Não invente contato.
+
+Me manda a planilha pronta pra baixar.</div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Prompt 1</span></div>
+  <div class="notes">Ler em voz alta o "não invente contato". É a linha que separa lista boa de lista que queima seu e-mail. Depois de enviar, deixar rodando e ir pra próxima aba, sem esperar parada.</div>
+</section>
+
+<!-- 22 -->
+<section class="slide">
+  <div class="tag">As colunas</div>
+  <h2>Por que cada coluna importa.</h2>
+  <div class="grid g3">
+    <div class="card"><div class="n">01</div><h3>Link do produto</h3><p>É a prova de que a marca vende mesmo aquilo, e é a ideia de vídeo já na sua mão.</p></div>
+    <div class="card"><div class="n">02</div><h3>@ e seguidores</h3><p>Diz o tamanho da marca e se ela cuida do Instagram. Marca sem perfil ativo raramente contrata creator.</p></div>
+    <div class="card"><div class="n">03</div><h3>E-mail de gente</h3><p>Nome de pessoa vale mais que contato@. Guarda os dois quando tiver.</p></div>
+    <div class="card"><div class="n">04</div><h3>WhatsApp</h3><p>Plano B quando o e-mail não responde, e a porta principal de marca pequena.</p></div>
+    <div class="card"><div class="n">05</div><h3>Observações</h3><p>"Já trabalha com creator", "acabou de lançar", "loja só em SP". É o que vira a sua linha de conexão.</p></div>
+    <div class="card" style="border-color:var(--red)"><div class="n">06</div><h3>Data</h3><p>Quando você encontrou. Daqui a um mês você vai querer saber quem já recebeu e-mail seu.</p></div>
+  </div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>As colunas</span></div>
+</section>
+
+<!-- 23 -->
+<section class="slide">
+  <div class="tag">Enquanto ele trabalha</div>
+  <h2>Não fica olhando a tela carregar. Abre a próxima aba.</h2>
+  <p class="lead">Enquanto ele procura fogão de indução numa aba, você já pede as marcas de decoração em outra e as do LinkedIn numa terceira. Três pesquisas ao mesmo tempo, uma pessoa só tocando.</p>
+  <div class="chips">
+    <span class="chip">Aba 1 · produto</span><span class="chip">Aba 2 · Instagram</span><span class="chip">Aba 3 · LinkedIn</span><span class="chip fill">Você segue vivendo</span>
+  </div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Três abas</span></div>
+</section>
+
+<!-- 24 -->
+<section class="slide">
+  <div class="tag">O resultado</div>
+  <h2>Foi isso que voltou.</h2>
+  <div class="ph" style="min-height:44vh">[PRINT DA PLANILHA QUE O CLAUDE DEVOLVEU]</div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Resultado</span></div>
+  <div class="notes">Abrir a planilha de verdade e rolar devagar. Mostrar uma linha boa e uma linha ruim, e dizer em voz alta por que a ruim é ruim.</div>
+</section>
+
+<!-- 25 -->
+<section class="slide dark">
+  <div class="tag">Antes de confiar</div>
+  <h2>Cinco conferidas rápidas na lista.</h2>
+  <ul class="check">
+    <li>O Instagram existe e postou nos últimos 30 dias</li>
+    <li>O e-mail tem cara de real, e é de pessoa ou de marketing, não de suporte técnico</li>
+    <li>A marca vende no Brasil e entrega na sua região</li>
+    <li>O link do produto abre e é o produto certo</li>
+    <li>Ela já fez vídeo com creator? Se já fez, seu caminho é mais curto</li>
+  </ul>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Conferir</span></div>
+</section>
+
+<!-- 26 -->
+<section class="slide red center">
+  <div class="tag">Caminho 2 · 10h50</div>
+  <h1>Instagram</h1>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Caminho 2</span></div>
+</section>
+
+<!-- 27 -->
+<section class="slide">
+  <div class="tag">O problema do jeito manual</div>
+  <h2>O Instagram só te mostra o que ele já decidiu te mostrar.</h2>
+  <div class="vs">
+    <div class="col sem">
+      <h3>Procurando na mão</h3>
+      <ul>
+        <li>Você cai nas marcas que já te seguem</li>
+        <li>Aparecem as mesmas que todas as creators já procuraram</li>
+        <li>Perfil por perfil, uma hora inteira pra juntar dez</li>
+        <li>Sem jeito de filtrar por tamanho</li>
+      </ul>
+    </div>
+    <div class="col com">
+      <h3>Pedindo pro Claude</h3>
+      <ul>
+        <li>Ele procura no Google, não no seu feed</li>
+        <li>Acha marca nova que ninguém abordou ainda</li>
+        <li>Vinte perfis numa lista só</li>
+        <li>Filtra por faixa de seguidores e por produto</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Manual x Claude</span></div>
+</section>
+
+<!-- 28 -->
+<section class="slide dark">
+  <div class="tag">Prompt pronto · copia e adapta</div>
+  <h2 style="font-size:clamp(22px,2.6vw,38px);max-width:30ch">Marcas pequenas de um nicho</h2>
+  <div class="prompt">Quero fechar parceria com marcas que vendam produtos de decoração pra casa: velas, quadros, vasos, porta-retrato e enfeite de mesa.
+
+<span class="k">Encontre marcas brasileiras com até 50 mil seguidores no Instagram.</span> Prefiro marcas novas, que estão começando a aparecer.
+
+Me traz 20 marcas, em lista, com:
+@ do perfil · link do Instagram · quantos seguidores · o que ela vende · se ela já postou vídeo feito por creator · e-mail ou forma de contato que estiver no perfil ou no site.
+
+Não repete marca grande e conhecida, o foco é quem está crescendo agora.</div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Prompt 2</span></div>
+</section>
+
+<!-- 29 -->
+<section class="slide">
+  <div class="tag">Antes de mandar mensagem</div>
+  <h2>Abre o perfil e olha estas cinco coisas.</h2>
+  <ul class="check">
+    <li>Posta com frequência? Marca parada há três meses não tem verba nem equipe.</li>
+    <li>Tem loja online ou só vende por DM? Isso muda o tipo de vídeo que você oferece.</li>
+    <li>Os vídeos dela são caseiros? Então o seu trabalho resolve uma dor visível.</li>
+    <li>Já postou creator marcando? Se sim, ela já entende o formato e já tem verba.</li>
+    <li>Tem e-mail no perfil? Anota junto com o @, você vai usar os dois.</li>
+  </ul>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Checar o perfil</span></div>
+  <div class="notes">Abrir um perfil de marca pequena ao vivo e fazer os cinco checks em voz alta, em 40 segundos. Repetir com um perfil que NÃO serve, pra elas verem o descarte.</div>
+</section>
+
+<!-- 30 -->
+<section class="slide">
+  <div class="tag">Na tela</div>
+  <h2>Como fica a lista de perfis.</h2>
+  <div class="ph" style="min-height:44vh">[PRINT DA LISTA DE PERFIS DE INSTAGRAM]</div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Na tela</span></div>
+</section>
+
+<!-- 31 -->
+<section class="slide red center">
+  <div class="tag">Caminho 3 · 11h10</div>
+  <h1>LinkedIn</h1>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Caminho 3</span></div>
+</section>
+
+<!-- 32 -->
+<section class="slide">
+  <div class="tag">Por que o LinkedIn</div>
+  <h2>É onde as empresas estão, e onde está a pessoa que decide.</h2>
+  <p class="lead">Eu prospecto mais por e-mail, porque hoje as marcas chegam bastante em mim. Mas eu tenho aluna fechando cliente por LinkedIn, inclusive fora do Brasil. Vale demais pra quem está começando.</p>
+  <div class="grid g2">
+    <div class="card"><div class="n">Quase nunca</div><h3>Falar com o dono</h3><p>Em empresa média o dono está longe do dia a dia de conteúdo e já tem gente pra isso.</p></div>
+    <div class="card" style="border-color:var(--red)"><div class="n">Quase sempre</div><h3>Falar com o marketing</h3><p>Analista, coordenador ou gerente de marketing. É quem contrata creator e quem tem a verba na mão.</p></div>
+  </div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Por que LinkedIn</span></div>
+</section>
+
+<!-- 33 -->
+<section class="slide dark">
+  <div class="tag">Prompt pronto · copia e adapta</div>
+  <h2 style="font-size:clamp(22px,2.6vw,38px);max-width:32ch">A pessoa certa dentro da empresa</h2>
+  <div class="prompt">Estou procurando novos clientes pra oferecer meu trabalho como criadora de conteúdo UGC.
+
+<span class="k">Encontre no LinkedIn pessoas responsáveis pelo marketing</span> de empresas brasileiras do nicho de tecnologia e aplicativos.
+
+Me traz 15 pessoas, com:
+nome · cargo · empresa · link do perfil no LinkedIn · Instagram da empresa · e se a empresa já falou alguma coisa sobre UGC ou creator.
+
+Prefiro analista, coordenador ou gerente de marketing, não o dono da empresa.</div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Prompt 3</span></div>
+</section>
+
+<!-- 34 -->
+<section class="slide">
+  <div class="tag">Como falar lá</div>
+  <h2>LinkedIn não é DM de Instagram.</h2>
+  <div class="grid g3">
+    <div class="card"><div class="n">01</div><h3>Convite com nota curta</h3><p>Duas linhas: quem você é e por que está falando com aquela empresa. Sem proposta no primeiro contato.</p></div>
+    <div class="card"><div class="n">02</div><h3>Fala de resultado</h3><p>Lá dentro o assunto é venda, teste e conversão. Guarda o "eu amo criar conteúdo" pro Instagram.</p></div>
+    <div class="card" style="border-color:var(--red)"><div class="n">03</div><h3>Link, nunca anexo</h3><p>Manda o endereço do portfólio que você publicou ontem. PDF pesado ninguém abre no trabalho.</p></div>
+  </div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Como falar</span></div>
+</section>
+
+<!-- 35 -->
+<section class="slide red center">
+  <div class="tag">Caminho 4 · 11h30</div>
+  <h1>A lista de marcas<br>que os e-commerces publicam</h1>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Caminho 4</span></div>
+</section>
+
+<!-- 36 -->
+<section class="slide">
+  <div class="tag">A mina de ouro</div>
+  <h2>Shopee, Amazon e Mercado Livre têm uma página com as marcas que vendem lá dentro.</h2>
+  <ol class="steps">
+    <li>No site da Shopee, procura pela página de marcas, a Shopee Brands.</li>
+    <li>Abre a lista. São centenas de marcas, das gigantes às que ninguém conhece ainda.</li>
+    <li>Escolhe as do seu nicho e pede pro Claude achar o Instagram e o contato de cada uma.</li>
+    <li>Repete na Amazon e no Mercado Livre. Cada um tem a sua lista.</li>
+  </ol>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Onde fica a lista</span></div>
+  <div class="notes">Fazer ao vivo na Shopee: mostrar a busca, abrir a página de marcas e rolar a lista devagar. O tamanho da lista é o que impressiona.</div>
+</section>
+
+<!-- 37 -->
+<section class="slide">
+  <div class="tag">Na tela</div>
+  <h2>É essa lista inteira aqui.</h2>
+  <div class="ph" style="min-height:44vh">[PRINT DA PÁGINA DE MARCAS DA SHOPEE]</div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Na tela</span></div>
+</section>
+
+<!-- 38 -->
+<section class="slide dark">
+  <div class="tag">Prompt pronto · copia e adapta</div>
+  <h2 style="font-size:clamp(22px,2.6vw,38px);max-width:34ch">Transformar a lista em contatos</h2>
+  <div class="prompt">Esta página tem a lista de marcas que vendem neste e-commerce.
+
+<span class="k">Separe as marcas do nicho de casa e cozinha</span> e, pra cada uma, procure:
+Instagram · quantos seguidores · site próprio · e-mail de contato ou marketing · se ela já usa vídeo de creator na página do produto.
+
+Me devolve 20 marcas em planilha, da menor pra maior em seguidores.
+
+Se não achar o contato, escreve "não encontrado".</div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Prompt 4</span></div>
+</section>
+
+<!-- 39 -->
+<section class="slide">
+  <div class="tag">Pra quem serve</div>
+  <h2>Esse caminho é ouro pra quem quer vídeo de e-commerce.</h2>
+  <p class="lead">Quem vende dentro de marketplace vive de vídeo curto na página do produto e nos anúncios. É o trabalho que estão chamando de clip: vídeo direto, feito pra vender, sem precisar da sua cara em campanha grande.</p>
+  <div class="chips">
+    <span class="chip">Vídeo de página de produto</span><span class="chip">TikTok Shop</span><span class="chip">Clips</span><span class="chip fill">Volume e recorrência</span>
+  </div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Pra quem serve</span></div>
+</section>
+
+<!-- 40 -->
+<section class="slide red center">
+  <div class="tag">Agora é você · 11h45</div>
+  <h1>30 marcas na sua lista</h1>
+  <p class="lead" style="color:rgba(255,255,255,.9)">Quarenta minutos. Eu fico na tela com vocês.</p>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Ao vivo</span></div>
+</section>
+
+<!-- 41 -->
+<section class="slide">
+  <div class="tag">Como dividir</div>
+  <h2>Dez de cada caminho, e você termina com trinta.</h2>
+  <div class="grid g3">
+    <div class="card"><div class="n">10</div><h3>Pelo produto</h3><p>Aquilo que a sua vida precisa agora. Usa o prompt 1, trocando o produto.</p></div>
+    <div class="card"><div class="n">10</div><h3>Pelo nicho no Instagram</h3><p>Marcas de até 50 mil seguidores. Usa o prompt 2, trocando o nicho.</p></div>
+    <div class="card" style="border-color:var(--red)"><div class="n">10</div><h3>Pela lista do e-commerce</h3><p>Escolhe uma categoria e traz as menores primeiro.</p></div>
+  </div>
+  <p class="lead">Quem terminar antes, roda o do LinkedIn e chega em 45.</p>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Divisão</span></div>
+  <div class="notes">Colocar um cronômetro na tela. De 10 em 10 minutos, perguntar no chat quantas já têm. Quem travou, pede pra colar o prompt que usou, quase sempre é falta do "quantas" ou do formato.</div>
+</section>
+
+<!-- 42 -->
+<section class="slide dark center">
+  <div class="kicker">12h30</div>
+  <h1 style="font-size:clamp(34px,5.6vw,86px)">Pausa</h1>
+  <p class="lead" style="max-width:40ch">Volta 13h30 com a sua lista aberta e o admin de ontem numa aba. À tarde a gente transforma essa lista em proposta.</p>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Pausa</span></div>
+</section>
+
+<!-- 43 -->
+<section class="slide red center">
+  <div class="tag">Bloco 5 · 13h30</div>
+  <h1>A sua base de marcas<br>dentro do admin</h1>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Bloco 5</span></div>
+</section>
+
+<!-- 44 -->
+<section class="slide">
+  <div class="tag">O problema</div>
+  <h2>De nada adianta encontrar 30 marcas e perder a lista em uma semana.</h2>
+  <div class="grid g4">
+    <div class="card"><div class="n">📱</div><h3>Print no celular</h3><p>Some no meio de 4 mil fotos.</p></div>
+    <div class="card"><div class="n">📝</div><h3>Bloco de notas</h3><p>Três listas diferentes e nenhuma completa.</p></div>
+    <div class="card"><div class="n">💬</div><h3>Salvo na DM</h3><p>Você lembra que falou, não lembra com quem.</p></div>
+    <div class="card" style="border-color:var(--red)"><div class="n">📄</div><h3>Planilha solta</h3><p>Fica na pasta de downloads e nunca mais abre.</p></div>
+  </div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>O problema</span></div>
+</section>
+
+<!-- 45 -->
+<section class="slide">
+  <div class="tag">Onde isso vai morar</div>
+  <h2>Ontem a aba Contatos guardava quem chega. Hoje entra quem você foi buscar.</h2>
+  <div class="grid g2">
+    <div class="card"><div class="n">Já existe</div><h3>Contatos</h3><p>As pessoas que preenchem o formulário do seu portfólio. Elas chegam até você.</p></div>
+    <div class="card" style="border-color:var(--red)"><div class="n">Hoje</div><h3>Marcas</h3><p>As empresas que você encontrou hoje de manhã, com status, origem e histórico. Você chega até elas.</p></div>
+  </div>
+  <p class="lead">Mesmo admin, mesmo login, mesma tranca. Muda só a aba.</p>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Onde mora</span></div>
+</section>
+
+<!-- 46 -->
+<section class="slide dark">
+  <div class="tag">O que entra na base</div>
+  <h2>Marca nova não é a única coisa que vai pra lá.</h2>
+  <ul class="check">
+    <li>As 30 marcas que você encontrou hoje de manhã</li>
+    <li>Todo cliente que você já atendeu, mesmo o de um ano atrás</li>
+    <li>Quem já pediu orçamento e não fechou, esse é o mais fácil de reativar</li>
+    <li>Marca que te mandou DM e você nunca respondeu direito</li>
+    <li>Contato que está no seu WhatsApp e não está em lugar nenhum</li>
+  </ul>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>O que entra</span></div>
+  <div class="notes">Bater forte aqui: cliente antigo responde muito mais que marca fria. A base começa com quem já te conhece, não com desconhecido.</div>
+</section>
+
+<!-- 47 -->
+<section class="slide dark">
+  <div class="tag">Prompt pronto · Claude Code</div>
+  <h2 style="font-size:clamp(22px,2.6vw,38px);max-width:30ch">Criar a aba Marcas</h2>
+  <div class="prompt">Abre a pasta do meu site, a mesma de ontem. Não cria pasta nova.
+
+<span class="k">No meu admin, cria a aba MARCAS</span>, que é a minha base de prospecção.
+
+No Supabase, cria a tabela marcas com: nome, site, instagram, seguidores, e-mail, whatsapp, pessoa de contato, nicho, origem (onde eu encontrei), status, observação e data.
+<span class="k">Liga o RLS</span>: só eu, logada, posso ler, criar, editar e apagar. Sem login ninguém enxerga essa tabela.
+
+Na aba eu quero: adicionar marca na mão, importar uma planilha CSV, buscar por nome, filtrar por nicho, origem e status, mudar o status em um clique (a enviar · enviado · respondeu · proposta · fechado · sem interesse) e um contador no topo com o total e quantas em cada status.
+
+No fim, me explica em português simples como eu importo a planilha.</div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Prompt 5</span></div>
+</section>
+
+<!-- 48 -->
+<section class="slide">
+  <div class="tag">O caminho da marca</div>
+  <h2>Toda marca anda por estas cinco casas.</h2>
+  <div class="flow">
+    <div class="box"><h3>A enviar</h3><p>Está na lista, ainda não recebeu nada.</p></div>
+    <div class="arr">→</div>
+    <div class="box"><h3>Enviado</h3><p>Recebeu seu e-mail, com data.</p></div>
+    <div class="arr">→</div>
+    <div class="box"><h3>Respondeu</h3><p>Voltou. Agora é conversa.</p></div>
+    <div class="arr">→</div>
+    <div class="box"><h3>Proposta</h3><p>Pediu valor e escopo.</p></div>
+    <div class="arr">→</div>
+    <div class="box"><h3>Fechado</h3><p>Virou trabalho pago.</p></div>
+  </div>
+  <p class="lead">O status é o que te diz o que fazer amanhã de manhã, sem precisar lembrar de nada.</p>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Status</span></div>
+</section>
+
+<!-- 49 -->
+<section class="slide">
+  <div class="tag">Importar</div>
+  <h2>Da planilha do Claude pra dentro do seu admin.</h2>
+  <ol class="steps">
+    <li>Baixa a planilha que ele montou de manhã, em CSV.</li>
+    <li>Confere as colunas: nome, instagram, e-mail e origem são as que importam.</li>
+    <li>Abre a aba Marcas, clica em importar e escolhe o arquivo.</li>
+    <li>Confere quantas entraram e apaga as repetidas.</li>
+  </ol>
+  <p class="lead">Se der erro, copia a mensagem inteira e cola pro Claude: "isso apareceu, o que é e como arruma?".</p>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Importar</span></div>
+  <div class="notes">Fazer ao vivo com a sua planilha. Mostrar de propósito um erro de coluna e arrumar na frente delas, isso vale mais que qualquer explicação.</div>
+</section>
+
+<!-- 50 -->
+<section class="slide red center">
+  <div class="tag">Bloco 6 · 14h30</div>
+  <h1>O que a marca lê<br>nos primeiros 8 segundos</h1>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Bloco 6</span></div>
+</section>
+
+<!-- 51 -->
+<section class="slide">
+  <div class="tag">A estrutura</div>
+  <h2>Eu escrevo sempre nesta ordem.</h2>
+  <ol class="steps">
+    <li><strong>Quem eu sou e o meu diferencial.</strong> Uma frase. Não é currículo.</li>
+    <li><strong>Por que estou falando com vocês.</strong> A conexão verdadeira: estou reformando a casa, uso o produto, vi o lançamento.</li>
+    <li><strong>A ideia de conteúdo.</strong> Já mastigada, pronta pra ela imaginar no feed.</li>
+    <li><strong>A prova e o convite.</strong> Link do portfólio e uma pergunta fácil de responder.</li>
+  </ol>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>A estrutura</span></div>
+  <div class="notes">Dizer que a parte 2 é a que quase ninguém faz, e é a que faz a marca responder. Sem a conexão, é mais um e-mail igual aos outros trinta da caixa dela.</div>
+</section>
+
+<!-- 52 -->
+<section class="slide">
+  <div class="tag">O assunto</div>
+  <h2>Se o assunto for genérico, ninguém abre o resto.</h2>
+  <div class="vs">
+    <div class="col sem">
+      <h3>Não abre</h3>
+      <ul>
+        <li>Parceria</li>
+        <li>Proposta comercial</li>
+        <li>Olá, tudo bem?</li>
+        <li>Criadora de conteúdo UGC</li>
+      </ul>
+    </div>
+    <div class="col com">
+      <h3>Abre</h3>
+      <ul>
+        <li>Ideia de vídeo pro fogão de indução de vocês</li>
+        <li>Vi o lançamento da linha de velas e tive uma ideia</li>
+        <li>Vídeo pra página do produto de vocês na Shopee</li>
+        <li>Conteúdo pra Black Friday da [marca]</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>O assunto</span></div>
+</section>
+
+<!-- 53 -->
+<section class="slide dark">
+  <div class="tag">O e-mail inteiro</div>
+  <h2 style="font-size:clamp(22px,2.6vw,38px);max-width:26ch">O modelo que você vai adaptar</h2>
+  <div class="prompt"><span class="k">Assunto:</span> ideia de vídeo pro fogão de indução da [marca]
+
+Oi, [nome]! Sou a [seu nome], criadora de conteúdo UGC. Eu gravo vídeo caseiro de produto, do jeito que a cliente de vocês grava, pra usar no perfil e nos anúncios.
+
+<span class="k">Estou reformando a minha cozinha agora</span> e fui atrás de marca de fogão de indução. Entrei no site de vocês, vi o modelo de duas bocas e ele é exatamente o que cabe no meu espaço.
+
+<span class="k">A ideia:</span> um vídeo de 40 segundos instalando e usando pela primeira vez, na cozinha real, mostrando quanto tempo a água leva pra ferver. Entrego em formato vertical, com e sem legenda, pra vocês usarem no Instagram e na página do produto.
+
+Meus trabalhos estão aqui: [link do seu portfólio]
+
+Faz sentido pra vocês? Eu mando os valores e os formatos.
+[seu nome] · [seu @]</div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>O modelo</span></div>
+</section>
+
+<!-- 54 -->
+<section class="slide">
+  <div class="tag">O que mata o e-mail</div>
+  <h2>Seis coisas que fazem a marca fechar sem ler.</h2>
+  <div class="grid g3">
+    <div class="card"><div class="n">01</div><h3>Texto gigante</h3><p>Se não cabe na tela do celular, não é lido. Corta pela metade e corta de novo.</p></div>
+    <div class="card"><div class="n">02</div><h3>Só falar de você</h3><p>Três parágrafos de sonho e paixão. A marca quer saber o que ela ganha.</p></div>
+    <div class="card"><div class="n">03</div><h3>Anexo pesado</h3><p>PDF de 20 MB vai pro lixo. Manda o link do portfólio que você publicou ontem.</p></div>
+    <div class="card"><div class="n">04</div><h3>Sem ideia nenhuma</h3><p>"Quero fazer uma parceria" não dá trabalho pra você e dá trabalho pra ela.</p></div>
+    <div class="card"><div class="n">05</div><h3>Copiado e colado</h3><p>Sem o nome da marca e sem a linha de conexão, vira spam na hora.</p></div>
+    <div class="card" style="border-color:var(--red)"><div class="n">06</div><h3>Sem pergunta no fim</h3><p>Termina com uma pergunta simples de responder. Silêncio também nasce de e-mail sem pedido.</p></div>
+  </div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Erros</span></div>
+</section>
+
+<!-- 55 -->
+<section class="slide dark">
+  <div class="tag">Prompt pronto · a sua versão</div>
+  <h2 style="font-size:clamp(22px,2.6vw,38px);max-width:32ch">Escrever na sua voz, não na minha</h2>
+  <div class="prompt">Escreve o meu e-mail de prospecção pra marca, seguindo esta estrutura:
+1 quem eu sou e o meu diferencial · 2 por que estou falando com essa marca · 3 a ideia de conteúdo pronta · 4 link do portfólio e uma pergunta no fim.
+
+<span class="k">Sobre mim:</span> [o que você grava, pra que nicho, o que te diferencia, quanto tempo de estrada].
+<span class="k">Meu portfólio:</span> [seu link].
+<span class="k">Meu tom:</span> [escreve aqui como você fala, ou cola uma legenda sua].
+
+Regras: no máximo 150 palavras, sem enrolação, sem "espero que esteja bem", nada de anexo.
+Deixa marcado com chave o que muda em cada marca: {marca}, {pessoa} e {linha de conexão}.
+
+Me entrega três versões de assunto também.</div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Prompt 6</span></div>
+  <div class="notes">Pedir pra cada aluna colar uma legenda dela no campo do tom. O e-mail sai com a voz dela e não com a voz de robô, e isso muda tudo na taxa de resposta.</div>
+</section>
+
+<!-- 56 -->
+<section class="slide">
+  <div class="tag">Em massa sem parecer massa</div>
+  <h2>O corpo é igual pra todas. Uma linha é só dela.</h2>
+  <div class="grid g2">
+    <div class="card"><div class="n">Igual</div><h3>O resto do e-mail</h3><p>Sua apresentação, a estrutura da ideia, o link do portfólio e a pergunta final não mudam.</p></div>
+    <div class="card" style="border-color:var(--red)"><div class="n">Só dela</div><h3>A linha de conexão</h3><p>"Vi que vocês lançaram a linha de velas de coco" ou "o modelo de duas bocas cabe na minha cozinha". Vem da coluna de observações que você pediu de manhã.</p></div>
+  </div>
+  <p class="lead">Cinquenta e-mails, cinquenta linhas diferentes, escritas de uma vez pelo Claude a partir da sua planilha.</p>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Personalização</span></div>
+</section>
+
+<!-- 57 -->
+<section class="slide">
+  <div class="tag">O gancho de agora</div>
+  <h2>Black Friday é a desculpa perfeita pra mandar esse e-mail hoje.</h2>
+  <div class="grid g3">
+    <div class="card"><div class="n">01</div><h3>A verba está sendo decidida agora</h3><p>Quem procura creator em novembro já fechou com outra em setembro.</p></div>
+    <div class="card"><div class="n">02</div><h3>Elas precisam de volume</h3><p>Anúncio de Black Friday come vídeo. Três, cinco, dez versões do mesmo produto.</p></div>
+    <div class="card" style="border-color:var(--red)"><div class="n">03</div><h3>Dá pra oferecer pacote</h3><p>Em vez de um vídeo, um combo pra campanha inteira. Trabalho maior, e você entra pro ano todo.</p></div>
+  </div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Black Friday</span></div>
+</section>
+
+<!-- 58 -->
+<section class="slide red center">
+  <div class="tag">Bloco 7 · 15h30</div>
+  <h1>Enviar pra cinquenta<br>com um clique</h1>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Bloco 7</span></div>
+</section>
+
+<!-- 59 -->
+<section class="slide">
+  <div class="tag">Por que não na mão</div>
+  <h2>Cinquenta e-mails no Gmail, um por um, é meio dia de trabalho.</h2>
+  <div class="vs">
+    <div class="col sem">
+      <h3>Na mão</h3>
+      <ul>
+        <li>Copia, cola, troca o nome, erra o nome</li>
+        <li>Nenhum registro de quem já recebeu</li>
+        <li>O Gmail trava depois de tantos envios seguidos</li>
+        <li>Semana que vem você não faz de novo</li>
+      </ul>
+    </div>
+    <div class="col com">
+      <h3>Pelo seu admin</h3>
+      <ul>
+        <li>Você escolhe as marcas e aperta um botão</li>
+        <li>Cada marca vira "enviado" com data, sozinha</li>
+        <li>Ninguém recebe duas vezes por engano</li>
+        <li>Semana que vem leva 10 minutos</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Na mão x admin</span></div>
+</section>
+
+<!-- 60 -->
+<section class="slide">
+  <div class="tag">O que é o Resend</div>
+  <h2>É o carteiro do seu site.</h2>
+  <p class="lead">O seu admin não sabe mandar e-mail sozinho, ele só sabe mostrar tela. O Resend é o serviço que pega o texto e entrega na caixa de entrada da marca. Você cria a conta, pega uma chave e o seu site passa a ter carteiro.</p>
+  <div class="chips">
+    <span class="chip">Conta gratuita pra começar</span><span class="chip">Entrega de verdade</span><span class="chip fill">Você vê quem recebeu</span>
+  </div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Resend</span></div>
+</section>
+
+<!-- 61 -->
+<section class="slide dark">
+  <div class="tag">Atenção · isso é importante</div>
+  <h2>A chave do Resend é secreta. Ela não pode ficar no site.</h2>
+  <div class="grid g2">
+    <div class="card"><div class="n">Lembra de ontem?</div><h3>Chave pública</h3><p>A do Supabase que fica no site. Pode, ela foi feita pra isso, e quem protege é o RLS.</p></div>
+    <div class="card" style="border-color:var(--red)"><div class="n">Diferente</div><h3>Chave do Resend</h3><p>Com ela qualquer um manda e-mail no seu nome. Ela mora escondida dentro do Supabase e o seu admin só pede pra ele enviar.</p></div>
+  </div>
+  <p class="lead">Se alguém pedir pra você colar essa chave dentro do site, a resposta é não.</p>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Chave secreta</span></div>
+  <div class="notes">Puxar direto da aula de ontem, elas já entenderam a diferença de chave pública e secreta. Repetir aqui prende o conceito de vez.</div>
+</section>
+
+<!-- 62 -->
+<section class="slide">
+  <div class="tag">Três passos</div>
+  <h2>O que fazer antes de pedir pro Claude construir.</h2>
+  <ol class="steps">
+    <li>Cria a conta no Resend com o seu e-mail de trabalho.</li>
+    <li>Gera a chave e guarda num lugar seguro. Ela aparece uma vez só.</li>
+    <li>Começa enviando pelo endereço de teste que eles dão. Depois, quando quiser, você liga o seu domínio e passa a mandar do seu próprio e-mail.</li>
+  </ol>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Três passos</span></div>
+  <div class="notes">Fazer a conta ao vivo. Avisar que ligar o domínio envolve mexer no DNS e que isso pode ficar pra depois da aula, com o passo a passo gravado. Ninguém precisa travar aqui.</div>
+</section>
+
+<!-- 63 -->
+<section class="slide dark">
+  <div class="tag">Prompt pronto · Claude Code</div>
+  <h2 style="font-size:clamp(22px,2.6vw,38px);max-width:30ch">Criar a aba Prospecção</h2>
+  <div class="prompt">No meu admin, cria a aba PROSPECÇÃO, que manda e-mail pras marcas da minha base.
+
+O envio vai pelo Resend. <span class="k">A chave do Resend é secreta</span>: guarda ela como segredo dentro de uma função do Supabase e faz o admin chamar essa função. A chave não pode aparecer no site.
+
+Na aba eu quero:
+· escrever o modelo do e-mail, com assunto e texto, usando {marca}, {pessoa} e {conexao}, que o sistema troca sozinho
+· a lista das minhas marcas com caixinha de seleção e um botão de marcar todas com status "a enviar"
+· <span class="k">um botão de enviar teste só pra mim</span>, antes de tudo
+· o botão de disparar, que manda um de cada vez com uma pausa entre eles
+· depois do envio, marcar a marca como enviado com a data, e me avisar se eu tentar enviar de novo pro mesmo e-mail
+· uma tabela com tudo que saiu: pra quem, quando e se deu erro
+
+Me explica no fim como eu troco o texto do modelo sem mexer no código.</div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Prompt 7</span></div>
+</section>
+
+<!-- 64 -->
+<section class="slide">
+  <div class="tag">Como fica</div>
+  <h2>Marcas selecionadas, modelo escolhido, um botão.</h2>
+  <div class="ph" style="min-height:44vh">[PRINT DA ABA PROSPECÇÃO COM AS MARCAS SELECIONADAS]</div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Como fica</span></div>
+</section>
+
+<!-- 65 -->
+<section class="slide dark">
+  <div class="tag">Pra não cair no spam</div>
+  <h2>Seis cuidados que valem o ano inteiro.</h2>
+  <ul class="check">
+    <li>Começa com 10 por dia, não com 200 de uma vez</li>
+    <li>Manda o teste pra você mesma e lê no celular antes</li>
+    <li>Um link só no e-mail, e nenhum anexo</li>
+    <li>Nada de MAIÚSCULA no assunto, nem "promoção imperdível"</li>
+    <li>Tira da lista quem pediu pra não receber, na hora</li>
+    <li>E-mail que voltou com erro, apaga da base, ele suja os próximos</li>
+  </ul>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Spam</span></div>
+</section>
+
+<!-- 66 -->
+<section class="slide red center">
+  <div class="tag">16h · ao vivo</div>
+  <h1>O primeiro envio</h1>
+  <p class="lead" style="color:rgba(255,255,255,.9)">Eu mando o meu na frente de vocês e vocês mandam o de vocês.</p>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Envio</span></div>
+</section>
+
+<!-- 67 -->
+<section class="slide">
+  <div class="tag">Antes de apertar</div>
+  <h2>A última conferida, em voz alta.</h2>
+  <ul class="check">
+    <li>O teste chegou na minha caixa e está bonito no celular</li>
+    <li>O nome da marca e a linha de conexão estão certos em cada uma</li>
+    <li>O link do portfólio abre</li>
+    <li>São e-mails de marcas que eu quero mesmo atender</li>
+    <li>O status vai virar "enviado" sozinho depois</li>
+  </ul>
+  <p class="lead">Conferiu tudo? Aperta. E respira, porque agora é a parte boa.</p>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Checklist do envio</span></div>
+  <div class="notes">Mandar o seu de verdade na tela, com a turma vendo o contador subir. Depois abrir o painel do Resend e mostrar os envios chegando. É o clímax do dia.</div>
+</section>
+
+<!-- 68 -->
+<section class="slide red center">
+  <div class="tag">Bloco 8 · 16h30</div>
+  <h1>Depois que o e-mail sai</h1>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Bloco 8</span></div>
+</section>
+
+<!-- 69 -->
+<section class="slide">
+  <div class="tag">Expectativa</div>
+  <h2>A maioria não responde. Isso não é fracasso, é o jogo.</h2>
+  <p class="lead">Prospecção é volume e repetição. A marca que não respondeu hoje pode responder no terceiro contato, em janeiro, quando a verba nova abrir. Por isso a base existe: pra você não recomeçar do zero toda vez.</p>
+  <div class="grid g3">
+    <div class="card"><div class="n">01</div><h3>Não leva pro pessoal</h3><p>Silêncio quase sempre é caixa cheia, não é sobre você.</p></div>
+    <div class="card"><div class="n">02</div><h3>Marca a data</h3><p>Quem não respondeu em 5 dias entra na fila do segundo e-mail.</p></div>
+    <div class="card" style="border-color:var(--red)"><div class="n">03</div><h3>Continua enchendo</h3><p>Lista parada não gera cliente. Trinta novas por semana.</p></div>
+  </div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Expectativa</span></div>
+</section>
+
+<!-- 70 -->
+<section class="slide dark">
+  <div class="tag">O segundo e-mail</div>
+  <h2 style="font-size:clamp(22px,2.6vw,38px);max-width:28ch">Cinco dias depois, três linhas</h2>
+  <div class="prompt"><span class="k">Assunto:</span> sobre o vídeo pro fogão de indução
+
+Oi, [nome]! Passando rapidinho pra saber se a ideia faz sentido pra vocês.
+
+Se for melhor, eu gravo um teste curto antes de qualquer acordo, pra vocês verem como fica com o produto de vocês na mão.
+
+Qualquer coisa eu fico por aqui. [seu nome]</div>
+  <p class="lead">Curto, sem cobrança e com uma oferta nova. É esse que costuma destravar a conversa.</p>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Follow-up</span></div>
+</section>
+
+<!-- 71 -->
+<section class="slide">
+  <div class="tag">Respondeu</div>
+  <h2>E agora, o que eu mando?</h2>
+  <ol class="steps">
+    <li>Responde no mesmo dia. Velocidade é metade do fechamento.</li>
+    <li>Manda dois ou três formatos com valor, não um só. Ela escolhe em vez de dizer não.</li>
+    <li>Deixa claro o que entrega: quantos vídeos, quantos cortes, prazo e direito de uso.</li>
+    <li>Marca no admin como proposta e coloca a data de voltar a falar.</li>
+  </ol>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Quando responder</span></div>
+  <div class="notes">Lembrar que direito de uso e exclusividade são o que mais muda o preço, e que isso tem aula gravada. Aqui é só não deixar a marca esperando.</div>
+</section>
+
+<!-- 72 -->
+<section class="slide">
+  <div class="tag">A rotina</div>
+  <h2>Isso vira uma hora por semana, não um dia inteiro.</h2>
+  <div class="grid g4">
+    <div class="card"><div class="n">Segunda</div><h3>Encher a lista</h3><p>30 marcas novas com os prompts de hoje. 20 minutos.</p></div>
+    <div class="card"><div class="n">Terça</div><h3>Disparar</h3><p>Seleciona as "a enviar" e manda. 10 minutos.</p></div>
+    <div class="card"><div class="n">Quinta</div><h3>Segundo e-mail</h3><p>Quem recebeu semana passada e não respondeu.</p></div>
+    <div class="card" style="border-color:var(--red)"><div class="n">Todo dia</div><h3>Responder</h3><p>Quem respondeu, no mesmo dia. Sempre.</p></div>
+  </div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Rotina</span></div>
+</section>
+
+<!-- 73 -->
+<section class="slide dark">
+  <div class="tag">Checkpoint · 16h45</div>
+  <h2>O mínimo de hoje.</h2>
+  <div class="grid g2">
+    <div>
+      <h3 style="margin-bottom:1.6vh">Se você tem isso, o dia valeu</h3>
+      <ul class="check">
+        <li>Lista com pelo menos 20 marcas</li>
+        <li>A aba Marcas no seu admin, com elas dentro</li>
+        <li>Seu e-mail de prospecção escrito na sua voz</li>
+        <li>Pelo menos um envio de verdade feito</li>
+      </ul>
+    </div>
+    <div>
+      <h3 style="margin-bottom:1.6vh">Se deu tempo</h3>
+      <ul class="check">
+        <li>Aba Prospecção com disparo em massa</li>
+        <li>Clientes antigos importados pra base</li>
+        <li>Modelo do segundo e-mail salvo</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Checkpoint</span></div>
+  <div class="notes">Ninguém sai daqui achando que falhou. O que não deu tempo está gravado e o grupo continua depois da imersão.</div>
+</section>
+
+<!-- 74 -->
+<section class="slide">
+  <div class="tag">Amanhã de manhã</div>
+  <h2>A primeira coisa a fazer quando essa aula acabar.</h2>
+  <ol class="steps">
+    <li>Abre a sua base e escolhe as 5 marcas que você mais quer.</li>
+    <li>Escreve a linha de conexão de cada uma na mão, com carinho.</li>
+    <li>Manda. Essas cinco são as suas apostas da semana.</li>
+    <li>Cola no grupo quando a primeira responder. A gente quer ver.</li>
+  </ol>
+  <div class="foot"><span>Dia 2 · Prospectar</span><span>Amanhã</span></div>
+</section>
+
+<!-- 75 -->
+<section class="slide red center">
+  <div class="tag">17h</div>
+  <h1>Dúvidas</h1>
+  <p class="lead" style="color:rgba(255,255,255,.85)">Obrigada pelos dois dias. Agora é usar: quem manda e-mail toda semana fecha cliente, quem só constrói fica só com a ferramenta bonita.</p>
+  <div class="foot"><span>@eilaradam</span><span>Até já no grupo</span></div>
+</section>
+
+</div>
+<div id="counter"></div>
+<div id="notes"></div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+
+/* ---------- as fases do dia: [hora, nome, slide em que comeca] ---------- */
+const FASES=[
+  ['9h','Abertura',1],
+  ['9h30','Claude no Chrome',6],
+  ['10h','Quem procurar',13],
+  ['10h20','Caminho 1 · Google',19],
+  ['10h50','Caminho 2 · Instagram',26],
+  ['11h10','Caminho 3 · LinkedIn',31],
+  ['11h30','Caminho 4 · E-commerce',35],
+  ['11h45','Captação ao vivo',40],
+  ['13h30','Base de marcas',43],
+  ['14h30','A copy',50],
+  ['15h30','Disparo em massa',58],
+  ['16h30','Depois do envio',68],
+  ['17h','Fechamento',75]
+];
+const hbHora=document.getElementById('hbHora'), hbFase=document.getElementById('hbFase'),
+      hbN=document.getElementById('hbN'), horaBar=document.getElementById('horaBar'),
+      linhaProg=document.getElementById('linhaProg');
+document.getElementById('hbTrilho').innerHTML=FASES.map(()=>'<i></i>').join('');
+const tracos=[...document.querySelectorAll('#hbTrilho i')];
+
+function faseDe(n){ let f=0; FASES.forEach((x,k)=>{ if(n+1>=x[2]) f=k; }); return f; }
+
+function barra(n){
+  const f=faseDe(n), s=slides[n];
+  hbHora.textContent=FASES[f][0];
+  hbFase.textContent=FASES[f][1];
+  hbN.textContent=(n+1)+' / '+slides.length;
+  tracos.forEach((t,k)=>{
+    t.classList.toggle('passou',k<f);
+    if(k===f && !t.classList.contains('agora')){ t.classList.add('agora'); }
+    if(k!==f) t.classList.remove('agora');
+  });
+  horaBar.classList.toggle('claro', s.classList.contains('dark')||s.classList.contains('red'));
+  horaBar.classList.toggle('some', n===0);
+  linhaProg.style.width=((n+1)/slides.length*100)+'%';
+  linhaProg.style.background=s.classList.contains('red')?'#fff':'var(--red)';
+}
+
+/* ---------- titulo dos slides de abertura entra palavra por palavra ---------- */
+slides.forEach(s=>{
+  if(!s.classList.contains('center')) return;
+  const t=s.querySelector('h1,h2'); if(!t) return;
+  const saida=document.createDocumentFragment(); let i=0;
+  [...t.childNodes].forEach(no=>{
+    if(no.nodeType===3){
+      no.textContent.split(/(\s+)/).forEach(p=>{
+        if(!p) return;
+        if(/^\s+$/.test(p)){ saida.appendChild(document.createTextNode(p)); return; }
+        const sp=document.createElement('span');
+        sp.className='pal'; sp.textContent=p;
+        sp.style.animationDelay=(0.16+i*0.075)+'s'; i++;
+        saida.appendChild(sp);
+      });
+    } else saida.appendChild(no.cloneNode(true));
+  });
+  t.innerHTML=''; t.appendChild(saida); t.classList.add('fatiado');
+});
+let i=Math.max(0,Math.min(slides.length-1,(parseInt(location.hash.slice(1))||1)-1));
+const counter=document.getElementById('counter');
+const notesBox=document.getElementById('notes');
+let notesOn=false;
+function show(n){
+  i=Math.max(0,Math.min(slides.length-1,n));
+  slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+  counter.textContent=(i+1)+' / '+slides.length;
+  location.hash=i+1;
+  const nt=slides[i].querySelector('.notes');
+  notesBox.innerHTML=nt?nt.innerHTML:'<i>Sem nota nesse slide.</i>';
+  barra(i);
+}
+document.addEventListener('keydown',e=>{
+  if(['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key)){e.preventDefault();show(i+1);}
+  else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();show(i-1);}
+  else if(e.key==='Home')show(0);
+  else if(e.key==='End')show(slides.length-1);
+  else if(e.key.toLowerCase()==='n'){notesOn=!notesOn;notesBox.classList.toggle('on',notesOn);}
+  else if(e.key.toLowerCase()==='f'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
+});
+document.addEventListener('click',e=>{
+  if(e.target.closest('#notes'))return;
+  const x=e.clientX/window.innerWidth;
+  show(x<0.25?i-1:i+1);
+});
+let tx=null;
+document.addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+document.addEventListener('touchend',e=>{if(tx===null)return;const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>40)show(d<0?i+1:i-1);tx=null;});
+
+/* ---------- botao de copiar em todo bloco de prompt ---------- */
+document.querySelectorAll('.prompt').forEach(p=>{
+  const txt=p.textContent.trim();
+  const b=document.createElement('button');
+  b.type='button'; b.className='btnCopia'; b.textContent='copiar';
+  b.addEventListener('click',ev=>{
+    ev.stopPropagation();
+    const ok=()=>{b.textContent='copiado';b.classList.add('ok');setTimeout(()=>{b.textContent='copiar';b.classList.remove('ok')},1600)};
+    if(navigator.clipboard && window.isSecureContext){ navigator.clipboard.writeText(txt).then(ok).catch(()=>caiFora()); }
+    else caiFora();
+    function caiFora(){
+      const ta=document.createElement('textarea');
+      ta.value=txt; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select();
+      try{document.execCommand('copy');ok()}catch(e){b.textContent='copia na mao'}
+      document.body.removeChild(ta);
+    }
+  });
+  p.appendChild(b);
+});
+show(i);
+</script>
+</body>
+</html>
