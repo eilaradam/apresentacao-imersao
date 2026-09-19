@@ -149,6 +149,14 @@ ol.steps li::before{content:counter(s);position:absolute;left:0;top:.05em;font-f
 .slide.active h1.fatiado,.slide.active h2.fatiado{animation:none}
 .slide.active .fatiado .pal{animation:rise .6s cubic-bezier(.2,.8,.3,1) both}
 
+/* ---------- lembrete de gravação ---------- */
+.rec{display:inline-flex;align-items:center;gap:.75em;background:var(--ink);color:#fff;border-radius:100px;
+  padding:.62em 1.5em;font-family:var(--font-h);font-weight:800;font-size:clamp(12px,1.25vw,18px);
+  letter-spacing:.14em;text-transform:uppercase;margin-bottom:3vh}
+.rec i{width:.82em;height:.82em;border-radius:50%;background:#FF4B4B;animation:pisca 1.1s ease-in-out infinite}
+@keyframes pisca{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.2;transform:scale(.72)}}
+.lembrete h1{font-size:clamp(38px,7vw,110px)}
+
 @media (max-width:800px){.dia{grid-template-columns:1fr;gap:20px}#horaBar{padding:0 5vw;gap:10px}.hb__fase{display:none}.g2,.g3,.g4,.two,.vs{grid-template-columns:1fr}.flow{flex-direction:column}.flow .arr{transform:rotate(90deg)}h2{max-width:none}}
 
 /* ===== animações ===== */
@@ -201,6 +209,15 @@ ol.steps li::before{content:counter(s);position:absolute;left:0;top:.05em;font-f
 <div id="deck">
 
 <!-- 1 -->
+<!-- LEMBRETE DE GRAVAÇÃO -->
+<section class="slide red center lembrete">
+  <div class="rec"><i></i>Antes de tudo</div>
+  <h1>Inicie a gravação</h1>
+  <p class="lead" style="color:rgba(255,255,255,.92);margin-top:3vh;max-width:44ch">Tela e áudio. Confere que está gravando <strong>antes</strong> de dizer bom dia, porque quem faltar hoje vai depender dessa gravação.</p>
+  <div class="foot"><span>@eilaradam</span><span>Não passa daqui sem gravar</span></div>
+  <div class="notes">Só avança depois de ver a bolinha vermelha. Vale falar em voz alta "estou gravando", que é o jeito mais fácil de não esquecer. Confere também se o áudio do computador está entrando, e não só o microfone.</div>
+</section>
+
 <section class="slide red center">
   <div class="kicker">Dia 2 de 2</div>
   <h1>Encontrar marcas<br>e mandar proposta</h1>
@@ -755,6 +772,15 @@ Se não achar o contato, escreve "não encontrado".</div>
   <div class="foot"><span>Dia 2 · Prospectar</span><span>Pausa</span></div>
 </section>
 
+<!-- LEMBRETE DE GRAVAÇÃO -->
+<section class="slide red center lembrete">
+  <div class="rec"><i></i>Voltando do almoço</div>
+  <h1>Inicie a gravação de tela</h1>
+  <p class="lead" style="color:rgba(255,255,255,.92);margin-top:3vh;max-width:44ch">A pausa interrompeu a gravação. Liga de novo <strong>agora</strong>, antes de falar qualquer coisa.</p>
+  <div class="foot"><span>@eilaradam</span><span>A tarde também precisa ficar gravada</span></div>
+  <div class="notes">É aqui que mais se esquece, porque a sala volta conversando. Liga a gravação antes de abrir qualquer aba. Se você parou a gravação da manhã, confere que o arquivo dela salvou antes de começar o novo.</div>
+</section>
+
 <!-- 43 -->
 <section class="slide red center">
   <div class="tag">Bloco 5 · 13h30</div>
@@ -1235,19 +1261,19 @@ const slides=[...document.querySelectorAll('.slide')];
 
 /* ---------- as fases do dia: [hora, nome, slide em que comeca] ---------- */
 const FASES=[
-  ['9h','Abertura',1],
-  ['9h30','Claude no Chrome',6],
-  ['10h','Quem procurar',13],
-  ['10h20','Caminho 1 · Google',19],
-  ['10h50','Caminho 2 · Instagram',26],
-  ['11h10','Caminho 3 · LinkedIn',31],
-  ['11h30','Caminho 4 · E-commerce',35],
-  ['11h45','Captação ao vivo',40],
-  ['13h30','Base de marcas',43],
-  ['14h30','A copy',50],
-  ['15h30','Disparo em massa',58],
-  ['16h30','Depois do envio',68],
-  ['17h','Fechamento',75]
+  ['9h','Abertura',2],
+  ['9h30','Claude no Chrome',7],
+  ['10h','Quem procurar',14],
+  ['10h20','Caminho 1 · Google',20],
+  ['10h50','Caminho 2 · Instagram',27],
+  ['11h10','Caminho 3 · LinkedIn',32],
+  ['11h30','Caminho 4 · E-commerce',36],
+  ['11h45','Captação ao vivo',41],
+  ['13h30','Base de marcas',45],
+  ['14h30','A copy',52],
+  ['15h30','Disparo em massa',60],
+  ['16h30','Depois do envio',70],
+  ['17h','Fechamento',77]
 ];
 const hbHora=document.getElementById('hbHora'), hbFase=document.getElementById('hbFase'),
       hbN=document.getElementById('hbN'), horaBar=document.getElementById('horaBar'),
@@ -1268,7 +1294,7 @@ function barra(n){
     if(k!==f) t.classList.remove('agora');
   });
   horaBar.classList.toggle('claro', s.classList.contains('dark')||s.classList.contains('red'));
-  horaBar.classList.toggle('some', n===0);
+  horaBar.classList.toggle('some', n<=1 || s.classList.contains('lembrete'));
   linhaProg.style.width=((n+1)/slides.length*100)+'%';
   linhaProg.style.background=s.classList.contains('red')?'#fff':'var(--red)';
 }
