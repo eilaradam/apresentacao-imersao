@@ -242,7 +242,7 @@ ol.steps li::before{content:counter(s);position:absolute;left:0;top:.05em;font-f
     </div>
     <div>
       <div class="ph">[PRINT DO SEU ADMIN]</div>
-      <p style="margin-top:1.5vh;font-size:clamp(15px,1.5vw,22px);color:rgba(255,255,255,.8)">Página de admin com login, ligada ao site: Portfólio, Calendário, Organização de Campanha e Checklist Portfólio.</p>
+      <p style="margin-top:1.5vh;font-size:clamp(15px,1.5vw,22px);color:rgba(255,255,255,.8)">Página de admin com login, ligada ao site: Portfólio, Marcas, Calendário, Campanhas e Checklist.</p>
     </div>
   </div>
   <div class="foot"><span>Dia 1 · Construir</span><span>Resultado</span></div>
@@ -424,7 +424,7 @@ ol.steps li::before{content:counter(s);position:absolute;left:0;top:.05em;font-f
   <h2>Você não escreve o prompt. Você preenche e copia.</h2>
   <div class="two">
     <ol class="steps" style="margin-top:0">
-      <li>Abre o site do prompt (link no grupo agora)</li>
+      <li>Abre <span class="mono">eilaradam.github.io/portfolios-imersao</span>, com a palavra da aula</li>
       <li>Escolhe o modelo que você acabou de decidir</li>
       <li>Preenche: nome, Instagram, posicionamento, nichos, formatos, links dos vídeos, marcas, contato</li>
       <li>Clica em copiar. O prompt sai pronto, já com as suas informações</li>
@@ -433,7 +433,7 @@ ol.steps li::before{content:counter(s);position:absolute;left:0;top:.05em;font-f
     <div class="ph">[PRINT DO SITE DO PROMPT]</div>
   </div>
   <div class="foot"><span>Dia 1 · Construir</span><span>Prompt</span></div>
-  <div class="notes">Mandar o link do site no grupo neste momento, não antes. Fazer o seu na tela junto com elas. Enquanto o Claude trabalha, avançar pros próximos slides e explicar a estrutura.</div>
+  <div class="notes">O link está no slide, mas cola no grupo também pra ninguém digitar errado. A palavra é <b>imersao</b>. Fazer o seu na tela junto com elas. Enquanto o Claude trabalha, avançar pros próximos slides e explicar a estrutura.</div>
 </section>
 
 <!-- 16 -->
@@ -658,12 +658,13 @@ ol.steps li::before{content:counter(s);position:absolute;left:0;top:.05em;font-f
 <!-- 29 -->
 <section class="slide dark">
   <div class="tag">As abas de hoje</div>
-  <h2>Quatro abas. Três de trabalho e uma que eu fiz pra essa turma.</h2>
-  <div class="grid g4">
-    <div class="card"><div class="n">01</div><h3>Portfólio</h3><p>Seus vídeos, nichos e formatos, mais as métricas de como ele está indo. O que você edita aqui aparece no site.</p></div>
-    <div class="card"><div class="n">02</div><h3>Calendário</h3><p>O que grava, edita e posta, por semana. Prazo de cada marca no mesmo lugar.</p></div>
-    <div class="card"><div class="n">03</div><h3>Organização de Campanha</h3><p>A mesma que eu uso pra tocar as minhas: briefing, entrega, aprovação, pagamento.</p></div>
-    <div class="card" style="border-color:#FF8A5C"><div class="n">Bônus</div><h3>Checklist Portfólio</h3><p>Checklist do portfólio, referências de vídeo, roteiros, ideias por nicho e revisão de roteiro.</p></div>
+  <h2>Cinco abas. Quatro de trabalho e uma que eu fiz pra essa turma.</h2>
+  <div class="grid" style="grid-template-columns:repeat(5,1fr)">
+    <div class="card"><div class="n">01</div><h3>Portfólio</h3><p>Seus vídeos e as métricas: quem abriu o seu site, de onde veio e qual nicho puxa mais.</p></div>
+    <div class="card"><div class="n">02</div><h3>Marcas</h3><p>Sua base de contatos de empresa: quem é lead, quem está conversando, quem virou cliente.</p></div>
+    <div class="card"><div class="n">03</div><h3>Calendário</h3><p>O mês inteiro do que você grava, edita e posta, com os prazos das campanhas entrando sozinhos.</p></div>
+    <div class="card"><div class="n">04</div><h3>Campanhas</h3><p>Do briefing ao pagamento, com quanto você tem a receber. A mesma que eu uso.</p></div>
+    <div class="card" style="border-color:#FF8A5C"><div class="n">Bônus</div><h3>Checklist</h3><p>Checklist do portfólio, referências, roteiros, ideias por nicho e revisão de roteiro.</p></div>
   </div>
   <p class="lead">Amanhã entram as extras: envio de proposta, automação e o que mais fizer sentido pra sua rotina.</p>
   <div class="foot"><span>Dia 1 · Construir</span><span>Abas</span></div>
@@ -724,7 +725,7 @@ ol.steps li::before{content:counter(s);position:absolute;left:0;top:.05em;font-f
   <h2>O admin também sai de um prompt pronto.</h2>
   <div class="two">
     <ol class="steps" style="margin-top:0">
-      <li>Abre a página do admin (link no grupo agora)</li>
+      <li>Abre <span class="mono">eilaradam.github.io/admin-imersao</span>, com a mesma palavra</li>
       <li>Copia o prompt. Ele já sabe que o seu portfólio está no GitHub e que o banco é o Supabase</li>
       <li>Cola no Claude Code, na mesma pasta do portfólio, e manda</li>
       <li>Ele vai pedir as chaves do Supabase. Eu mostro onde copiar</li>
@@ -773,14 +774,16 @@ ol.steps li::before{content:counter(s);position:absolute;left:0;top:.05em;font-f
 <!-- 37 -->
 <section class="slide">
   <div class="tag">Passo 3 · formulário</div>
-  <h2>Agora o formulário do site chega em algum lugar.</h2>
+  <h2>Agora o formulário do site vira a sua base de marcas.</h2>
   <ol class="steps">
-    <li>Pede: "liga o formulário de contato do site à tabela leads e mostra os leads numa aba do admin".</li>
-    <li>Abre o site, preenche o formulário com seus dados de teste, envia.</li>
-    <li>Abre o admin. O lead está lá: nome, marca, mensagem, data.</li>
-    <li>Amanhã a gente faz esse lead virar proposta. Hoje só precisa chegar.</li>
+    <li>Quem preenche o formulário do seu portfólio cai direto na aba Marcas, já como <strong>Lead</strong>.</li>
+    <li>Abre o seu site, preenche com os seus dados de teste e envia.</li>
+    <li>Abre o admin na aba Marcas. Está lá, com nome, @, e-mail, telefone e a data.</li>
+    <li>Você vai movendo a situação conforme conversa: Lead, Conversando, Cliente, Parada.</li>
+    <li>Amanhã essa base vira o disparo de proposta. Hoje ela só precisa começar a encher.</li>
   </ol>
-  <div class="foot"><span>Dia 1 · Construir</span><span>Leads</span></div>
+  <div class="foot"><span>Dia 1 · Construir</span><span>Base de marcas</span></div>
+  <div class="notes">Mostrar na sua tela: preencher o formulário do seu site e a linha aparecendo na aba Marcas. É o segundo momento "ahh" da tarde, depois do vídeo. Falar que a base baixa em planilha, que é o que amanhã vai alimentar o disparo.</div>
 </section>
 
 <!-- 38 -->
@@ -791,12 +794,12 @@ ol.steps li::before{content:counter(s);position:absolute;left:0;top:.05em;font-f
     <div class="card">
       <div class="n">Calendário</div>
       <h3>O que grava, edita e posta</h3>
-      <p>Visão por semana. Cada item tem marca, tipo (gravar, editar, postar), data e status. Pede pra colorir por marca se ajudar.</p>
+      <p>O mês inteiro numa grade. Os prazos das campanhas entram sozinhos, e o que passou do dia aparece num bloco de "ficou pra trás".</p>
     </div>
     <div class="card">
-      <div class="n">Organização de Campanha</div>
+      <div class="n">Campanhas</div>
       <h3>Cada campanha, do briefing ao pagamento</h3>
-      <p>Marca, briefing, prazo de entrega, status (em produção, enviado, aprovado, pago), valor e observações. É a que eu uso pra tocar as minhas.</p>
+      <p>Campanha, cliente, tipo, status, quantidade, valor e prazo. Em cima, quanto você já recebeu e quanto tem a receber. Toda coluna ordena, inclusive por status.</p>
     </div>
   </div>
   <p class="lead">Regra: primeiro faz funcionar simples. Campo a mais você adiciona quando sentir falta, não antes.</p>
@@ -830,7 +833,7 @@ ol.steps li::before{content:counter(s);position:absolute;left:0;top:.05em;font-f
       <ul class="check" style="margin-top:2vh">
         <li>Entro no admin com meu login e ninguém mais</li>
         <li>Adiciono um vídeo no admin e ele aparece no site</li>
-        <li>Preencho o formulário do site e o lead chega no admin</li>
+        <li>Preencho o formulário do site e a marca chega na minha base</li>
         <li>O admin abre pelo link, não só no meu computador</li>
       </ul>
     </div>
@@ -838,8 +841,8 @@ ol.steps li::before{content:counter(s);position:absolute;left:0;top:.05em;font-f
       <h3 style="color:var(--muted);letter-spacing:.1em;text-transform:uppercase;font-size:clamp(13px,1.2vw,17px)">Se deu tempo</h3>
       <ul class="check" style="margin-top:2vh">
         <li>Calendário abre e salva</li>
-        <li>Organização de Campanha abre e salva</li>
-        <li>Checklist Portfólio está no admin</li>
+        <li>Campanhas abre e salva</li>
+        <li>Checklist está no admin, com as referências</li>
       </ul>
     </div>
   </div>
