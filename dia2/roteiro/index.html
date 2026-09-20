@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Roteiro falado · Imersão Dia 2 · Prospectar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#C8441A; --red-dark:#A3360F; --ink:#1B1B1B; --cream:#FFF8F2; --cream2:#F4EFE9;
+  --line:#E8E0D8; --muted:#5A5550; --white:#fff; --soft:#FFF0E8;
+  --fh:'Montserrat',Arial,sans-serif; --fb:'DM Sans',Arial,sans-serif; --fm:'DM Mono',monospace;
+  --fs:19px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--cream);color:var(--ink);font-family:var(--fb);font-size:var(--fs);line-height:1.75;
+  background-image:radial-gradient(rgba(27,27,27,.045) 1px,transparent 1px);background-size:3px 3px}
+.topo{position:sticky;top:0;z-index:50;background:var(--ink);color:#fff;box-shadow:0 3px 0 rgba(0,0,0,.25)}
+.topo .in{max-width:1000px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.topo b{font-family:var(--fh);font-weight:900;font-size:15px;letter-spacing:.02em}
+.topo .ag{font-family:var(--fm);font-size:12px;color:#FFB59B;letter-spacing:.06em;text-transform:uppercase}
+.topo .dir{margin-left:auto;display:flex;gap:8px}
+.topo button{font-family:var(--fm);font-size:12px;background:rgba(255,255,255,.12);color:#fff;border:0;
+  padding:6px 11px;border-radius:6px;cursor:pointer}
+.topo button:hover{background:var(--red)}
+#prog{height:4px;background:var(--red);width:0}
+.wrap{max-width:1000px;margin:0 auto;padding:0 20px 120px}
+.capa{padding:64px 0 34px;border-bottom:3px solid var(--ink)}
+.capa .tag{font-family:var(--fh);font-weight:700;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--red)}
+.capa h1{font-family:var(--fh);font-weight:900;font-size:clamp(34px,5.6vw,58px);line-height:1.02;margin:14px 0 16px;letter-spacing:-.02em}
+.capa p{font-size:20px;color:var(--muted);max-width:70ch}
+.aviso{background:var(--soft);border:2px solid var(--red);border-radius:10px;padding:20px 22px;margin:28px 0 0}
+.aviso h3{font-family:var(--fh);font-size:15px;text-transform:uppercase;letter-spacing:.1em;color:var(--red);margin-bottom:10px}
+.aviso ul{margin-left:20px}
+.aviso li{margin:6px 0}
+.legenda{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:26px 0 0}
+.legenda div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-size:16px}
+.legenda b{font-family:var(--fm);font-size:12px;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:4px;color:var(--red)}
+.mapa{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:10px;margin:34px 0 0}
+.mapa a{display:block;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);
+  border-left:5px solid var(--red);border-radius:8px;padding:12px 14px}
+.mapa a:hover{background:var(--soft)}
+.mapa .h{font-family:var(--fm);font-size:12px;color:var(--red)}
+.mapa .n{font-family:var(--fh);font-weight:800;font-size:16px;line-height:1.25;margin-top:2px}
+.mapa .s{font-size:13px;color:var(--muted)}
+.bloco{margin:70px 0 0;scroll-margin-top:70px}
+.bloco>.cab{background:var(--red);color:#fff;border-radius:12px;padding:22px 26px;box-shadow:0 3px 0 var(--red-dark)}
+.bloco>.cab .h{font-family:var(--fm);font-size:13px;letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+.bloco>.cab h2{font-family:var(--fh);font-weight:900;font-size:clamp(24px,3.4vw,36px);line-height:1.1;margin-top:4px}
+.bloco>.cab .s{font-size:16px;margin-top:8px;opacity:.92;max-width:65ch}
+.s{}
+.slide{background:#fff;border:1px solid var(--line);border-radius:12px;padding:26px 28px;margin:18px 0;
+  box-shadow:0 3px 0 rgba(27,27,27,.06);scroll-margin-top:70px}
+.slide .cab2{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:1px dashed var(--line);padding-bottom:12px;margin-bottom:16px}
+.num{font-family:var(--fm);font-size:12px;background:var(--ink);color:#fff;padding:4px 9px;border-radius:6px;letter-spacing:.06em}
+.slide h3{font-family:var(--fh);font-weight:800;font-size:22px;line-height:1.2}
+.min{font-family:var(--fm);font-size:12px;color:var(--muted);margin-left:auto}
+.fala p{margin:0 0 14px}
+.fala p:last-child{margin-bottom:0}
+.fala em{background:linear-gradient(transparent 62%,#FFD9C9 62%);font-style:normal;font-weight:600}
+.faz{background:var(--cream2);border-left:5px solid var(--ink);border-radius:8px;padding:14px 16px;margin:16px 0 0;font-size:16.5px}
+.faz b{font-family:var(--fm);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:5px}
+.faz.alerta{background:#FFE9E0;border-left-color:var(--red)}
+.faz.alerta b{color:var(--red)}
+.pausa{background:var(--ink);color:#fff;border-radius:12px;padding:26px 28px;margin:18px 0;text-align:center}
+.pausa h3{font-family:var(--fh);font-weight:900;font-size:26px}
+.pausa p{color:#D9D2CC;margin-top:8px}
+.fim{background:var(--ink);color:#fff;border-radius:12px;padding:34px 30px;margin:70px 0 0}
+.fim h2{font-family:var(--fh);font-weight:900;font-size:30px;margin-bottom:14px}
+.fim ol{margin:0 0 0 22px}
+.fim li{margin:8px 0;color:#EDE6E0}
+.fim b{color:#FFB59B}
+@media (max-width:640px){
+  body{--fs:18px}
+  .slide{padding:20px 18px}
+  .capa{padding:40px 0 26px}
+}
+@media print{
+  .topo,#prog,.mapa{display:none}
+  body{background:#fff;font-size:12pt}
+  .slide{break-inside:avoid;box-shadow:none}
+}
+</style>
+</head>
+<body>
+<div class="topo"><div class="in">
+  <b>Roteiro falado · Dia 2</b>
+  <span class="ag" id="ondeEstou">Abertura</span>
+  <span class="dir">
+    <button onclick="fonte(1)">A+</button>
+    <button onclick="fonte(-1)">A-</button>
+    <button onclick="window.print()">imprimir</button>
+  </span>
+</div><div id="prog"></div></div>
+
+<div class="wrap">
+
+<div class="capa">
+  <div class="tag">Imersão Claude pra Creator · 20 de setembro</div>
+  <h1>A aula do dia 2,<br>escrita como você fala</h1>
+  <p>É o deck inteiro, slide por slide, com a fala pronta pra você ler em voz alta e pegar o ritmo. Não é pra decorar nem pra ler no dia olhando aqui. É pra você passar o olho hoje, sentir onde acelera e onde respira, e amanhã só falar.</p>
+
+  <div class="aviso">
+    <h3>Três coisas antes de começar a ler</h3>
+    <ul>
+      <li>O que está <em>grifado</em> é o que eu falaria mais devagar, olhando pra câmera. É a frase que fica.</li>
+      <li>Os blocos cinza são o que a sua mão faz enquanto a boca fala. Eles importam mais que a fala.</li>
+      <li>Se atrasar, corta fala, nunca corta o ao vivo. A turma perdoa slide pulado, não perdoa aula sem ver acontecendo.</li>
+    </ul>
+  </div>
+
+  <div class="legenda">
+    <div><b>Fala</b>O texto corrido, na sua voz. Pode trocar palavra, o ritmo é o que importa.</div>
+    <div><b>Faz na tela</b>A ação daquele slide: abrir, mostrar, perguntar no chat.</div>
+    <div><b>Tempo</b>Quanto aquele slide aguenta antes de virar palestra.</div>
+  </div>
+
+  <div class="mapa">
+    <a href="#b1"><div class="h">9h</div><div class="n">Abertura</div><div class="s">slides 1 a 6</div></a>
+    <a href="#b2"><div class="h">9h30</div><div class="n">Claude no Chrome</div><div class="s">slides 7 a 13</div></a>
+    <a href="#b3"><div class="h">10h</div><div class="n">Quem procurar</div><div class="s">slides 14 a 19</div></a>
+    <a href="#b4"><div class="h">10h20</div><div class="n">Caminho 1 · Google</div><div class="s">slides 20 a 26</div></a>
+    <a href="#b5"><div class="h">10h50</div><div class="n">Caminho 2 · Instagram</div><div class="s">slides 27 a 31</div></a>
+    <a href="#b6"><div class="h">11h10</div><div class="n">Caminho 3 · LinkedIn</div><div class="s">slides 32 a 35</div></a>
+    <a href="#b7"><div class="h">11h30</div><div class="n">Caminho 4 · E-commerce</div><div class="s">slides 36 a 40</div></a>
+    <a href="#b8"><div class="h">11h45</div><div class="n">Captação ao vivo</div><div class="s">slides 41 a 44</div></a>
+    <a href="#b9"><div class="h">13h30</div><div class="n">Base de marcas</div><div class="s">slides 45 a 51</div></a>
+    <a href="#b10"><div class="h">14h30</div><div class="n">A copy</div><div class="s">slides 52 a 59</div></a>
+    <a href="#b11"><div class="h">15h30</div><div class="n">Disparo em massa</div><div class="s">slides 60 a 69</div></a>
+    <a href="#b12"><div class="h">16h30</div><div class="n">Depois do envio</div><div class="s">slides 70 a 76</div></a>
+    <a href="#b13"><div class="h">17h</div><div class="n">Fechamento</div><div class="s">slide 77</div></a>
+  </div>
+</div>
+
+<section class="bloco" id="b1" data-nome="9h · Abertura">
+  <div class="cab">
+    <div class="h">9h · Bloco de abertura</div>
+    <h2>Chegar, olhar no olho e prometer o dia</h2>
+    <div class="s">Aqui você não ensina nada ainda. Você acolhe, mostra onde a gente chega às 17h e coloca todo mundo na mesma página. Trinta minutos, no máximo.</div>
+  </div>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 1</span><h3>Inicie a gravação</h3><span class="min">só pra você</span></div>
+    <div class="fala">
+      <p>Esse slide ninguém vê. É o seu lembrete antes de abrir a boca.</p>
+    </div>
+    <div class="faz alerta"><b>Faz na tela</b>Liga a gravação de tela e áudio. Espera ver a bolinha vermelha. Fala em voz alta "estou gravando", que é o jeito mais fácil de não esquecer. Confere que está entrando o áudio do computador, não só o seu microfone. Quem faltar hoje vai depender desse arquivo.</div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 2</span><h3>Dia 2 de 2 · Encontrar marcas e mandar proposta</h3><span class="min">3 min</span></div>
+    <div class="fala">
+      <p>Bom dia, gente! Que bom ver vocês de novo aqui. Senta, pega o café, porque hoje é dia de trabalhar.</p>
+      <p>Ontem a gente construiu. Vocês saíram daqui com um site no ar, com endereço de verdade, que é seu, que ninguém pode tirar de você. <em>Hoje esse site sai pra trabalhar.</em></p>
+      <p>Porque portfólio bonito parado não paga boleto, tá? Portfólio que nunca chega na frente de uma marca é álbum de fotos. E eu não quero que vocês tenham um álbum de fotos, eu quero que vocês tenham cliente.</p>
+      <p>Então eu vou dizer agora onde a gente chega no fim do dia, e eu quero que vocês guardem isso: <em>hoje, antes das cinco da tarde, você vai ter mandado proposta pra marca de verdade.</em> Não é exercício, não é rascunho, não é "depois eu mando". Marca real, e-mail real, enviado com você vendo.</p>
+    </div>
+    <div class="faz"><b>Faz na tela</b>Pede no chat: "cola aqui o link do site que ficou pronto ontem". Deixa a turma colando enquanto você fala o próximo slide. Confere que Chrome, admin e a conta do Resend estão abertos na sua máquina.</div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 3</span><h3>Como vai ser o dia</h3><span class="min">3 min</span></div>
+    <div class="fala">
+      <p>Olha como o dia foi desenhado, porque saber o caminho tira ansiedade.</p>
+      <p>A manhã inteira é encontrar marca. Eu vou te mostrar o Claude dentro do navegador, a gente vai decidir quem procurar, e aí a gente passa pelos quatro caminhos que eu uso pra achar empresa: Google, Instagram, LinkedIn e uma lista que os e-commerces publicam e quase ninguém sabe que existe. Às 11h45 é você fazendo, comigo na tela, até ter trinta marcas na sua lista.</p>
+      <p>Meio-dia e meia a gente para pra almoçar, uma hora. Volta uma e meia.</p>
+      <p>A tarde é transformar essa lista em dinheiro. A base de marcas dentro do seu admin, a copy do e-mail (que é onde eu mais vejo criadora perder trabalho), o disparo em massa, e às quatro da tarde o envio ao vivo.</p>
+      <p><em>Um objetivo só hoje: sair daqui com proposta enviada.</em> Tudo que a gente faz até as cinco serve pra isso.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 4</span><h3>Onde a gente chega às 17h</h3><span class="min">3 min</span></div>
+    <div class="fala">
+      <p>Três coisas que você não tinha ontem e vai ter hoje.</p>
+      <p>A primeira: uma lista de trinta marcas. Com o arroba do Instagram, o link do produto, o e-mail e, quando der, o nome de quem decide lá dentro. Encontradas hoje, na sua frente, não compradas de ninguém.</p>
+      <p>A segunda: essa lista salva dentro do seu admin, numa aba sua, com status. Não é print no celular, não é bloco de notas, não é planilha perdida na pasta de downloads. É a sua base, e ela vai ficar com você pro ano inteiro.</p>
+      <p>E a terceira: proposta enviada. Um e-mail escrito na sua voz, disparado pra dezenas de marcas com um clique só.</p>
+      <p><em>Isso aqui é a diferença entre ter uma ferramenta bonita e ter um negócio.</em></p>
+    </div>
+    <div class="faz"><b>Faz na tela</b>Mostra o seu, rápido: sua base de marcas, seu e-mail de prospecção e o painel do Resend com envios. Trinta segundos, só pra elas verem que existe de verdade.</div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 5</span><h3>Primeiro, ontem</h3><span class="min">20 min, sem passar disso</span></div>
+    <div class="fala">
+      <p>Antes de andar, eu preciso saber como cada uma está. Três perguntas, responde no chat.</p>
+      <p>Um: seu site está no ar? Cola o link aqui pra mim.</p>
+      <p>Dois: seu admin abre e você consegue entrar com o seu login?</p>
+      <p>Três: o que travou ontem e ficou pra hoje?</p>
+      <p>E eu quero deixar uma coisa combinada com vocês agora: <em>quem travou não fica pra trás.</em> A monitoria resolve com você em paralelo enquanto a gente segue. Ninguém vai ficar olhando a tela das outras se sentindo por fora, isso não vai acontecer aqui.</p>
+    </div>
+    <div class="faz"><b>Faz na tela</b>Lê os links em voz alta e elogia em público. "Olha o da Bruna, gente, ficou lindo." Isso levanta a sala inteira. Anota quem travou num papel e passa pra monitoria. Vinte minutos no máximo, se esticar você perde a manhã.</div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 6</span><h3>A virada</h3><span class="min">3 min</span></div>
+    <div class="fala">
+      <p>Ontem você fez a vitrine. Hoje você vai buscar quem entra nela.</p>
+      <p>Olha os dois lados desse slide, porque a maioria das criadoras vive do lado esquerdo e nem percebe. Postar e torcer pra marca aparecer. Mídia kit lindo parado esperando alguém pedir. Mês fechando sem nenhum trabalho novo. E, quando a marca enfim chega, aceitar o valor que ela ofereceu porque foi ela que procurou você.</p>
+      <p>Do lado direito é outra vida. Você escolhe a marca que você quer. Você fala com a pessoa que decide. Sua lista enche toda semana. E você chega primeiro, com ideia sua e preço seu.</p>
+      <p>Eu preciso ser honesta com vocês: hoje chega bastante marca em mim. Mas isso não caiu do céu, e não começou assim. <em>Começou com prospecção ativa, com e-mail que eu mandei e ninguém respondeu.</em> Quem está começando não tem caixa de entrada cheia. Quem está começando tem que ir atrás, e ir atrás com método é o que a gente vai fazer hoje.</p>
+    </div>
+    <div class="faz"><b>Faz na tela</b>Conta o seu caso em um minuto, com data e nome de marca se puder. É a hora de ser gente, não professora.</div>
+  </article>
+</section>
+
+<section class="bloco" id="b2" data-nome="9h30 · Claude no Chrome">
+  <div class="cab">
+    <div class="h">9h30 · Bloco 1</div>
+    <h2>O Claude dentro do seu navegador</h2>
+    <div class="s">Meia hora. O objetivo não é ensinar a instalar, é elas entenderem que existe um Claude que enxerga a internet e trabalha sozinho enquanto elas fazem outra coisa.</div>
+  </div>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 7</span><h3>Abertura do bloco 1</h3><span class="min">30 seg</span></div>
+    <div class="fala">
+      <p>Então vamos começar pelo começo: a ferramenta que vai fazer a pesquisa por você.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 8</span><h3>O que é</h3><span class="min">3 min</span></div>
+    <div class="fala">
+      <p>A extensão do Claude no Chrome enxerga a mesma tela que você.</p>
+      <p>Funciona assim: você abre o navegador, clica no iconezinho dele ali no canto, e pede exatamente do mesmo jeito que você pediria no chat. A diferença é que ele pesquisa, abre link, lê a página, entra no site da marca, volta, compara e junta tudo numa lista pra você. <em>Você não copia e cola nada.</em></p>
+      <p>Eu sei que parece pouco quando eu falo assim, mas é o seguinte: o trabalho de procurar marca é abrir cinquenta abas e anotar. É isso que consome a sua manhã. Ele faz essa parte.</p>
+    </div>
+    <div class="faz"><b>Faz na tela</b>Antes de explicar qualquer coisa, mostra o ícone na barra do Chrome. Gente visual entende em dois segundos o que três slides não explicam.</div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 9</span><h3>Três lugares, três trabalhos</h3><span class="min">3 min</span></div>
+    <div class="fala">
+      <p>E aqui eu preciso separar uma coisa que confunde muita gente, porque tem três Claudes e eles não fazem a mesma coisa.</p>
+      <p>O Claude no chat, que é aquele que vocês já usam, é pra pensar. Escrever legenda, revisar roteiro, organizar ideia. Tudo acontece dentro da conversa.</p>
+      <p>O Claude no Chrome é pra ir atrás de coisa na internet. Procurar marca, ler site, achar contato, montar lista. <em>É a manhã de hoje inteira.</em></p>
+      <p>E o Claude Code, que foi o dia de ontem, é pra mexer nos arquivos e publicar. Ele volta hoje à tarde, quando a gente for construir as abas novas do seu admin.</p>
+      <p>Guarda assim: chat pensa, Chrome procura, Code constrói.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 10</span><h3>Instalar</h3><span class="min">6 min, ao vivo</span></div>
+    <div class="fala">
+      <p>Vamos instalar juntas, e eu vou devagar.</p>
+      <p>Primeiro: Chrome aberto e logado na sua conta de sempre, aquela que você usa todo dia.</p>
+      <p>Segundo: procura pela extensão do Claude para Chrome e adiciona.</p>
+      <p>Terceiro: entra com a mesma conta do Claude que você está usando na aula. Tem que ser a mesma, senão ele não reconhece.</p>
+      <p>Quarto: fixa o ícone na barra, aquele alfinetinho. Se ele ficar escondido você esquece que tem, e ferramenta esquecida é ferramenta que não existe.</p>
+    </div>
+    <div class="faz"><b>Faz na tela</b>Faz do zero, devagar, esperando a turma acompanhar. Se a extensão não estiver liberada pra conta de alguma aluna, avisa na hora que tem o caminho do chat (slide 13) e segue sem drama nenhum.</div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 11</span><h3>Como funciona</h3><span class="min">2 min</span></div>
+    <div class="fala">
+      <p>O jeito de trabalhar com ele é sempre esse, e é bom você entender porque tira o medo.</p>
+      <p>Você pede, escrevendo do jeito que fala. Ele te mostra o plano, ou seja, o que ele vai abrir, procurar e coletar. Você lê, concorda, e manda seguir. Aí ele trabalha e você vê as abas abrindo sozinhas na sua frente.</p>
+      <p>É meio hipnótico ver isso a primeira vez, eu confesso que eu fico olhando. <em>Ele nunca faz nada sem te mostrar antes o que vai fazer.</em></p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 12</span><h3>Combinados</h3><span class="min">3 min</span></div>
+    <div class="fala">
+      <p>Quatro combinados pra usar isso sem susto.</p>
+      <p>Um: autoriza vendo. Ele avisa o que vai fazer antes de fazer, então lê a frase antes de clicar em sim. Não sai clicando no automático só porque está com pressa.</p>
+      <p>Dois: onde tem dinheiro, não. Banco, cartão, compra, checkout, isso você faz com a sua mão. Pesquisar sim, comprar não. Combinado?</p>
+      <p>Três: confere o que ele trouxe. E-mail errado acontece, número trocado acontece. <em>Bate o olho na lista antes de mandar qualquer coisa</em>, porque quem manda e-mail errado é você, não ele.</p>
+      <p>Quatro, e esse é o que mais muda a sua vida: uma aba por tarefa. Deixa ele pesquisando numa aba e vai tocando a próxima em outra. É assim que a lista cresce rápido.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 13</span><h3>Plano B</h3><span class="min">1 min</span></div>
+    <div class="fala">
+      <p>E se a extensão não abrir na sua conta hoje? Nada se perde, escuta bem.</p>
+      <p>Todos os pedidos de hoje funcionam no chat normal do Claude, com a pesquisa ligada. Muda o lugar onde você cola, não muda o que você pede. O resultado chega igual, só que você não vê as abas abrindo.</p>
+      <p><em>Ninguém aqui vai ficar parada olhando a tela das outras.</em></p>
+    </div>
+    <div class="faz"><b>Faz na tela</b>Fala isso cedo e com calma. É o slide que tira a ansiedade de quem não conseguiu instalar.</div>
+  </article>
+</section>
+
+<section class="bloco" id="b3" data-nome="10h · Quem procurar">
+  <div class="cab">
+    <div class="h">10h · Bloco 2</div>
+    <h2>Antes de procurar, decidir quem procurar</h2>
+    <div class="s">Vinte minutos. É o bloco mais conceitual da manhã e o que mais muda o resultado, porque busca sem filtro traz lista genérica.</div>
+  </div>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 14</span><h3>Abertura do bloco 2</h3><span class="min">30 seg</span></div>
+    <div class="fala">
+      <p>Agora que a ferramenta está na mão, a pergunta é: procurar quem?</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 15</span><h3>Três filtros</h3><span class="min">3 min</span></div>
+    <div class="fala">
+      <p>Toda busca boa começa escolhendo um destes três.</p>
+      <p>Nicho: casa e decoração, beleza, pet, maternidade, moda, tecnologia, alimentação. O nicho que você já gosta de mostrar, porque você vai gravar aquilo muitas vezes.</p>
+      <p>Produto: um produto específico que você precisa agora. Esse é o meu preferido e eu explico no próximo slide.</p>
+      <p>Cidade: marcas da sua região. Esse é o mais esquecido e é ótimo, porque perto de você dá visita, dá gravação presencial, dá evento, e tem muito menos criadora disputando.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 16</span><h3>O jeito que eu uso</h3><span class="min">4 min</span></div>
+    <div class="fala">
+      <p>Esse aqui é o meu preferido e eu vou contar direitinho, porque é onde a ficha cai.</p>
+      <p><em>O melhor cliente costuma ser o produto que você já ia comprar.</em></p>
+      <p>Eu estou reformando a nossa casa agora. E aí eu precisava de fogão de indução, aquele de duas bocas, porque é o que cabe no meu espaço. Em vez de comprar, eu fui atrás de marca de fogão de indução pra fechar parceria. A próxima meta é geladeira, gente. Um dia sai, eu tenho fé.</p>
+      <p>Presta atenção no que aconteceu aí: eu ia gastar esse dinheiro de qualquer jeito. Quando a permuta é de uma coisa que você ia comprar, ela vira dinheiro que fica no seu bolso. <em>Agora, permuta de coisa que você não precisa é prejuízo disfarçado</em>, porque você gasta o seu tempo, a sua luz, a sua edição, e recebe uma caixa que vai ficar parada.</p>
+      <p>Então pensa: o que a sua vida está pedindo agora? Fogão, geladeira, luminária, tinta, berço, ração, o que for. É dali que sai a sua primeira lista de hoje.</p>
+    </div>
+    <div class="faz"><b>Faz na tela</b>Conta a reforma com detalhe, com o tamanho da cozinha, o modelo que você escolheu. Detalhe é o que faz elas acreditarem que dá.</div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 17</span><h3>Por que funciona</h3><span class="min">2 min</span></div>
+    <div class="fala">
+      <p>Três motivos pra prospectar aquilo que você precisa.</p>
+      <p>Primeiro, a conversa é verdadeira. "Estou reformando minha cozinha e quero mostrar o fogão de vocês" é um e-mail que a marca lê até o fim, porque tem gente do outro lado, não tem modelo copiado.</p>
+      <p>Segundo, o vídeo sai melhor. Você usa de verdade, na sua casa, no seu dia. Isso aparece na tela, e marca que vê isso contrata de novo.</p>
+      <p>Terceiro, a permuta vale. É o que eu falei: é dinheiro que fica no seu bolso.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 18</span><h3>Tamanho da marca</h3><span class="min">3 min</span></div>
+    <div class="fala">
+      <p>Agora um ponto que quase todo mundo erra no começo: o tamanho da marca.</p>
+      <p>Todo mundo quer mandar e-mail pra marca gigante. E eu entendo, é bonito de contar. Só que na marca gigante tem uma agência no meio do caminho, a verba já foi fechada meses atrás, tem fila de criadora pra entrar, e a resposta demora ou não vem nunca.</p>
+      <p>Na marca de até cinquenta mil seguidores é outro jogo. <em>Quem lê o seu e-mail é quem decide.</em> Muitas vezes é a dona. Ela testa rápido, responde rápido, topa permuta e primeiro teste, e ela cresce junto com você e vira cliente todo mês.</p>
+      <p>Eu não estou dizendo pra você desistir da marca dos sonhos. Estou dizendo pra não construir o seu mês em cima dela.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 19</span><h3>Sua vez · 3 minutos</h3><span class="min">4 min</span></div>
+    <div class="fala">
+      <p>Agora para tudo e escreve, num papel ou no bloco de notas. Três minutos no relógio.</p>
+      <p>Três nichos que você gosta de mostrar. Dois produtos que a sua vida precisa nos próximos três meses. Uma marca dos sonhos, daquelas que você printaria pra contar pra sua mãe. E a cidade ou região que você consegue atender presencialmente.</p>
+      <p><em>Essa folha é o combustível de todos os pedidos que a gente vai fazer hoje.</em> Quem não escrever vai travar na hora de pedir, porque o Claude vai perguntar o nicho e você vai ficar pensando.</p>
+    </div>
+    <div class="faz"><b>Faz na tela</b>Silêncio de verdade por três minutos, com cronômetro. Não preenche o silêncio falando. Depois pede duas ou três pra ler o que escreveram no chat.</div>
+  </article>
+</section>
+
+<section class="bloco" id="b4" data-nome="10h20 · Caminho 1 · Google">
+  <div class="cab">
+    <div class="h">10h20 · Caminho 1</div>
+    <h2>Pesquisa de marcas pelo Chrome</h2>
+    <div class="s">Esse é o bloco mais importante da manhã. Se elas entenderem a anatomia do pedido, montam qualquer busca pro resto da vida.</div>
+  </div>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 20</span><h3>Abertura do caminho 1</h3><span class="min">30 seg</span></div>
+    <div class="fala">
+      <p>Caminho um: a pesquisa aberta, pelo Chrome. É o mais direto de todos.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 21</span><h3>Anatomia do pedido</h3><span class="min">5 min</span></div>
+    <div class="fala">
+      <p>Se você prestar atenção em um slide hoje, que seja esse. <em>É a aula inteira em cinco linhas.</em></p>
+      <p>Todo pedido bom tem estas cinco partes. Quem você é: criadora de conteúdo UGC, faço vídeo pra marca. O que você quer: encontrar empresas pra prospectar como cliente. O filtro: o produto, o nicho, a faixa de seguidores, a cidade. Quantas você quer: dez, vinte, trinta, porque sem número ele traz três e para. E o formato: planilha, com essas colunas, pronta pra baixar.</p>
+      <p>Guarda essas cinco, porque depois dessa aula você vai querer procurar outra coisa, num outro nicho, e você não vai precisar de mim. <em>Você monta o pedido sozinha.</em></p>
+    </div>
+    <div class="faz"><b>Faz na tela</b>Lê as cinco apontando uma por uma. Se der, pede pra alguém repetir as cinco em voz alta.</div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 22</span><h3>Prompt 1 · marcas de um produto específico</h3><span class="min">5 min, ao vivo</span></div>
+    <div class="fala">
+      <p>Olha o pedido pronto. Tem o botão de copiar aí no canto, e ele também está na apostila de hoje, então ninguém precisa digitar.</p>
+      <p>Presta atenção que está tudo que a gente acabou de falar: quem eu sou, o que eu quero, o filtro que é o fogão de indução de duas bocas pra cozinha pequena, quantas marcas eu quero, e as colunas que eu quero na planilha.</p>
+      <p>E tem uma linha aqui que eu quero ler em voz alta pra vocês: <em>"se você não encontrar o e-mail, escreve não encontrado. Não invente contato."</em></p>
+      <p>Essa frase é o que separa uma lista boa de uma lista que queima o seu e-mail. Sem ela, às vezes vem um contato que parece certo e não é, você dispara pra cinquenta endereços inválidos, e aí o seu e-mail passa a cair no spam de todo mundo. Essa linha vai em todo prompt de busca que você fizer, pra sempre.</p>
+    </div>
+    <div class="faz"><b>Faz na tela</b>Copia, cola no Claude do Chrome e manda rodar de verdade. Assim que ele começar, não fica esperando: vai pro próximo slide falando, e volta nele depois.</div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 23</span><h3>As colunas</h3><span class="min">4 min</span></div>
+    <div class="fala">
+      <p>Enquanto ele trabalha, por que cada coluna importa.</p>
+      <p>Link do produto: é a prova de que a marca vende mesmo aquilo, e é a sua ideia de vídeo já na mão.</p>
+      <p>Arroba e seguidores: diz o tamanho da marca e se ela cuida do Instagram. Marca com perfil abandonado quase nunca contrata criadora.</p>
+      <p>E-mail de gente: nome de pessoa vale muito mais que aquele contato arroba marca. Quando tiver os dois, guarda os dois.</p>
+      <p>WhatsApp: é o plano B quando o e-mail não responde, e é a porta principal de marca pequena.</p>
+      <p>Observações: "já trabalha com creator", "acabou de lançar", "loja só em São Paulo". <em>Essa coluna é ouro, porque é dela que sai a sua linha de conexão à tarde.</em></p>
+      <p>E a data: quando você encontrou. Daqui a um mês você vai querer saber quem já recebeu e-mail seu.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 24</span><h3>Enquanto ele trabalha</h3><span class="min">2 min</span></div>
+    <div class="fala">
+      <p>E olha o pulo do gato: não fica olhando a tela carregar.</p>
+      <p>Enquanto ele procura fogão de indução numa aba, você já pede as marcas de decoração em outra, e as do LinkedIn numa terceira. Três pesquisas rodando ao mesmo tempo, uma pessoa só tocando.</p>
+      <p><em>É assim que uma manhã vira trinta marcas em vez de cinco.</em> Enquanto ele trabalha, você segue vivendo.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 25</span><h3>O resultado</h3><span class="min">4 min, ao vivo</span></div>
+    <div class="fala">
+      <p>Pronto, voltou. Olha o que ele trouxe.</p>
+    </div>
+    <div class="faz"><b>Faz na tela</b>Abre a planilha de verdade e rola devagar. Escolhe uma linha boa e uma linha ruim. Fala em voz alta por que a ruim é ruim: e-mail genérico, perfil parado, marca grande demais. Elas aprendem a descartar vendo você descartar.</div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 26</span><h3>Antes de confiar</h3><span class="min">3 min</span></div>
+    <div class="fala">
+      <p>Cinco conferidas rápidas antes de confiar na lista.</p>
+      <p>O Instagram existe e postou nos últimos trinta dias. O e-mail tem cara de real, e é de pessoa ou de marketing, não de suporte técnico. A marca vende no Brasil e entrega na sua região. O link do produto abre e é o produto certo. E, por último, ela já fez vídeo com criadora? Se já fez, seu caminho é mais curto, porque ela não precisa ser convencida de que isso funciona.</p>
+      <p>Isso leva dois minutos e evita e-mail vergonhoso. <em>Lista não conferida é lista que trabalha contra você.</em></p>
+    </div>
+  </article>
+</section>
+
+<section class="bloco" id="b5" data-nome="10h50 · Caminho 2 · Instagram">
+  <div class="cab">
+    <div class="h">10h50 · Caminho 2</div>
+    <h2>Instagram</h2>
+    <div class="s">Vinte minutos. Aqui o que convence é a comparação entre procurar na mão e pedir pro Claude.</div>
+  </div>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 27</span><h3>Abertura do caminho 2</h3><span class="min">30 seg</span></div>
+    <div class="fala">
+      <p>Caminho dois: Instagram. Que é onde todo mundo procura, e quase sempre procura errado.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 28</span><h3>O problema do jeito manual</h3><span class="min">3 min</span></div>
+    <div class="fala">
+      <p>Quem aqui já passou uma hora rolando o Instagram procurando marca pra chamar? Eu já, muitas vezes.</p>
+      <p>O problema é que <em>o Instagram só te mostra o que ele já decidiu te mostrar.</em> Você cai nas marcas que já te seguem, aparecem sempre as mesmas que todas as criadoras já abordaram, você abre perfil por perfil, e depois de uma hora você juntou dez. E não tem jeito nenhum de filtrar por tamanho.</p>
+      <p>Pedindo pro Claude é diferente: ele procura no Google, não no seu feed. Então ele acha marca nova, que ninguém abordou ainda. Traz vinte perfis numa lista só, e filtra por faixa de seguidores e por produto.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 29</span><h3>Prompt 2 · marcas pequenas de um nicho</h3><span class="min">4 min, ao vivo</span></div>
+    <div class="fala">
+      <p>Olha o pedido. Esse é o de nicho, e eu usei decoração de exemplo: velas, quadros, vasos, porta-retrato, enfeite de mesa.</p>
+      <p>Repara nos detalhes que fazem diferença: marcas brasileiras, até cinquenta mil seguidores, de preferência novas, que estão começando a aparecer. E no fim eu peço pra ele não repetir marca grande e conhecida, porque senão ele traz as cinco que todo mundo conhece.</p>
+      <p>Tem uma coluna aqui que eu amo: "se ela já postou vídeo feito por criadora". <em>Marca que já postou vídeo de criadora é marca que já tem verba e já entende o formato.</em> Essa você coloca no topo da fila.</p>
+      <p>Troca o nicho pelo seu, que você escreveu no papel, e manda rodar agora numa aba nova.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 30</span><h3>Antes de mandar mensagem</h3><span class="min">4 min, ao vivo</span></div>
+    <div class="fala">
+      <p>Quando a lista voltar, você vai abrir os perfis. E aí são cinco coisas pra olhar, em quarenta segundos cada um.</p>
+      <p>Posta com frequência? Marca parada há três meses não tem verba nem equipe. Tem loja online ou vende só por DM? Isso muda o tipo de vídeo que você vai oferecer. Os vídeos dela são caseiros, mal iluminados? Ótimo, o seu trabalho resolve uma dor visível. Já postou criadora marcando? Então ela já entende o formato. Tem e-mail no perfil? Anota junto com o arroba, você vai usar os dois.</p>
+    </div>
+    <div class="faz"><b>Faz na tela</b>Abre um perfil de marca pequena ao vivo e faz os cinco checks em voz alta, rápido. Depois abre um que NÃO serve e descarta na frente delas. O descarte ensina tanto quanto a escolha.</div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 31</span><h3>Na tela</h3><span class="min">2 min</span></div>
+    <div class="fala">
+      <p>Olha como fica a lista de perfis quando ele termina.</p>
+    </div>
+    <div class="faz"><b>Faz na tela</b>Mostra a sua lista de verdade. Se o print do slide não estiver lá, mostra direto do Claude, funciona igual.</div>
+  </article>
+</section>
+
+<section class="bloco" id="b6" data-nome="11h10 · Caminho 3 · LinkedIn">
+  <div class="cab">
+    <div class="h">11h10 · Caminho 3</div>
+    <h2>LinkedIn</h2>
+    <div class="s">Vinte minutos. É o caminho que elas menos esperam e o que mais impressiona, porque leva direto na pessoa que assina.</div>
+  </div>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 32</span><h3>Abertura do caminho 3</h3><span class="min">30 seg</span></div>
+    <div class="fala">
+      <p>Caminho três, e esse aqui é o que ninguém espera numa aula de criadora de conteúdo: LinkedIn.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 33</span><h3>Por que o LinkedIn</h3><span class="min">4 min</span></div>
+    <div class="fala">
+      <p>LinkedIn é onde as empresas estão, e principalmente onde está a pessoa que decide.</p>
+      <p>Eu vou ser honesta: eu prospecto mais por e-mail, porque hoje as marcas chegam bastante em mim. Mas <em>eu tenho aluna fechando cliente por LinkedIn, inclusive fora do Brasil.</em> Então pra quem está começando vale demais, e eu não ia deixar isso de fora.</p>
+      <p>E tem uma coisa importante aqui: quase nunca você quer falar com o dono. Em empresa média o dono está longe do dia a dia de conteúdo e já tem gente pra isso. Quem você quer é o marketing. Analista, coordenador ou gerente de marketing. É quem contrata criadora e quem tem a verba na mão.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 34</span><h3>Prompt 3 · a pessoa certa dentro da empresa</h3><span class="min">3 min</span></div>
+    <div class="fala">
+      <p>Olha o pedido. Ele traz quinze pessoas, com nome, cargo, empresa, link do perfil, Instagram da empresa e se a empresa já falou alguma coisa sobre criadora ou UGC.</p>
+      <p>E repara na última linha: "prefiro analista, coordenador ou gerente de marketing, não o dono da empresa". <em>Sem essa linha ele te traz uma lista de CEO, e CEO não responde.</em></p>
+      <p>Usei tecnologia e aplicativos de exemplo aqui porque é um nicho que contrata muito e paga bem. Troca pelo seu.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 35</span><h3>Como falar lá</h3><span class="min">3 min</span></div>
+    <div class="fala">
+      <p>Agora, LinkedIn não é DM de Instagram, o tom é outro. Três coisas.</p>
+      <p>Primeira: convite com nota curta. Duas linhas dizendo quem você é e por que está falando com aquela empresa. Sem proposta no primeiro contato, sem tabela de preço, nada.</p>
+      <p>Segunda: fala de resultado. Lá dentro o assunto é venda, teste, conversão. <em>Guarda o "eu amo criar conteúdo" pro Instagram</em>, lá isso não vende.</p>
+      <p>Terceira: link, nunca anexo. Manda o endereço do portfólio que você publicou ontem. PDF pesado ninguém abre no horário de trabalho.</p>
+    </div>
+  </article>
+</section>
+
+<section class="bloco" id="b7" data-nome="11h30 · Caminho 4 · E-commerce">
+  <div class="cab">
+    <div class="h">11h30 · Caminho 4</div>
+    <h2>A lista de marcas que os e-commerces publicam</h2>
+    <div class="s">Quinze minutos. Faz ao vivo na Shopee: o tamanho da lista é o que impressiona.</div>
+  </div>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 36</span><h3>Abertura do caminho 4</h3><span class="min">30 seg</span></div>
+    <div class="fala">
+      <p>E o caminho quatro é o meu favorito pra quem quer volume. Poucas pessoas sabem disso.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 37</span><h3>A mina de ouro</h3><span class="min">5 min, ao vivo</span></div>
+    <div class="fala">
+      <p>Shopee, Amazon e Mercado Livre têm uma página com as marcas que vendem lá dentro. Uma lista pública, com centenas de marcas, das gigantes às que ninguém conhece ainda.</p>
+      <p>Você entra no site da Shopee, procura pela página de marcas, abre a lista, escolhe as do seu nicho e pede pro Claude achar o Instagram e o contato de cada uma. Depois repete na Amazon e no Mercado Livre, cada um tem a sua lista.</p>
+      <p><em>Isso é trabalho pro ano inteiro numa página só.</em></p>
+    </div>
+    <div class="faz"><b>Faz na tela</b>Faz na Shopee ao vivo: mostra a busca, abre a página de marcas e rola devagar, deixando a lista passar. Não corre. O tamanho da lista é o argumento.</div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 38</span><h3>Na tela</h3><span class="min">1 min</span></div>
+    <div class="fala">
+      <p>É essa lista inteira aqui, olha o tanto.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 39</span><h3>Prompt 4 · transformar a lista em contatos</h3><span class="min">3 min</span></div>
+    <div class="fala">
+      <p>E aqui o pedido muda de jeito, presta atenção: você está com a página aberta e fala com ele sobre essa página. "Esta página tem a lista de marcas que vendem neste e-commerce."</p>
+      <p>Aí ele separa as do seu nicho e, pra cada uma, procura Instagram, seguidores, site próprio, e-mail e se ela já usa vídeo de criadora na página do produto.</p>
+      <p>Repara que eu peço em ordem, da menor pra maior em seguidores. <em>As menores respondem primeiro</em>, então é por elas que você começa. E de novo a linha: se não achar o contato, escreve não encontrado.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 40</span><h3>Pra quem serve</h3><span class="min">3 min</span></div>
+    <div class="fala">
+      <p>Esse caminho é ouro pra quem quer fazer vídeo de e-commerce.</p>
+      <p>Quem vende dentro de marketplace vive de vídeo curto na página do produto e nos anúncios. É o trabalho que estão chamando de clip: vídeo direto, feito pra vender, sem precisar da sua cara numa campanha grande.</p>
+      <p>E o melhor: tem volume e tem recorrência. <em>Uma marca dessas não pede um vídeo, pede cinco por mês.</em></p>
+    </div>
+  </article>
+</section>
+
+<section class="bloco" id="b8" data-nome="11h45 · Captação ao vivo">
+  <div class="cab">
+    <div class="h">11h45 · Ao vivo</div>
+    <h2>Quarenta minutos, trinta marcas</h2>
+    <div class="s">Aqui você fala pouco. Você fica na tela, com cronômetro, perguntando de dez em dez minutos.</div>
+  </div>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 41</span><h3>Agora é você</h3><span class="min">1 min pra explicar</span></div>
+    <div class="fala">
+      <p>Agora é você. Quarenta minutos, e eu fico aqui na tela com vocês o tempo todo.</p>
+      <p>Não é pra sair da chamada, tá? Deixa rodando, pergunta o que travar, cola o que der errado. <em>Ninguém faz isso sozinha em casa depois, a gente faz agora, junto.</em></p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 42</span><h3>Como dividir</h3><span class="min">40 min de prática</span></div>
+    <div class="fala">
+      <p>Divide assim, que é o jeito de chegar em trinta sem enlouquecer.</p>
+      <p>Dez pelo produto: aquilo que a sua vida precisa agora, com o prompt 1, só trocando o produto.</p>
+      <p>Dez pelo nicho no Instagram: marcas de até cinquenta mil, com o prompt 2, trocando o nicho.</p>
+      <p>Dez pela lista do e-commerce: escolhe uma categoria e traz as menores primeiro.</p>
+      <p>Quem terminar antes roda o do LinkedIn e chega em quarenta e cinco. E quem ficar com vinte, tudo bem também, vinte já dá pra trabalhar hoje à tarde.</p>
+    </div>
+    <div class="faz"><b>Faz na tela</b>Cronômetro visível. De dez em dez minutos pergunta no chat "quantas você já tem?". Quem travou, pede pra colar o prompt que usou: quase sempre falta o "quantas" ou falta o formato de planilha. Vai lendo e elogiando números no chat, isso vira competição saudável.</div>
+  </article>
+
+  <div class="pausa">
+    <h3>Slide 43 · 12h30, pausa</h3>
+    <p>"Volta uma e meia com a sua lista aberta e o admin de ontem numa aba. À tarde a gente transforma essa lista em proposta." Fala a hora do retorno duas vezes e escreve no chat.</p>
+  </div>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 44</span><h3>Voltando do almoço: grava de novo</h3><span class="min">só pra você</span></div>
+    <div class="fala">
+      <p>Esse é o lembrete que mais se esquece, porque a sala volta conversando.</p>
+    </div>
+    <div class="faz alerta"><b>Faz na tela</b>Liga a gravação ANTES de abrir qualquer aba e antes de dizer qualquer coisa. E confere se o arquivo da manhã salvou.</div>
+  </article>
+</section>
+
+<section class="bloco" id="b9" data-nome="13h30 · Base de marcas">
+  <div class="cab">
+    <div class="h">13h30 · Bloco 5</div>
+    <h2>A sua base de marcas dentro do admin</h2>
+    <div class="s">Uma hora. Aqui o Claude Code volta e elas mexem no admin de ontem. Cuidado com o pega do slide 49, está anotado lá.</div>
+  </div>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 45</span><h3>Abertura do bloco 5</h3><span class="min">1 min</span></div>
+    <div class="fala">
+      <p>Boa tarde de novo, gente. De manhã a gente encontrou. Agora a gente organiza, porque lista perdida é lista que não existe.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 46</span><h3>O problema</h3><span class="min">3 min</span></div>
+    <div class="fala">
+      <p>De nada adianta encontrar trinta marcas hoje e perder essa lista em uma semana. E olha os quatro lugares onde a gente perde.</p>
+      <p>Print no celular, que some no meio de quatro mil fotos. Bloco de notas, que vira três listas diferentes e nenhuma completa. Salvo na DM, aí você lembra que falou mas não lembra com quem. E a planilha solta, que fica na pasta de downloads e você nunca mais abre.</p>
+      <p>Eu já fiz os quatro. <em>E cada lista perdida é mês que recomeça do zero.</em></p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 47</span><h3>Onde isso vai morar</h3><span class="min">2 min</span></div>
+    <div class="fala">
+      <p>Vai morar no mesmo admin de ontem. Olha que bonito: ontem a aba Contatos guardava quem chega até você, quem preenche o formulário do seu portfólio.</p>
+      <p>Hoje entra a aba Marcas, que é quem você foi buscar. As empresas que você encontrou hoje de manhã, com status, origem e histórico.</p>
+      <p>Mesmo admin, mesmo login, mesma tranca. <em>Muda só a aba.</em> É o mesmo sistema crescendo com você, e é por isso que valeu a pena construir ontem.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 48</span><h3>O que entra na base</h3><span class="min">3 min</span></div>
+    <div class="fala">
+      <p>E não é só marca nova que vai pra lá, presta atenção nessa lista.</p>
+      <p>As trinta que você encontrou hoje, claro. Mas também: todo cliente que você já atendeu, mesmo o de um ano atrás. Quem já pediu orçamento e não fechou, e esse é o mais fácil de reativar, sabia? Marca que te mandou DM e você nunca respondeu direito, que é uma coisa que acontece com todo mundo. E contato que está no seu WhatsApp e não está em lugar nenhum.</p>
+      <p><em>Cliente antigo responde muito mais que marca fria.</em> Então a sua base não começa com desconhecido, começa com quem já te conhece. Na semana que vem você manda um e-mail simples pra eles, e você vai se surpreender.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 49</span><h3>Prompt 5 · a aba Marcas</h3><span class="min">15 min, ao vivo</span></div>
+    <div class="fala">
+      <p>Antes de rodar, abre o seu admin e olha as abas que você tem. Quem rodou o prompt de ontem do jeito que eu mandei, já tem a aba Marcas lá. Se você já tem, a gente não cria de novo: a gente confere se tem tudo que está nesse slide e pede pro Claude ajustar o que faltar. Quem não tem, roda o prompt inteiro agora.</p>
+      <p>E olha o que a gente pede: a tabela com nome, site, instagram, seguidores, e-mail, whatsapp, pessoa de contato, nicho, origem, status, observação e data. O RLS ligado, que é a tranca que a gente viu ontem: só você, logada, lê e mexe. Sem login ninguém enxerga.</p>
+      <p>E na tela: adicionar marca na mão, importar planilha, buscar por nome, filtrar, mudar o status em um clique, e um contador no topo.</p>
+      <p>A última linha do pedido é a que eu quero que vocês copiem pra vida: <em>"no fim, me explica em português simples como eu importo a planilha".</em> Pede sempre isso. Ele constrói e ainda te ensina a usar.</p>
+    </div>
+    <div class="faz alerta"><b>Cuidado aqui</b>O prompt do admin de ontem já cria as abas Marcas e Prospecção. Então o mais provável é que a maioria já tenha. Abre o seu na frente delas, mostra a aba existente e transforma o momento em "conferir e ajustar". Se você falar "vamos criar" e elas já tiverem, vira confusão.</div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 50</span><h3>O caminho da marca</h3><span class="min">3 min</span></div>
+    <div class="fala">
+      <p>Toda marca anda por essas cinco casas, e é isso que o status faz.</p>
+      <p>A enviar: está na lista, ainda não recebeu nada. Enviado: recebeu o seu e-mail, com data. Respondeu: voltou, agora é conversa. Proposta: pediu valor e escopo. Fechado: virou trabalho pago.</p>
+      <p>Parece burocracia, mas é o contrário. <em>O status é o que te diz o que fazer amanhã de manhã sem você precisar lembrar de nada.</em> Você abre o admin, filtra "a enviar", e já sabe o seu trabalho do dia.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 51</span><h3>Importar</h3><span class="min">10 min, ao vivo</span></div>
+    <div class="fala">
+      <p>Agora a parte prática: tirar a planilha de manhã e botar dentro do admin.</p>
+      <p>Baixa a planilha que ele montou, em CSV. Confere as colunas, e as que importam mesmo são nome, instagram, e-mail e origem. Abre a aba Marcas, clica em importar e escolhe o arquivo. Depois confere quantas entraram e apaga as repetidas.</p>
+      <p>E se der erro? <em>Copia a mensagem inteira e cola pro Claude, falando assim: "isso apareceu, o que é e como arruma?".</em> Erro não é problema, erro é o jeito normal de trabalhar com isso. Quem trava é quem fecha a tela.</p>
+    </div>
+    <div class="faz"><b>Faz na tela</b>Importa a sua planilha ao vivo e, se der, provoca um erro de coluna de propósito e arruma na frente delas. Isso vale mais que qualquer explicação, porque elas vão ver que você também erra e resolve.</div>
+  </article>
+</section>
+
+<section class="bloco" id="b10" data-nome="14h30 · A copy">
+  <div class="cab">
+    <div class="h">14h30 · Bloco 6</div>
+    <h2>O que a marca lê nos primeiros 8 segundos</h2>
+    <div class="s">Uma hora. É o bloco mais seu, o que só você pode dar. Aqui vale falar mais e correr menos.</div>
+  </div>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 52</span><h3>Abertura do bloco 6</h3><span class="min">1 min</span></div>
+    <div class="fala">
+      <p>Agora a parte que decide tudo. Você pode ter a melhor lista do mundo e perder tudo em oito segundos de e-mail ruim.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 53</span><h3>A estrutura</h3><span class="min">5 min</span></div>
+    <div class="fala">
+      <p>Eu escrevo sempre nesta ordem, e são só quatro partes.</p>
+      <p>Um: quem eu sou e o meu diferencial. Uma frase. Uma. Não é currículo, ninguém quer saber a sua trajetória no primeiro e-mail.</p>
+      <p>Dois: por que estou falando com vocês. A conexão verdadeira: estou reformando a casa, uso o produto, vi o lançamento de vocês.</p>
+      <p>Três: a ideia de conteúdo, já mastigada, pronta pra ela imaginar no feed.</p>
+      <p>Quatro: a prova e o convite. O link do portfólio e uma pergunta fácil de responder.</p>
+      <p>E eu quero marcar bem a parte dois, porque <em>é a que quase ninguém faz e é a que faz a marca responder.</em> Sem a conexão, o seu e-mail é mais um igual aos outros trinta que chegaram na caixa dela hoje.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 54</span><h3>O assunto</h3><span class="min">4 min</span></div>
+    <div class="fala">
+      <p>Antes do e-mail, o assunto. Porque se o assunto for genérico, ninguém abre o resto e todo o seu trabalho foi pro lixo.</p>
+      <p>Olha o que não abre: "Parceria". "Proposta comercial". "Olá, tudo bem?". "Criadora de conteúdo UGC". São assuntos sobre você.</p>
+      <p>E olha o que abre: "Ideia de vídeo pro fogão de indução de vocês". "Vi o lançamento da linha de velas e tive uma ideia". "Vídeo pra página do produto de vocês na Shopee". "Conteúdo pra Black Friday da marca tal".</p>
+      <p>Sentiu a diferença? <em>Os que abrem falam do produto dela e entregam uma ideia. Os que não abrem falam de você.</em></p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 55</span><h3>O e-mail inteiro</h3><span class="min">6 min</span></div>
+    <div class="fala">
+      <p>Agora o modelo completo. Eu vou ler inteiro em voz alta, e vocês vão ver que é curtinho.</p>
+      <p>Repara no tamanho: cabe na tela do celular sem rolar. Repara que o primeiro parágrafo diz o que eu faço em uma frase, e já fala a língua dela: vídeo caseiro de produto, do jeito que a cliente dela grava, pra usar no perfil e nos anúncios.</p>
+      <p>O segundo parágrafo é a conexão: estou reformando a cozinha, entrei no site de vocês, vi o modelo de duas bocas e é exatamente o que cabe no meu espaço. <em>Isso não é lábia, isso é verdade, e a marca sente a diferença.</em></p>
+      <p>O terceiro é a ideia pronta: vídeo de quarenta segundos instalando e usando pela primeira vez, mostrando quanto tempo a água leva pra ferver. Olha que específico. Ela consegue ver o vídeo na cabeça dela.</p>
+      <p>Aí o link do portfólio, que é a prova, e a pergunta final: "faz sentido pra vocês? Eu mando os valores e os formatos". Pergunta fácil, de responder em dez segundos.</p>
+    </div>
+    <div class="faz"><b>Faz na tela</b>Lê o e-mail inteiro em voz alta, no ritmo de quem está lendo pra uma amiga. É o momento mais "aula da Lara" do dia.</div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 56</span><h3>O que mata o e-mail</h3><span class="min">4 min</span></div>
+    <div class="fala">
+      <p>Seis coisas que fazem a marca fechar sem ler.</p>
+      <p>Texto gigante: se não cabe na tela do celular, não é lido. Corta pela metade, e corta de novo.</p>
+      <p>Só falar de você: três parágrafos de sonho e paixão. A marca quer saber o que ela ganha.</p>
+      <p>Anexo pesado: PDF de vinte megas vai pro lixo. Manda o link do portfólio que você publicou ontem, que abre no celular em dois segundos.</p>
+      <p>Sem ideia nenhuma: "quero fazer uma parceria" não dá trabalho pra você e dá trabalho pra ela. Ela vai ter que pensar no que pedir, e ela não vai.</p>
+      <p>Copiado e colado: sem o nome da marca e sem a linha de conexão, vira spam na hora.</p>
+      <p>E sem pergunta no fim. <em>Muito silêncio nasce de e-mail que não pediu nada.</em></p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 57</span><h3>Prompt 6 · escrever na sua voz</h3><span class="min">10 min, ao vivo</span></div>
+    <div class="fala">
+      <p>Agora vocês vão escrever o de vocês, porque o meu e-mail é meu. Na sua boca ele tem que soar como você.</p>
+      <p>Olha o pedido: ele segue a estrutura das quatro partes, você preenche quem é, o link do portfólio e o tom.</p>
+      <p>E tem um campo aqui que eu quero que ninguém pule: o tom. <em>Cola uma legenda sua, daquelas que você escreveu e ficou com a sua cara.</em> Aí ele escreve o e-mail com o seu jeito de falar e não com jeito de robô. Isso muda a taxa de resposta, gente, não é firula.</p>
+      <p>As regras que eu coloco: no máximo cento e cinquenta palavras, sem enrolação, sem "espero que esteja bem", nada de anexo. E o mais importante: deixa marcado com chave o que muda em cada marca, ou seja, marca, pessoa e linha de conexão. Já vou explicar por quê.</p>
+    </div>
+    <div class="faz"><b>Faz na tela</b>Pede pra cada uma colar uma legenda dela no campo do tom, e pede pra duas ou três lerem no chat o e-mail que saiu. Comenta um em voz alta.</div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 58</span><h3>Em massa sem parecer massa</h3><span class="min">4 min</span></div>
+    <div class="fala">
+      <p>Aqui está o segredo do dia, e é por isso que aquelas chaves importam.</p>
+      <p>O corpo do e-mail é igual pra todas: sua apresentação, a estrutura da ideia, o link do portfólio, a pergunta final. Isso não muda.</p>
+      <p>O que muda é uma linha só: a linha de conexão. "Vi que vocês lançaram a linha de velas de coco." "O modelo de duas bocas cabe na minha cozinha." E de onde vem essa linha? <em>Da coluna de observações que você pediu lá de manhã.</em> Tá vendo como tudo se encaixa?</p>
+      <p>Então são cinquenta e-mails com cinquenta linhas diferentes, escritas de uma vez pelo Claude a partir da sua planilha. Cada marca recebe um e-mail que parece escrito pra ela. Porque foi.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 59</span><h3>O gancho de agora</h3><span class="min">3 min</span></div>
+    <div class="fala">
+      <p>E tem uma coisa de calendário que eu preciso falar hoje, porque é agora ou é só ano que vem.</p>
+      <p>Black Friday. A verba está sendo decidida neste momento. <em>Quem procura criadora em novembro já fechou com outra em setembro.</em> É literalmente agora.</p>
+      <p>Segundo: elas precisam de volume. Anúncio de Black Friday come vídeo, são três, cinco, dez versões do mesmo produto pra testar.</p>
+      <p>E terceiro: dá pra oferecer pacote. Em vez de um vídeo, um combo pra campanha inteira. Trabalho maior, e você entra pro ano seguinte inteiro como a criadora daquela marca.</p>
+      <p>Então quando você for escrever hoje, usa esse gancho no assunto. É o motivo perfeito pra estar mandando e-mail exatamente hoje.</p>
+    </div>
+  </article>
+</section>
+
+<section class="bloco" id="b11" data-nome="15h30 · Disparo em massa">
+  <div class="cab">
+    <div class="h">15h30 · Bloco 7</div>
+    <h2>Enviar pra cinquenta com um clique</h2>
+    <div class="s">Uma hora, e termina no clímax do dia: o envio ao vivo. Não deixa esse bloco ser comido pelo atraso.</div>
+  </div>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 60</span><h3>Abertura do bloco 7</h3><span class="min">30 seg</span></div>
+    <div class="fala">
+      <p>Você tem a lista, tem o e-mail escrito. Falta o carteiro.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 61</span><h3>Por que não na mão</h3><span class="min">3 min</span></div>
+    <div class="fala">
+      <p>Alguém vai pensar: mas Lara, eu mando pelo Gmail mesmo. Então olha o que é mandar cinquenta e-mails na mão.</p>
+      <p>Copia, cola, troca o nome, erra o nome (e todo mundo já mandou e-mail com o nome da marca errado, todo mundo). Nenhum registro de quem já recebeu. O Gmail trava depois de tantos envios seguidos. E o pior: semana que vem você não faz de novo. <em>É meio dia de trabalho, e ninguém repete meio dia de trabalho chato.</em></p>
+      <p>Pelo seu admin: você escolhe as marcas e aperta um botão. Cada marca vira "enviado" com data, sozinha. Ninguém recebe duas vezes por engano. E semana que vem leva dez minutos.</p>
+      <p>É a diferença entre fazer uma vez e ter uma rotina.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 62</span><h3>O que é o Resend</h3><span class="min">3 min</span></div>
+    <div class="fala">
+      <p>O Resend é o carteiro do seu site.</p>
+      <p>Porque o seu admin não sabe mandar e-mail sozinho, ele só sabe mostrar tela. O Resend é o serviço que pega o texto e entrega na caixa de entrada da marca. Você cria a conta, pega uma chave, e o seu site passa a ter carteiro.</p>
+      <p>Conta gratuita pra começar, entrega de verdade, e você vê quem recebeu. É simples assim.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 63</span><h3>Atenção: a chave é secreta</h3><span class="min">4 min</span></div>
+    <div class="fala">
+      <p>Agora para tudo, porque essa parte é importante e é sobre a sua segurança.</p>
+      <p>Lembra de ontem, quando a gente falou de chave pública e chave secreta? A chave pública do Supabase fica no site e tudo bem, ela foi feita pra isso, e quem protege os seus dados é o RLS, a tranca.</p>
+      <p>A chave do Resend é diferente. <em>Com ela, qualquer pessoa manda e-mail no seu nome.</em> Então ela não pode ficar no site de jeito nenhum. Ela mora escondida dentro do Supabase, como segredo, e o seu admin só pede pra ele enviar.</p>
+      <p>Guarda essa frase: se alguém pedir pra você colar essa chave dentro do site, a resposta é não.</p>
+    </div>
+    <div class="faz"><b>Faz na tela</b>Puxa direto da aula de ontem, elas já entenderam a diferença. Repetir aqui prende o conceito de vez.</div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 64</span><h3>Três passos</h3><span class="min">8 min, ao vivo</span></div>
+    <div class="fala">
+      <p>Três passos antes de pedir pro Claude construir.</p>
+      <p>Cria a conta no Resend com o seu e-mail de trabalho. Gera a chave e guarda num lugar seguro, e presta atenção: <em>ela aparece uma vez só.</em> Copiou, guarda no bloco de notas seguro, no gerenciador de senhas, onde você guardar as suas coisas.</p>
+      <p>E começa enviando pelo endereço de teste que eles dão. Depois, quando você quiser, liga o seu domínio e passa a mandar do seu próprio e-mail, que fica muito mais bonito.</p>
+      <p>Só que ligar o domínio mexe no DNS, e isso pode ficar pra depois da aula, com o passo a passo gravado. <em>Ninguém precisa travar aqui hoje.</em></p>
+    </div>
+    <div class="faz"><b>Faz na tela</b>Cria a conta ao vivo. Deixa claro em voz alta que quem não conseguir o domínio hoje não perdeu nada.</div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 65</span><h3>Prompt 7 · a aba Prospecção</h3><span class="min">15 min, ao vivo</span></div>
+    <div class="fala">
+      <p>De novo: abre o seu admin e olha se a aba Prospecção já está lá. Se estiver, a gente confere item por item desse slide e pede pro Claude ajustar o que faltar. Se não estiver, roda o prompt inteiro.</p>
+      <p>E olha o que essa aba faz: você escreve o modelo do e-mail com aquelas chaves, marca, pessoa e conexão, e o sistema troca sozinho. Tem a lista das suas marcas com caixinha de seleção. Tem um botão de mandar teste só pra você, antes de tudo. Tem o botão de disparar, que manda um de cada vez com uma pausa entre eles. Depois do envio ele marca a marca como enviado com a data, e te avisa se você tentar mandar de novo pro mesmo e-mail. E tem uma tabela com tudo que saiu: pra quem, quando, e se deu erro.</p>
+      <p>E de novo a última linha, que é a que eu mais uso: <em>"me explica no fim como eu troco o texto do modelo sem mexer no código".</em> Porque semana que vem você vai querer trocar o e-mail, e você não vai lembrar.</p>
+    </div>
+    <div class="faz alerta"><b>Cuidado aqui</b>Mesma coisa do slide 49: o admin de ontem já nasce com essa aba. Confere no seu antes, e conduz como "conferir e ajustar".</div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 66</span><h3>Como fica</h3><span class="min">2 min</span></div>
+    <div class="fala">
+      <p>Olha como fica: marcas selecionadas, modelo escolhido, um botão. É isso que você vai abrir toda terça-feira daqui pra frente.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 67</span><h3>Pra não cair no spam</h3><span class="min">4 min</span></div>
+    <div class="fala">
+      <p>Seis cuidados que valem o ano inteiro, e eu peço que vocês anotem esse slide.</p>
+      <p>Começa com dez por dia, não com duzentos de uma vez. E-mail novo que dispara duzentos no primeiro dia é e-mail marcado.</p>
+      <p>Manda o teste pra você mesma e lê no celular antes. Sempre.</p>
+      <p>Um link só no e-mail, e nenhum anexo.</p>
+      <p>Nada de maiúscula no assunto, nem "promoção imperdível", nem excesso de emoji.</p>
+      <p>Tira da lista quem pediu pra não receber, na hora. Isso é respeito e é lei.</p>
+      <p>E e-mail que voltou com erro, apaga da base. <em>Endereço inválido suja os próximos envios todos.</em></p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 68</span><h3>16h · o primeiro envio</h3><span class="min">1 min pra abrir</span></div>
+    <div class="fala">
+      <p>Chegou a hora. Eu mando o meu na frente de vocês, e vocês mandam o de vocês.</p>
+      <p>Respira, porque é agora que a aula de dois dias vira trabalho.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 69</span><h3>Antes de apertar</h3><span class="min">20 min, ao vivo</span></div>
+    <div class="fala">
+      <p>A última conferida, e eu vou ler em voz alta pra gente fazer junto.</p>
+      <p>O teste chegou na minha caixa e está bonito no celular. O nome da marca e a linha de conexão estão certos em cada uma. O link do portfólio abre. São marcas que eu quero mesmo atender. E o status vai virar "enviado" sozinho depois.</p>
+      <p>Conferiu tudo? Aperta. <em>E respira, porque agora é a parte boa.</em></p>
+    </div>
+    <div class="faz"><b>Faz na tela</b>Manda o seu de verdade, com a turma vendo o contador subir. Depois abre o painel do Resend e mostra os envios chegando. Esse é o clímax do dia, então deixa o silêncio acontecer e comemora com elas. Pede pra cada uma escrever no chat quando apertar.</div>
+  </article>
+</section>
+
+<section class="bloco" id="b12" data-nome="16h30 · Depois do envio">
+  <div class="cab">
+    <div class="h">16h30 · Bloco 8</div>
+    <h2>Depois que o e-mail sai</h2>
+    <div class="s">Meia hora. É o bloco que evita que elas desistam na semana que vem. Tom de conversa, não de aula.</div>
+  </div>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 70</span><h3>Abertura do bloco 8</h3><span class="min">30 seg</span></div>
+    <div class="fala">
+      <p>Mandou. E agora? Essa é a parte que ninguém ensina e é onde a maioria desiste.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 71</span><h3>Expectativa</h3><span class="min">4 min</span></div>
+    <div class="fala">
+      <p>Eu preciso falar uma coisa com muito carinho e muita honestidade: <em>a maioria não vai responder. E isso não é fracasso, é o jogo.</em></p>
+      <p>Prospecção é volume e repetição. A marca que não respondeu hoje pode responder no terceiro contato, em janeiro, quando a verba nova abrir. Por isso a base existe, pra você não recomeçar do zero toda vez.</p>
+      <p>Três combinados pra semana que vem. Um: não leva pro pessoal. Silêncio quase sempre é caixa cheia, não é sobre você nem sobre o seu trabalho. Dois: marca a data. Quem não respondeu em cinco dias entra na fila do segundo e-mail. Três: continua enchendo. Lista parada não gera cliente, trinta novas por semana.</p>
+      <p>Se você mandar trinta e uma responder, você fechou um cliente que você não tinha ontem. <em>Um cliente por mês vindo daqui muda o seu ano.</em></p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 72</span><h3>O segundo e-mail</h3><span class="min">3 min</span></div>
+    <div class="fala">
+      <p>Cinco dias depois, três linhas. Só isso.</p>
+      <p>Olha como é curto: "Oi, passando rapidinho pra saber se a ideia faz sentido pra vocês. Se for melhor, eu gravo um teste curto antes de qualquer acordo, pra vocês verem como fica com o produto de vocês na mão. Qualquer coisa eu fico por aqui."</p>
+      <p>Repara: sem cobrança, sem "não obtive retorno", e com uma oferta nova, que é o teste curto. <em>É esse e-mail que costuma destravar a conversa</em>, e é o que quase ninguém manda.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 73</span><h3>Respondeu</h3><span class="min">4 min</span></div>
+    <div class="fala">
+      <p>E quando responder, o que você faz?</p>
+      <p>Responde no mesmo dia. <em>Velocidade é metade do fechamento</em>, porque a marca está com a verba na cabeça naquele momento.</p>
+      <p>Manda dois ou três formatos com valor, nunca um só. Quando você manda um, a resposta é sim ou não. Quando você manda três, ela escolhe.</p>
+      <p>Deixa claro o que entrega: quantos vídeos, quantos cortes, prazo e direito de uso. E aqui eu vou só marcar, porque tem aula gravada sobre isso: direito de uso e exclusividade são o que mais mudam o seu preço.</p>
+      <p>E marca no admin como proposta, com a data de voltar a falar.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 74</span><h3>A rotina</h3><span class="min">4 min</span></div>
+    <div class="fala">
+      <p>Agora, como isso vira rotina. Porque tudo que a gente fez hoje em oito horas, daqui pra frente cabe em uma hora por semana.</p>
+      <p>Segunda: encher a lista, trinta marcas novas com os prompts de hoje. Vinte minutos.</p>
+      <p>Terça: disparar. Seleciona as "a enviar" e manda. Dez minutos.</p>
+      <p>Quinta: segundo e-mail pra quem recebeu semana passada e não respondeu.</p>
+      <p>E todo dia: responder quem respondeu, no mesmo dia, sempre.</p>
+      <p><em>Uma hora por semana, gente. É isso que separa quem tem agenda cheia de quem espera.</em></p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 75</span><h3>Checkpoint das 16h45</h3><span class="min">4 min</span></div>
+    <div class="fala">
+      <p>Olha o que é o mínimo de hoje. Se você tem isso, o dia valeu.</p>
+      <p>Uma lista com pelo menos vinte marcas. A aba Marcas no seu admin, com elas dentro. O seu e-mail de prospecção escrito na sua voz. E pelo menos um envio de verdade feito.</p>
+      <p>E se deu tempo: a aba Prospecção com disparo em massa, os clientes antigos importados e o modelo do segundo e-mail salvo.</p>
+      <p>Quem não conseguiu tudo, escuta: <em>ninguém sai daqui achando que falhou.</em> Está tudo gravado, está tudo na apostila, e o grupo continua depois da imersão.</p>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 76</span><h3>Amanhã de manhã</h3><span class="min">3 min</span></div>
+    <div class="fala">
+      <p>E a primeira coisa a fazer quando essa aula acabar, ou amanhã de manhã, com café.</p>
+      <p>Abre a sua base e escolhe as cinco marcas que você mais quer. Escreve a linha de conexão de cada uma na mão, com carinho, sem pressa. E manda. Essas cinco são as suas apostas da semana.</p>
+      <p>E cola no grupo quando a primeira responder. <em>A gente quer ver, viu?</em> Eu quero ver.</p>
+    </div>
+  </article>
+</section>
+
+<section class="bloco" id="b13" data-nome="17h · Fechamento">
+  <div class="cab">
+    <div class="h">17h · Fechamento</div>
+    <h2>Dúvidas e despedida</h2>
+    <div class="s">Fica até acabar a última pergunta. Mas fecha com a frase antes de abrir o microfone, senão a aula termina no ar.</div>
+  </div>
+
+  <article class="slide">
+    <div class="cab2"><span class="num">Slide 77</span><h3>Dúvidas</h3><span class="min">o tempo que precisar</span></div>
+    <div class="fala">
+      <p>Antes de abrir pra dúvidas, eu quero fechar com uma coisa.</p>
+      <p>Obrigada pelos dois dias, de verdade. Vocês ficaram oito horas de sábado e oito horas de domingo construindo em vez de assistindo, e isso não é pouco.</p>
+      <p>Ontem vocês fizeram a ferramenta. Hoje vocês usaram. E agora é o seguinte, e é a única coisa que eu peço: <em>quem manda e-mail toda semana fecha cliente. Quem só constrói fica só com a ferramenta bonita.</em></p>
+      <p>Não deixa isso virar mais um site parado. Segunda-feira, vinte minutos, trinta marcas. Toda semana.</p>
+      <p>Agora sim, manda as dúvidas, eu fico aqui o tempo que precisar. E nos vemos no grupo.</p>
+    </div>
+  </article>
+</section>
+
+<div class="fim">
+  <h2>Se o dia atrasar</h2>
+  <ol>
+    <li><b>Não corta:</b> a captação ao vivo das 11h45 e o envio ao vivo das 16h. São os dois momentos em que a aula acontece de verdade.</li>
+    <li><b>Corta primeiro:</b> o LinkedIn (slides 32 a 35). Está na apostila inteiro e ninguém sente falta hoje.</li>
+    <li><b>Depois:</b> o slide 23 das colunas e o 40 do e-commerce, que dá pra resumir em duas frases enquanto o Claude trabalha.</li>
+    <li><b>Encurta, não pula:</b> o bloco da copy (52 a 59). Se precisar, lê só o e-mail modelo e o slide dos erros.</li>
+    <li><b>Se sobrar tempo:</b> abre mais espaço no checkpoint das 16h45 e ajuda uma aluna por vez com a tela dela compartilhada. Vale mais que qualquer slide extra.</li>
+  </ol>
+</div>
+
+</div>
+
+<script>
+function fonte(d){
+  const r=document.documentElement;
+  const a=parseFloat(getComputedStyle(document.body).fontSize)+d*1.5;
+  document.body.style.fontSize=Math.max(15,Math.min(26,a))+'px';
+}
+const blocos=[...document.querySelectorAll('.bloco')];
+const onde=document.getElementById('ondeEstou');
+const prog=document.getElementById('prog');
+function scroll(){
+  const h=document.documentElement;
+  prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let atual=blocos[0];
+  blocos.forEach(b=>{ if(b.getBoundingClientRect().top<120) atual=b; });
+  onde.textContent=atual.dataset.nome||'';
+}
+document.addEventListener('scroll',scroll,{passive:true});
+scroll();
+</script>
+</body>
+</html>
