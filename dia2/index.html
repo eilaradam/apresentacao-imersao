@@ -1083,19 +1083,17 @@ Me entrega três versões de assunto também.</div>
 <section class="slide dark">
   <div class="tag">Prompt pronto · Claude Code</div>
   <h2 style="font-size:clamp(22px,2.6vw,38px);max-width:30ch">Criar a aba Prospecção</h2>
-  <div class="prompt">No meu admin, cria a aba PROSPECÇÃO, que manda e-mail pras marcas da minha base.
+  <div class="prompt">O prompt é grande, então ele mora numa página só dele. Lá você preenche os seus dados e copia num clique.
 
-O envio vai pelo Resend. <span class="k">A chave do Resend é secreta</span>: guarda ela como segredo dentro de uma função do Supabase e faz o admin chamar essa função. A chave não pode aparecer no site.
-
-Na aba eu quero:
-· escrever o modelo do e-mail, com assunto e texto, usando {marca}, {pessoa} e {conexao}, que o sistema troca sozinho
-· a lista das minhas marcas com caixinha de seleção e um botão de marcar todas com status "a enviar"
-· <span class="k">um botão de enviar teste só pra mim</span>, antes de tudo
-· o botão de disparar, que manda um de cada vez com uma pausa entre eles
-· depois do envio, marcar a marca como enviado com a data, e me avisar se eu tentar enviar de novo pro mesmo e-mail
-· uma tabela com tudo que saiu: pra quem, quando e se deu erro
-
-Me explica no fim como eu troco o texto do modelo sem mexer no código.</div>
+O que ele constrói:
+· a lista de envio sai da <span class="k">sua aba Marcas</span>, sem cadastrar contato de novo
+· caixinha em cada marca pra você <span class="k">escolher a dedo</span>, e a seleção fica salva
+· dois jeitos de escrever: texto fácil ou HTML, pra quando quiser caprichar
+· <span class="k">um botão de enviar teste só pra você</span>, antes de tudo
+· o disparo em lotes, com barra de progresso, e cada marca vira enviada com a data
+· histórico de tudo que saiu: pra quem, quando e se deu erro
+· <span class="k">a chave do Resend fica no Supabase</span>, nunca no site
+· e o modo rascunho, que abre no Gmail, pra quem ainda não tem domínio</div>
   <div class="linkaula">O prompt completo, com os campos pra preencher e o botão de copiar, está em <b>eilaradam.github.io/admin-imersao/disparo</b></div>
   <div class="foot"><span>Dia 2 · Prospectar</span><span>Prompt 7</span></div>
 </section>
